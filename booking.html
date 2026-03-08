@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>สำรองที่นั่ง — หล่อซานเฮ้าส์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #3B7EC8;
+      --blue-mid:    #2D6AAD;
+      --blue-dark:   #1E4D82;
+      --blue-deep:   #0F2D4E;
+      --sky:         #EBF4FD;
+      --sky-light:   #F5FAFF;
+      --sky-mid:     #D6EAFA;
+      --silver:      #F1F5F9;
+      --silver-mid:  #E2EAF2;
+      --border:      #C5D8EC;
+      --accent:      #56A3D9;
+      --accent-soft: #A8D4EF;
+      --text-muted:  #7A92A8;
+      --text-body:   #3D5A72;
+      --text-dark:   #0F2D4E;
+      --error:       #E53E3E;
+      --success:     #38A169;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+      background: var(--sky-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,250,255,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 36px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: .08em; color: var(--blue-dark);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue); flex-shrink: 0;
+    }
+    .btn-back {
+      color: var(--blue-dark); font-size: .85rem; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 50px;
+      border: 1.5px solid var(--border);
+      white-space: nowrap;
+      transition: all .2s;
+    }
+    .btn-back:hover { background: var(--sky-mid); border-color: var(--blue); }
+    .btn-lang {
+      background: transparent; color: var(--blue-dark);
+      padding: 7px 16px; border-radius: 50px;
+      font-size: .82rem; font-weight: 700; letter-spacing: .05em;
+      border: 1.5px solid var(--border);
+      cursor: pointer; transition: all .2s;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .btn-lang:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    @media (max-width: 400px) {
+      nav { padding: 10px 14px; }
+      .btn-lang { font-size: .75rem; padding: 7px 11px; }
+      .btn-back { font-size: .75rem; padding: 7px 12px; }
+    }
+
+    /* ══ HERO BANNER ══ */
+    .booking-hero {
+      position: relative;
+      padding: 120px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .booking-hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('hero-bg.jpg');
+      background-size: cover; background-position: center;
+    }
+    .booking-hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(15,45,78,.80) 0%, rgba(30,77,130,.70) 100%);
+    }
+    .booking-hero-content { position: relative; z-index: 1; }
+    .booking-hero-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.15); color: #fff;
+      font-size: .78rem; font-weight: 700;
+      padding: 7px 20px; border-radius: 50px;
+      margin-bottom: 18px; letter-spacing: .1em;
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(6px);
+    }
+    .booking-hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800; color: #fff; margin-bottom: 10px;
+    }
+    .booking-hero p {
+      font-size: .97rem; color: rgba(255,255,255,.82);
+      max-width: 480px; margin: 0 auto;
+    }
+
+    /* ══ INFO CHIPS ══ */
+    .info-strip {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;
+      padding: 28px 24px 0;
+      max-width: 700px; margin: -20px auto 0;
+      position: relative; z-index: 10;
+    }
+    .info-chip {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 50px; padding: 10px 20px;
+      font-size: .85rem; font-weight: 600; color: var(--text-body);
+      display: flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 16px rgba(59,126,200,.1);
+    }
+
+    /* ══ FORM CARD ══ */
+    .form-wrap {
+      max-width: 600px; margin: 40px auto 80px;
+      padding: 0 20px;
+    }
+    .form-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 28px;
+      padding: 44px 40px;
+      box-shadow: 0 8px 48px rgba(59,126,200,.12);
+      position: relative; overflow: hidden;
+    }
+    .form-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+    }
+    .form-section-title {
+      font-size: .72rem; font-weight: 800; color: var(--blue);
+      letter-spacing: .14em; text-transform: uppercase;
+      margin-bottom: 18px; margin-top: 32px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .form-section-title:first-of-type { margin-top: 0; }
+    .form-section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--silver-mid);
+    }
+
+    .field { margin-bottom: 18px; }
+    label {
+      display: block; font-size: .85rem; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 7px;
+    }
+    label span { color: var(--error); margin-left: 2px; }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--silver-mid);
+      border-radius: 12px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: .93rem; color: var(--text-dark);
+      background: var(--sky-light);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59,126,200,.12);
+      background: #fff;
+    }
+    input.error, select.error { border-color: var(--error); }
+    .field-error {
+      font-size: .78rem; color: var(--error);
+      margin-top: 5px; display: none;
+    }
+    .field-error.show { display: block; }
+    .field-hint {
+      font-size: .78rem; color: var(--text-muted); margin-top: 5px;
+    }
+
+    /* Time Slots */
+    .time-slots {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .time-slot {
+      border: 2px solid var(--silver-mid);
+      border-radius: 14px; padding: 16px;
+      cursor: pointer; transition: all .2s;
+      text-align: center; background: var(--sky-light);
+    }
+    .time-slot:hover { border-color: var(--accent); background: #fff; }
+    .time-slot.selected {
+      border-color: var(--blue);
+      background: linear-gradient(135deg, #EBF4FD, #fff);
+      box-shadow: 0 0 0 3px rgba(59,126,200,.12);
+    }
+    .time-slot input[type="radio"] { display: none; }
+    .time-slot-time {
+      font-size: 1.3rem; font-weight: 800; color: var(--blue);
+      display: block; margin-bottom: 4px;
+    }
+    .time-slot-label {
+      font-size: .8rem; color: var(--text-muted); font-weight: 600;
+    }
+    .time-slot.selected .time-slot-time { color: var(--blue-dark); }
+
+    /* Guest count */
+    .guest-counter {
+      display: flex; align-items: center; gap: 0;
+      border: 1.5px solid var(--silver-mid);
+      border-radius: 12px; overflow: hidden;
+      background: var(--sky-light);
+    }
+    .guest-counter:focus-within {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59,126,200,.12);
+    }
+    .guest-btn {
+      background: none; border: none; cursor: pointer;
+      width: 48px; height: 48px;
+      font-size: 1.2rem; font-weight: 700; color: var(--blue-dark);
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .guest-btn:hover { background: var(--sky-mid); }
+    .guest-btn:disabled { color: var(--text-muted); cursor: not-allowed; }
+    .guest-display {
+      flex: 1; text-align: center;
+      font-size: 1rem; font-weight: 700; color: var(--text-dark);
+      border-left: 1px solid var(--silver-mid);
+      border-right: 1px solid var(--silver-mid);
+      padding: 10px 0;
+    }
+
+    /* Note */
+    textarea { resize: none; height: 88px; }
+
+    /* Summary */
+    .summary-box {
+      background: var(--sky); border: 1.5px solid var(--sky-mid);
+      border-radius: 16px; padding: 20px 22px;
+      margin-bottom: 24px; display: none;
+    }
+    .summary-box.show { display: block; }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      font-size: .88rem; margin-bottom: 8px;
+    }
+    .summary-row:last-child { margin-bottom: 0; }
+    .summary-key { color: var(--text-muted); font-weight: 600; }
+    .summary-val { color: var(--text-dark); font-weight: 700; text-align: right; max-width: 55%; }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+      color: #fff; padding: 17px 32px; border-radius: 50px;
+      font-size: 1rem; font-weight: 800; border: none; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(59,126,200,.35);
+      transition: all .2s; letter-spacing: .02em;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(59,126,200,.45); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .spinner {
+      width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; display: none; flex-shrink: 0;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .alert-box {
+      padding: 14px 18px; border-radius: 12px; font-size: .88rem;
+      font-weight: 600; margin-bottom: 18px; display: none;
+    }
+    .alert-box.show { display: block; }
+    .alert-error { background: #FFF5F5; border: 1.5px solid #FCA5A5; color: #B91C1C; }
+    .form-note {
+      text-align: center; font-size: .78rem;
+      color: var(--text-muted); margin-top: 12px;
+    }
+
+    /* Success Screen */
+    .success-screen {
+      display: none; text-align: center; padding: 16px 0;
+    }
+    .success-screen.show { display: block; }
+    .success-icon { font-size: 3.5rem; margin-bottom: 18px; }
+    .success-title {
+      font-size: 1.5rem; font-weight: 800; color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+    .success-sub {
+      font-size: .93rem; color: var(--text-body); line-height: 1.75;
+      max-width: 380px; margin: 0 auto 28px;
+    }
+    .success-detail {
+      background: var(--sky); border-radius: 16px;
+      padding: 20px 24px; text-align: left;
+      margin-bottom: 28px;
+    }
+    .success-detail .summary-row { font-size: .9rem; }
+    .btn-back-home {
+      display: inline-block;
+      background: var(--blue); color: #fff;
+      padding: 14px 36px; border-radius: 50px;
+      font-size: .95rem; font-weight: 700;
+      box-shadow: 0 4px 18px rgba(59,126,200,.3);
+      transition: all .2s;
+    }
+    .btn-back-home:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+    /* Footer */
+    footer {
+      background: var(--blue-deep); color: #4a7aa8;
+      text-align: center; padding: 28px 24px; font-size: .82rem;
+    }
+    .footer-logo { color: var(--accent); font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 12px 16px; }
+      .form-card { padding: 32px 22px; }
+      .time-slots { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .form-card { padding: 26px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <div class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</div>
+    <div class="nav-right">
+      <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+      <a href="index.html" class="btn-back" id="btnBack" data-th="← กลับหน้าหลัก" data-en="← Back">← กลับหน้าหลัก</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <div class="booking-hero">
+    <div class="booking-hero-bg"></div>
+    <div class="booking-hero-content">
+      <div class="booking-hero-tag">🏮 PREMIUM BOOKING</div>
+      <h1 data-th="สำรองที่นั่ง Premium" data-en="Reserve a Premium Seat">สำรองที่นั่ง Premium</h1>
+      <p data-th="กรอกข้อมูลด้านล่างเพื่อจองประสบการณ์สุดพิเศษที่หล่อซานเฮ้าส์" data-en="Fill in the form below to book your exclusive experience at Lor Xan House.">กรอกข้อมูลด้านล่างเพื่อจองประสบการณ์สุดพิเศษที่หล่อซานเฮ้าส์</p>
+    </div>
+  </div>
+
+  <!-- ══ INFO CHIPS ══ -->
+  <div class="info-strip">
+    <div class="info-chip" data-th="🕛 รอบ 12:00 &amp; 🕕 18:00" data-en="🕛 12:00 &amp; 🕕 18:00 Sessions">🕛 รอบ 12:00 &amp; 🕕 18:00</div>
+    <div class="info-chip" data-th="👥 สูงสุด 6 ท่านต่อรอบ" data-en="👥 Max 6 guests per session">👥 สูงสุด 6 ท่านต่อรอบ</div>
+    <div class="info-chip" data-th="📅 จองล่วงหน้าอย่างน้อย 2 วัน" data-en="📅 Book at least 2 days in advance">📅 จองล่วงหน้าอย่างน้อย 2 วัน</div>
+  </div>
+
+  <!-- ══ FORM ══ -->
+  <div class="form-wrap">
+    <div class="form-card">
+
+      <!-- FORM CONTENT -->
+      <div id="formContent">
+
+        <div class="alert-box alert-error" id="sendError"
+             data-th="❌ ส่งอีเมลไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อ watcharapong.saikaew@gmail.com โดยตรง"
+             data-en="❌ Failed to send email. Please try again or contact watcharapong.saikaew@gmail.com directly.">
+          ❌ ส่งอีเมลไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อ watcharapong.saikaew@gmail.com โดยตรง
+        </div>
+
+        <p class="form-section-title" data-th="ข้อมูลผู้จอง" data-en="Guest Information">ข้อมูลผู้จอง</p>
+
+        <div class="field">
+          <label id="labelName" data-th="ชื่อ-นามสกุล" data-en="Full Name">ชื่อ-นามสกุล <span>*</span></label>
+          <input type="text" id="guestName" data-placeholder-th="เช่น สมชาย ใจดี" data-placeholder-en="e.g. John Smith" placeholder="เช่น สมชาย ใจดี" />
+          <div class="field-error" id="nameError" data-th="กรุณากรอกชื่อ-นามสกุล" data-en="Please enter your full name">กรุณากรอกชื่อ-นามสกุล</div>
+        </div>
+
+        <div class="field">
+          <label id="labelEmail" data-th="อีเมล" data-en="Email">อีเมล <span>*</span></label>
+          <input type="email" id="guestEmail" placeholder="example@email.com" />
+          <div class="field-error" id="emailError" data-th="กรุณากรอกอีเมลให้ถูกต้อง" data-en="Please enter a valid email address">กรุณากรอกอีเมลให้ถูกต้อง</div>
+        </div>
+
+        <div class="field">
+          <label id="labelPhone" data-th="เบอร์โทรศัพท์" data-en="Phone Number">เบอร์โทรศัพท์</label>
+          <input type="tel" id="guestPhone" data-placeholder-th="08x-xxx-xxxx" data-placeholder-en="e.g. +66 8x-xxx-xxxx" placeholder="08x-xxx-xxxx" />
+          <div class="field-hint" id="hintPhone" data-th="ไม่บังคับ — สำหรับติดต่อยืนยันการจอง" data-en="Optional — for booking confirmation contact">ไม่บังคับ — สำหรับติดต่อยืนยันการจอง</div>
+        </div>
+
+        <p class="form-section-title" data-th="เลือกวันและเวลา" data-en="Select Date & Time">เลือกวันและเวลา</p>
+
+        <div class="field">
+          <label id="labelDate" data-th="วันที่ต้องการ" data-en="Preferred Date">วันที่ต้องการ <span>*</span></label>
+          <input type="date" id="bookingDate" />
+          <div class="field-error" id="dateError" data-th="กรุณาเลือกวันที่ล่วงหน้าอย่างน้อย 2 วัน" data-en="Please select a date at least 2 days in advance">กรุณาเลือกวันที่ล่วงหน้าอย่างน้อย 2 วัน</div>
+          <div class="field-hint" id="hintDate">
+            <span data-th="จองได้ตั้งแต่วันที่" data-en="Earliest available date:">จองได้ตั้งแต่วันที่</span> <strong id="minDateLabel"></strong> <span data-th="เป็นต้นไป" data-en="">เป็นต้นไป</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label id="labelTime" data-th="รอบเวลา" data-en="Session Time">รอบเวลา <span>*</span></label>
+          <div class="time-slots">
+            <label class="time-slot" id="slot-12" onclick="selectSlot('12:00')">
+              <input type="radio" name="timeSlot" value="12:00" />
+              <span class="time-slot-time">12:00</span>
+              <span class="time-slot-label" data-th="รอบกลางวัน" data-en="Lunch Session">รอบกลางวัน</span>
+            </label>
+            <label class="time-slot" id="slot-18" onclick="selectSlot('18:00')">
+              <input type="radio" name="timeSlot" value="18:00" />
+              <span class="time-slot-time">18:00</span>
+              <span class="time-slot-label" data-th="รอบเย็น" data-en="Evening Session">รอบเย็น</span>
+            </label>
+          </div>
+          <div class="field-error" id="timeError" data-th="กรุณาเลือกรอบเวลา" data-en="Please select a session time">กรุณาเลือกรอบเวลา</div>
+        </div>
+
+        <p class="form-section-title" data-th="จำนวนผู้เข้าร่วม" data-en="Number of Guests">จำนวนผู้เข้าร่วม</p>
+
+        <div class="field">
+          <label id="labelGuests">
+            <span data-th="จำนวนผู้เข้าร่วม" data-en="Number of Guests">จำนวนผู้เข้าร่วม</span>
+            <span>*</span>
+            <span style="color:var(--text-muted);font-weight:400" data-th="(4–6 ท่าน)" data-en="(4–6 guests)">(4–6 ท่าน)</span>
+          </label>
+          <div class="guest-counter">
+            <button class="guest-btn" id="guestMinus" onclick="changeGuest(-1)" disabled>−</button>
+            <div class="guest-display"><span id="guestCount">4</span> <span id="guestUnit" data-th="ท่าน" data-en="guests">ท่าน</span></div>
+            <button class="guest-btn" id="guestPlus" onclick="changeGuest(1)">+</button>
+          </div>
+          <div class="field-hint" id="hintPrice" data-th="ราคา 1,950 ฿ ต่อท่าน · รวมทุกอย่าง" data-en="฿1,950 per person · All-inclusive">ราคา 1,950 ฿ ต่อท่าน · รวมทุกอย่าง</div>
+        </div>
+
+        <p class="form-section-title" data-th="ข้อมูลเพิ่มเติม" data-en="Additional Information">ข้อมูลเพิ่มเติม</p>
+
+        <div class="field">
+          <label id="labelNote" data-th="หมายเหตุ / ความต้องการพิเศษ" data-en="Notes / Special Requests">หมายเหตุ / ความต้องการพิเศษ</label>
+          <textarea id="guestNote" data-placeholder-th="เช่น แพ้อาหาร ต้องการวีลแชร์ หรือมาเพื่อโอกาสพิเศษ..." data-placeholder-en="e.g. food allergies, wheelchair access, special occasion..." placeholder="เช่น แพ้อาหาร ต้องการวีลแชร์ หรือมาเพื่อโอกาสพิเศษ..."></textarea>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary-box" id="summaryBox">
+          <div class="summary-row">
+            <span class="summary-key" data-th="📅 วันที่" data-en="📅 Date">📅 วันที่</span>
+            <span class="summary-val" id="sumDate">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="🕐 รอบ" data-en="🕐 Session">🕐 รอบ</span>
+            <span class="summary-val" id="sumTime">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="👥 จำนวน" data-en="👥 Guests">👥 จำนวน</span>
+            <span class="summary-val" id="sumGuests">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="💰 ยอดรวม" data-en="💰 Total">💰 ยอดรวม</span>
+            <span class="summary-val" id="sumTotal" style="color:var(--blue);font-size:1rem">—</span>
+          </div>
+        </div>
+
+        <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+          <div class="spinner" id="spinner"></div>
+          <span id="submitLabel" data-th="ยืนยันการจอง Premium →" data-en="Confirm Premium Booking →">ยืนยันการจอง Premium →</span>
+        </button>
+        <p class="form-note" data-th="อีเมลยืนยันจะถูกส่งไปยังคุณและทีมงานทันที" data-en="A confirmation email will be sent to you and our team immediately.">อีเมลยืนยันจะถูกส่งไปยังคุณและทีมงานทันที</p>
+
+      </div><!-- /formContent -->
+
+      <!-- SUCCESS SCREEN -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">🎉</div>
+        <div class="success-title" data-th="รับการจองแล้ว!" data-en="Booking Received!">รับการจองแล้ว!</div>
+        <p class="success-sub">
+          <span data-th="ขอบคุณที่เลือกหล่อซานเฮ้าส์ เราจะส่งอีเมลยืนยันรายละเอียดไปยัง" data-en="Thank you for choosing Lor Xan House. A confirmation email will be sent to">ขอบคุณที่เลือกหล่อซานเฮ้าส์ เราจะส่งอีเมลยืนยันรายละเอียดไปยัง</span>
+          <strong id="confirmEmail"></strong>
+          <span data-th="ภายใน 24 ชั่วโมง" data-en="within 24 hours.">ภายใน 24 ชั่วโมง</span>
+        </p>
+        <div class="success-detail">
+          <div class="summary-row">
+            <span class="summary-key" data-th="👤 ชื่อผู้จอง" data-en="👤 Guest Name">👤 ชื่อผู้จอง</span>
+            <span class="summary-val" id="confirmName"></span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="📅 วันที่" data-en="📅 Date">📅 วันที่</span>
+            <span class="summary-val" id="confirmDate"></span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="🕐 รอบ" data-en="🕐 Session">🕐 รอบ</span>
+            <span class="summary-val" id="confirmTime"></span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="👥 จำนวน" data-en="👥 Guests">👥 จำนวน</span>
+            <span class="summary-val" id="confirmGuests"></span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key" data-th="💰 ยอดรวม" data-en="💰 Total">💰 ยอดรวม</span>
+            <span class="summary-val" id="confirmTotal" style="color:var(--blue);font-size:1rem"></span>
+          </div>
+        </div>
+        <a href="index.html" class="btn-back-home" data-th="← กลับหน้าหลัก" data-en="← Back to Home">← กลับหน้าหลัก</a>
+      </div>
+
+    </div><!-- /form-card -->
+  </div><!-- /form-wrap -->
+
+  <footer>
+    <div class="footer-logo">• LOR XAN HOUSE •</div>
+    <div>Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
+  </footer>
+
+  <script>
+    // ── EMAILJS CONFIG ──────────────────────────────────────────
+    const EMAILJS_PUBLIC_KEY   = 'IRgrrYrBs3oD8JoIa';
+    const EMAILJS_SERVICE_ID   = 'service_1zgjmjm';
+    const OWNER_TEMPLATE_ID    = 'template_3y6fmpa';
+    const CUSTOMER_TEMPLATE_ID = 'template_fnerug8';
+    const OWNER_EMAIL          = 'watcharapong.saikaew@gmail.com';
+    // ────────────────────────────────────────────────────────────
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    let guestCount = 4;
+    let selectedTime = '';
+
+    // ── Date setup ──
+    function setupMinDate() {
+      const today = new Date();
+      const minDate = new Date(today);
+      minDate.setDate(today.getDate() + 2);
+      const yyyy = minDate.getFullYear();
+      const mm   = String(minDate.getMonth() + 1).padStart(2, '0');
+      const dd   = String(minDate.getDate()).padStart(2, '0');
+      document.getElementById('bookingDate').min = `${yyyy}-${mm}-${dd}`;
+      const thaiMonths = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+      document.getElementById('minDateLabel').textContent =
+        `${minDate.getDate()} ${thaiMonths[minDate.getMonth()]} ${minDate.getFullYear() + 543}`;
+      document.getElementById('bookingDate').addEventListener('change', updateSummary);
+    }
+
+    function selectSlot(time) {
+      selectedTime = time;
+      document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+      document.getElementById('slot-' + time.split(':')[0]).classList.add('selected');
+      clearError('timeError');
+      updateSummary();
+    }
+
+    function changeGuest(delta) {
+      guestCount = Math.max(4, Math.min(6, guestCount + delta));
+      document.getElementById('guestCount').textContent = guestCount;
+      document.getElementById('guestMinus').disabled = guestCount <= 4;
+      document.getElementById('guestPlus').disabled  = guestCount >= 6;
+      updateSummary();
+    }
+
+    function formatThaiDate(dateStr) {
+      if (!dateStr) return '—';
+      const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+                          'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      const thaiDays = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+      const d = new Date(dateStr + 'T00:00:00');
+      return `วัน${thaiDays[d.getDay()]}ที่ ${d.getDate()} ${thaiMonths[d.getMonth()]} ${d.getFullYear() + 543}`;
+    }
+    function formatEnglishDate(dateStr) {
+      if (!dateStr) return '—';
+      const enMonths = ['January','February','March','April','May','June',
+                        'July','August','September','October','November','December'];
+      const enDays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const d = new Date(dateStr + 'T00:00:00');
+      return `${enDays[d.getDay()]}, ${d.getDate()} ${enMonths[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    function updateSummary() {
+      const date  = document.getElementById('bookingDate').value;
+      const total = guestCount * 1950;
+      if (date && selectedTime) {
+        document.getElementById('summaryBox').classList.add('show');
+        document.getElementById('sumDate').textContent   = currentLang === 'th' ? formatThaiDate(date) : formatEnglishDate(date);
+        document.getElementById('sumTime').textContent   = currentLang === 'th' ? `รอบ ${selectedTime} น.` : `${selectedTime} session`;
+        document.getElementById('sumGuests').textContent = currentLang === 'th' ? `${guestCount} ท่าน` : `${guestCount} guests`;
+        document.getElementById('sumTotal').textContent  = `฿${total.toLocaleString()}`;
+      }
+    }
+
+    function showError(id, inputId) {
+      document.getElementById(id).classList.add('show');
+      if (inputId) document.getElementById(inputId).classList.add('error');
+    }
+    function clearError(id, inputId) {
+      document.getElementById(id).classList.remove('show');
+      if (inputId) document.getElementById(inputId)?.classList.remove('error');
+    }
+
+    // ── Build bilingual email HTML ──
+    function buildOwnerEmail(data) {
+      return `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#0F2D4E">
+  <div style="background:linear-gradient(135deg,#1E4D82,#3B7EC8);padding:32px 28px;border-radius:16px 16px 0 0;text-align:center">
+    <div style="font-size:2rem;margin-bottom:8px">🏮</div>
+    <h1 style="color:#fff;margin:0;font-size:1.3rem;font-weight:800">การจองใหม่ — รอยืนยัน</h1>
+    <p style="color:rgba(255,255,255,.8);margin:6px 0 0;font-size:.88rem">New Booking — Pending Confirmation</p>
+  </div>
+  <div style="background:#fff;border:1px solid #C5D8EC;border-top:none;padding:28px;border-radius:0 0 16px 16px">
+    <div style="background:#FFFBEB;border:1px solid #FCD34D;border-radius:10px;padding:12px 16px;margin-bottom:22px;font-size:.85rem;color:#92400E">
+      ⏳ <strong>สถานะ: รอการยืนยัน / Status: Pending Confirmation</strong><br>
+      กรุณายืนยันกับลูกค้าภายใน 24 ชั่วโมง / Please confirm with the guest within 24 hours.
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:.9rem">
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8;width:40%">👤 ชื่อ / Name</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;font-weight:700">${data.name}</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8">📧 อีเมล / Email</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2"><a href="mailto:${data.email}" style="color:#3B7EC8">${data.email}</a></td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8">📱 โทร / Phone</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2">${data.phone || '—'}</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8">📅 วันที่ / Date</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;font-weight:700">${data.dateTH}<br><span style="font-weight:400;color:#7A92A8;font-size:.82rem">${data.dateEN}</span></td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8">🕐 รอบ / Session</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;font-weight:700">${data.time} น.</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8">👥 จำนวน / Guests</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2">${data.guests} ท่าน / guests</td></tr>
+      <tr><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;color:#7A92A8">💰 ยอดรวม / Total</td><td style="padding:10px 0;border-bottom:1px solid #E2EAF2;font-weight:800;color:#3B7EC8;font-size:1.05rem">${data.total.toLocaleString()} ฿</td></tr>
+      <tr><td style="padding:10px 0;color:#7A92A8;vertical-align:top">📝 หมายเหตุ / Note</td><td style="padding:10px 0">${data.note || '—'}</td></tr>
+    </table>
+    <div style="text-align:center;margin-top:24px">
+      <a href="mailto:${data.email}?subject=ยืนยันการจอง หล่อซานเฮ้าส์ ${data.dateTH}&body=เรียนคุณ${data.name}%0A%0Aทีมงานหล่อซานเฮ้าส์ขอยืนยันการจองของคุณ..."
+         style="background:#3B7EC8;color:#fff;padding:12px 28px;border-radius:50px;text-decoration:none;font-weight:700;font-size:.9rem;display:inline-block">
+        ✉️ ตอบกลับลูกค้า
+      </a>
+    </div>
+  </div>
+  <p style="text-align:center;color:#7A92A8;font-size:.75rem;margin-top:16px">Lor Xan House · Premium Heritage Experience</p>
+</div>`;
+    }
+
+    function buildCustomerEmail(data) {
+      return `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#0F2D4E">
+  <div style="background:linear-gradient(135deg,#1E4D82,#3B7EC8);padding:32px 28px;border-radius:16px 16px 0 0;text-align:center">
+    <div style="font-size:2rem;margin-bottom:8px">🏮</div>
+    <h1 style="color:#fff;margin:0;font-size:1.3rem;font-weight:800">รับข้อมูลการจองแล้ว</h1>
+    <p style="color:rgba(255,255,255,.8);margin:6px 0 0;font-size:.88rem">We Have Received Your Booking Request</p>
+  </div>
+  <div style="background:#fff;border:1px solid #C5D8EC;border-top:none;padding:28px;border-radius:0 0 16px 16px">
+
+    <p style="color:#3D5A72;line-height:1.75;margin-bottom:6px">เรียนคุณ <strong>${data.name}</strong></p>
+    <p style="color:#3D5A72;line-height:1.75;margin-bottom:20px">
+      เราได้รับข้อมูลการจองของคุณแล้ว และกำลังดำเนินการตรวจสอบ ทีมงานจะติดต่อกลับเพื่อยืนยันภายใน 24 ชั่วโมง
+      <br><br>
+      <em style="color:#7A92A8;font-size:.88rem">Dear ${data.name}, we have received your booking request and will confirm within 24 hours.</em>
+    </p>
+
+    <div style="background:#FFFBEB;border:1px solid #FCD34D;border-radius:10px;padding:14px 16px;margin-bottom:22px">
+      <strong style="color:#92400E">⏳ สถานะ: รอการยืนยัน / Status: Pending Confirmation</strong><br>
+      <span style="font-size:.83rem;color:#B45309">ยังไม่ถือว่าจองสำเร็จจนกว่าจะได้รับอีเมลยืนยันจากเรา<br>
+      Booking is not confirmed until you receive a confirmation email from us.</span>
+    </div>
+
+    <div style="background:#EBF4FD;border-radius:12px;padding:20px;margin-bottom:22px">
+      <p style="font-weight:800;color:#1E4D82;margin-bottom:14px;font-size:.9rem">📋 สรุปการจอง / Booking Summary</p>
+      <table style="width:100%;border-collapse:collapse;font-size:.88rem">
+        <tr><td style="padding:8px 0;border-bottom:1px solid #C5D8EC;color:#7A92A8;width:42%">📅 วันที่ / Date</td><td style="padding:8px 0;border-bottom:1px solid #C5D8EC;font-weight:700">${data.dateTH}<br><span style="font-weight:400;color:#7A92A8;font-size:.8rem">${data.dateEN}</span></td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #C5D8EC;color:#7A92A8">🕐 รอบ / Session</td><td style="padding:8px 0;border-bottom:1px solid #C5D8EC;font-weight:700">${data.time} น.</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #C5D8EC;color:#7A92A8">👥 จำนวน / Guests</td><td style="padding:8px 0;border-bottom:1px solid #C5D8EC">${data.guests} ท่าน / guests</td></tr>
+        <tr><td style="padding:8px 0;color:#7A92A8">💰 ยอดรวม / Total</td><td style="padding:8px 0;font-weight:800;color:#3B7EC8;font-size:1rem">${data.total.toLocaleString()} ฿</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#F1F5F9;border-radius:10px;padding:16px;font-size:.83rem;color:#3D5A72;line-height:1.75">
+      <strong style="color:#1E4D82">สิ่งที่รวมอยู่ในแพ็กเกจ / What's Included:</strong><br>
+      ✓ วัตถุดิบทุกรายการ / All ingredients<br>
+      ✓ อาหาร 1 มื้อร่วมกัน / 1 shared meal<br>
+      ✓ อังกู๊ที่ทำเองในกล่องพิเศษ / Homemade Ang Ku Kueh in special box<br>
+      ✓ หนังสือ "ย้อนวันหวานที่หล่อซานเฮ้าส์" พร้อมลายเซ็น / Signed book<br>
+      ✓ สูตรอาหารฉบับพิมพ์พิเศษ / Special printed recipe card<br>
+      ✓ ภาพถ่ายที่ระลึก / Commemorative photo
+    </div>
+
+    <p style="margin-top:22px;font-size:.83rem;color:#7A92A8;text-align:center">
+      หากมีคำถามติดต่อ / Questions? Contact us at<br>
+      <a href="mailto:watcharapong.saikaew@gmail.com" style="color:#3B7EC8">watcharapong.saikaew@gmail.com</a>
+    </p>
+  </div>
+  <p style="text-align:center;color:#7A92A8;font-size:.75rem;margin-top:16px">Lor Xan House · Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</p>
+</div>`;
+    }
+
+    // ── Submit ──
+    async function submitForm() {
+      let valid = true;
+      const name  = document.getElementById('guestName').value.trim();
+      const email = document.getElementById('guestEmail').value.trim();
+      const phone = document.getElementById('guestPhone').value.trim();
+      const date  = document.getElementById('bookingDate').value;
+      const note  = document.getElementById('guestNote').value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      ['nameError','emailError','dateError','timeError'].forEach(id => clearError(id));
+      ['guestName','guestEmail','bookingDate'].forEach(id => document.getElementById(id)?.classList.remove('error'));
+      document.getElementById('sendError').classList.remove('show');
+
+      if (!name)  { showError('nameError',  'guestName');  valid = false; }
+      if (!email || !emailRegex.test(email)) { showError('emailError', 'guestEmail'); valid = false; }
+      if (!date)  { showError('dateError',  'bookingDate'); valid = false; }
+      if (!selectedTime) { showError('timeError'); valid = false; }
+      if (!valid) return;
+
+      const total = guestCount * 1950;
+      const data  = {
+        name, email, phone, note, guests: guestCount, time: selectedTime, total,
+        dateTH: formatThaiDate(date), dateEN: formatEnglishDate(date)
+      };
+
+      // ── Loading state ──
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.classList.add('loading');
+      document.getElementById('submitLabel').textContent = 'กำลังส่ง...';
+
+      try {
+        const commonParams = {
+          guest_name: data.name, guest_email: data.email,
+          booking_date_th: data.dateTH, booking_date_en: data.dateEN,
+          booking_time: data.time, guest_count: data.guests,
+          total_price: `${data.total.toLocaleString()} ฿`, note: data.note || '—'
+        };
+
+        // ส่งถึงเจ้าของ
+        await emailjs.send(EMAILJS_SERVICE_ID, OWNER_TEMPLATE_ID, {
+          ...commonParams,
+          to_email: OWNER_EMAIL,
+          message_html: buildOwnerEmail(data)
+        });
+
+        // ส่ง copy ถึงลูกค้า
+        await emailjs.send(EMAILJS_SERVICE_ID, CUSTOMER_TEMPLATE_ID, {
+          ...commonParams,
+          to_email: data.email,
+          message_html: buildCustomerEmail(data)
+        });
+
+        showSuccessScreen(data);
+
+      } catch (err) {
+        console.error('EmailJS error:', err);
+        document.getElementById('sendError').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        document.getElementById('submitLabel').textContent = 'ยืนยันการจอง Premium →';
+      }
+    }
+
+    function showSuccessScreen(data) {
+      const isTH = currentLang === 'th';
+      document.getElementById('confirmName').textContent   = data.name;
+      document.getElementById('confirmEmail').textContent  = data.email;
+      document.getElementById('confirmDate').textContent   = isTH ? data.dateTH : data.dateEN;
+      document.getElementById('confirmTime').textContent   = isTH ? `รอบ ${data.time} น.` : `${data.time} session`;
+      document.getElementById('confirmGuests').textContent = isTH ? `${data.guests} ท่าน` : `${data.guests} guests`;
+      document.getElementById('confirmTotal').textContent  = `฿${data.total.toLocaleString()}`;
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── Language Toggle ──
+    let currentLang = 'th';
+
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      const btn = document.getElementById('langToggle');
+      btn.textContent = currentLang === 'th' ? '🌐 EN' : '🌐 TH';
+      document.documentElement.lang = currentLang;
+
+      // สลับ textContent ของ elements ที่มี data-th / data-en
+      document.querySelectorAll('[data-th][data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+
+      // สลับ placeholder ของ input/textarea
+      document.querySelectorAll('[data-placeholder-th][data-placeholder-en]').forEach(el => {
+        el.placeholder = el.getAttribute('data-placeholder-' + currentLang);
+      });
+
+      // อัปเดต label ที่มี <span> ลูกข้างใน (ต้องแยกจัดการ)
+      const labelName  = document.getElementById('labelName');
+      const labelEmail = document.getElementById('labelEmail');
+      const labelPhone = document.getElementById('labelPhone');
+      const labelDate  = document.getElementById('labelDate');
+      const labelTime  = document.getElementById('labelTime');
+      if (currentLang === 'en') {
+        labelName.innerHTML  = 'Full Name <span style="color:var(--error)">*</span>';
+        labelEmail.innerHTML = 'Email <span style="color:var(--error)">*</span>';
+        labelPhone.innerHTML = 'Phone Number';
+        labelDate.innerHTML  = 'Preferred Date <span style="color:var(--error)">*</span>';
+        labelTime.innerHTML  = 'Session Time <span style="color:var(--error)">*</span>';
+      } else {
+        labelName.innerHTML  = 'ชื่อ-นามสกุล <span style="color:var(--error)">*</span>';
+        labelEmail.innerHTML = 'อีเมล <span style="color:var(--error)">*</span>';
+        labelPhone.innerHTML = 'เบอร์โทรศัพท์';
+        labelDate.innerHTML  = 'วันที่ต้องการ <span style="color:var(--error)">*</span>';
+        labelTime.innerHTML  = 'รอบเวลา <span style="color:var(--error)">*</span>';
+      }
+
+      // อัปเดตปุ่ม submit (ต้องจัดการแยกเพราะมี spinner อยู่ข้างใน)
+      document.getElementById('submitLabel').textContent =
+        currentLang === 'th' ? 'ยืนยันการจอง Premium →' : 'Confirm Premium Booking →';
+
+      // อัปเดต summary ถ้ามีข้อมูลอยู่แล้ว
+      updateSummary();
+    }
+
+    setupMinDate();
+  </script>
+
+</body>
+</html>
