@@ -75,6 +75,24 @@
     }
     .btn-lang:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
     .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-links {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .nav-link {
+      color: var(--text-body); font-size: .83rem; font-weight: 600;
+      padding: 7px 13px; border-radius: 50px;
+      transition: color .2s, background .2s;
+      letter-spacing: .01em;
+    }
+    .nav-link:hover { color: var(--blue); background: var(--sky-mid); }
+    .nav-link.booking-link {
+      color: var(--blue-dark); border: 1.5px solid var(--border);
+      font-weight: 700;
+    }
+    .nav-link.booking-link:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
     @media (max-width: 400px) {
       .btn-nav { font-size: .75rem; padding: 8px 14px; }
       .btn-lang { font-size: .75rem; padding: 7px 11px; }
@@ -459,9 +477,16 @@
   <!-- ══ NAV ══ -->
   <nav>
     <div class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</div>
+    <div class="nav-links">
+      <a href="#gallery" class="nav-link" data-th="ภาพบรรยากาศ" data-en="Gallery">ภาพบรรยากาศ</a>
+      <a href="#features" class="nav-link" data-th="ประสบการณ์" data-en="Experiences">ประสบการณ์</a>
+      <a href="#about" class="nav-link" data-th="เกี่ยวกับเรา" data-en="About">เกี่ยวกับเรา</a>
+      <a href="#pricing" class="nav-link" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="booking.html" class="nav-link booking-link" data-th="📅 จองเลย" data-en="📅 Book Now">📅 จองเลย</a>
+    </div>
     <div class="nav-right">
       <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
-      <a href="#reserve" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
+      <a href="booking.html" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
     </div>
   </nav>
 
@@ -479,7 +504,7 @@
         ฟังเรื่องราวจริง และสัมผัสรสชาติที่สืบทอดมารุ่นสู่รุ่น
       </p>
       <div class="hero-btns">
-        <a href="#reserve" class="btn-primary" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
+        <a href="booking.html" class="btn-primary" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
         <a href="#features" class="btn-ghost" data-th="ดูรายละเอียด" data-en="See Details">ดูรายละเอียด</a>
       </div>
       <div class="scroll-hint">
@@ -662,7 +687,7 @@
         <div class="include-item"><span class="ck">✓</span><span data-th="ภาพถ่ายที่ระลึก" data-en="Commemorative photo">ภาพถ่ายที่ระลึก</span></div>
         <div class="include-item"><span class="ck">✓</span><span data-th="คำแนะนำส่วนตัวจากเจ้าของบ้าน" data-en="Personal tips from the homeowner">คำแนะนำส่วนตัวจากเจ้าของบ้าน</span></div>
       </div>
-      <a id="reserve" href="mailto:reserve@lorxanhouse.com?subject=สำรองที่นั่ง Premium" class="btn-reserve" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">
+      <a href="booking.html" class="btn-reserve" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">
         สำรองที่นั่ง Premium →
       </a>
       <p class="price-note" data-th="เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า" data-en="Available for specially scheduled sessions only">เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า</p>
@@ -719,7 +744,7 @@
       <div class="cta-icon">🏮</div>
       <h2 data-th="พร้อมสัมผัสประสบการณ์ที่แตกต่างหรือยัง?" data-en="Ready for a Truly Different Experience?">พร้อมสัมผัสประสบการณ์ที่แตกต่างหรือยัง?</h2>
       <p data-th="ที่นั่งมีจำนวนจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า ติดต่อมาเพื่อเช็ควันว่างได้เลย" data-en="Seats are limited. Available only for specially scheduled sessions. Contact us now to check available dates.">ที่นั่งมีจำนวนจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า ติดต่อมาเพื่อเช็ควันว่างได้เลย</p>
-      <a href="mailto:reserve@lorxanhouse.com?subject=สำรองที่นั่ง Premium" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">
+      <a href="booking.html" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">
         สำรองที่นั่ง Premium →
       </a>
     </div>
@@ -729,6 +754,13 @@
   <footer>
     <div class="footer-logo">• LOR XAN HOUSE •</div>
     <div data-th="Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต" data-en="Lor Xan Premium Heritage Experience · A Living Century-Old Home">Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
+    <div style="margin-top:14px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+      <a href="#gallery" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="ภาพบรรยากาศ" data-en="Gallery">ภาพบรรยากาศ</a>
+      <a href="#features" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="ประสบการณ์" data-en="Experiences">ประสบการณ์</a>
+      <a href="#about" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="เกี่ยวกับเรา" data-en="About">เกี่ยวกับเรา</a>
+      <a href="#pricing" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="booking.html" style="color:var(--accent); font-size:.8rem; font-weight:700; text-decoration:none;" data-th="📅 สำรองที่นั่ง" data-en="📅 Reserve Now">📅 สำรองที่นั่ง</a>
+    </div>
   </footer>
 
   <script>
