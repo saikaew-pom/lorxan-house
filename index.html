@@ -470,6 +470,117 @@
       .gallery-item:first-child { border-radius: 20px 20px 0 0; }
       .gallery-item:last-child { border-radius: 0 0 20px 20px; }
     }
+
+    /* ══════════════════════════════════════
+       BLOG PREVIEW SECTION
+    ══════════════════════════════════════ */
+    #blog-preview {
+      padding: 88px 24px;
+      background: var(--sky-light);
+      border-top: 1px solid var(--border);
+    }
+    .blog-preview-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .blog-preview-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 44px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .blog-preview-header .section-label {
+      font-size: .73rem; font-weight: 800;
+      color: var(--blue); letter-spacing: .18em;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .blog-preview-header .section-h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      font-weight: 800; color: var(--text-dark);
+      line-height: 1.25;
+    }
+    .blog-preview-header .section-desc {
+      font-size: .92rem; color: var(--text-muted);
+      margin-top: 8px; max-width: 420px; line-height: 1.7;
+    }
+    .btn-all-posts {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: var(--blue-dark);
+      border: 1.5px solid var(--border);
+      padding: 12px 24px; border-radius: 50px;
+      font-size: .85rem; font-weight: 700;
+      white-space: nowrap; flex-shrink: 0;
+      transition: all .2s;
+    }
+    .btn-all-posts:hover {
+      background: var(--blue); color: #fff;
+      border-color: var(--blue);
+      transform: translateX(3px);
+    }
+    /* 3-column cards grid */
+    .blog-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 900px) { .blog-cards-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px) { .blog-cards-grid { grid-template-columns: 1fr; } }
+
+    .bcard {
+      background: #fff;
+      border: 1.5px solid var(--silver-mid);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 2px 18px rgba(59,126,200,.06);
+      transition: transform .28s, box-shadow .28s;
+      display: flex; flex-direction: column;
+    }
+    .bcard:hover { transform: translateY(-7px); box-shadow: 0 14px 44px rgba(59,126,200,.14); }
+
+    .bcard-img-wrap { position: relative; overflow: hidden; height: 210px; flex-shrink: 0; }
+    .bcard-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .bcard:hover .bcard-img-wrap img { transform: scale(1.06); }
+    .bcard-cat {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(15,45,78,.75); color: #fff;
+      backdrop-filter: blur(8px);
+      font-size: .67rem; font-weight: 800; letter-spacing: .1em;
+      padding: 5px 12px; border-radius: 50px;
+    }
+
+    .bcard-body { padding: 22px 22px 26px; flex: 1; display: flex; flex-direction: column; }
+    .bcard-title {
+      font-size: 1rem; font-weight: 800;
+      color: var(--text-dark); line-height: 1.45;
+      margin-bottom: 10px;
+    }
+    .bcard-excerpt {
+      font-size: .84rem; color: var(--text-body);
+      line-height: 1.72; flex: 1; margin-bottom: 18px;
+    }
+    .bcard-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-top: auto; padding-top: 14px;
+      border-top: 1px solid var(--silver-mid);
+    }
+    .bcard-meta { font-size: .73rem; color: var(--text-muted); }
+    .bcard-read {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .8rem; font-weight: 700; color: var(--blue);
+      transition: gap .2s;
+    }
+    .bcard:hover .bcard-read { gap: 8px; }
+
+    /* Accent top-border per category */
+    .bcard.cat-heritage  { border-top: 3px solid #B5523A; }
+    .bcard.cat-recipe    { border-top: 3px solid #C2713A; }
+    .bcard.cat-arch      { border-top: 3px solid #2A7A6E; }
   </style>
 </head>
 <body>
@@ -478,7 +589,8 @@
   <nav>
     <div class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</div>
     <div class="nav-links">
-      <a href="#gallery" class="nav-link" data-th="ภาพบรรยากาศ" data-en="Gallery">ภาพบรรยากาศ</a>
+      <a href="gallery.html" class="nav-link" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="blog.html" class="nav-link" data-th="บล็อก" data-en="Blog">บล็อก</a>
       <a href="#features" class="nav-link" data-th="ประสบการณ์" data-en="Experiences">ประสบการณ์</a>
       <a href="#about" class="nav-link" data-th="เกี่ยวกับเรา" data-en="About">เกี่ยวกับเรา</a>
       <a href="#pricing" class="nav-link" data-th="ราคา" data-en="Pricing">ราคา</a>
@@ -737,6 +849,93 @@
     </div>
   </section>
 
+  <!-- ══ BLOG PREVIEW ══ -->
+  <section id="blog-preview">
+    <div class="blog-preview-inner">
+
+      <!-- Header row -->
+      <div class="blog-preview-header">
+        <div>
+          <p class="section-label" data-th="เรื่องราวจากหล่อซานเฮ้าส์" data-en="STORIES FROM LOR XAN HOUSE">เรื่องราวจากหล่อซานเฮ้าส์</p>
+          <h2 class="section-h2"
+              data-th="ความรู้จากคนใน"
+              data-en="Insider Knowledge">ความรู้จากคนใน</h2>
+          <p class="section-desc"
+             data-th="มรดกวัฒนธรรม ตำรับอาหาร และเรื่องเล่าของบ้านโบราณ — อ่านก่อนมา หรืออ่านเพื่อระลึกถึง"
+             data-en="Cultural heritage, heirloom recipes, and stories of an antique home — read before your visit, or to relive it.">มรดกวัฒนธรรม ตำรับอาหาร และเรื่องเล่าของบ้านโบราณ — อ่านก่อนมา หรืออ่านเพื่อระลึกถึง</p>
+        </div>
+        <a href="blog.html" class="btn-all-posts"
+           data-th="อ่านบทความทั้งหมด →"
+           data-en="All Articles →">อ่านบทความทั้งหมด →</a>
+      </div>
+
+      <!-- 3 cards -->
+      <div class="blog-cards-grid">
+
+        <!-- Card 1 — บ้านร้อยปี (Heritage) -->
+        <a href="blog-post-heritage-house.html" class="bcard cat-heritage">
+          <div class="bcard-img-wrap">
+            <img src="about.jpg" alt="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง" />
+            <span class="bcard-cat" data-th="🏮 มรดก" data-en="🏮 Heritage">🏮 มรดก</span>
+          </div>
+          <div class="bcard-body">
+            <div class="bcard-title"
+                 data-th="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง"
+                 data-en="A Century-Old Home and the Memories That Never Fade">บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง</div>
+            <div class="bcard-excerpt"
+                 data-th="เมื่อผนังของบ้านเก็บเสียง กลิ่น และความทรงจำของคนหลายรุ่น สิ่งที่เหลืออยู่คือเรื่องเล่าที่ไม่มีวันหมดอายุ"
+                 data-en="When a home's walls hold the sounds, scents, and memories of generations, what remains are stories that never expire.">เมื่อผนังของบ้านเก็บเสียง กลิ่น และความทรงจำของคนหลายรุ่น สิ่งที่เหลืออยู่คือเรื่องเล่าที่ไม่มีวันหมดอายุ</div>
+            <div class="bcard-footer">
+              <span class="bcard-meta" data-th="📖 5 นาที · มี.ค. 2569" data-en="📖 5 min · Mar 2026">📖 5 นาที · มี.ค. 2569</span>
+              <span class="bcard-read" data-th="อ่านต่อ →" data-en="Read →">อ่านต่อ →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 — อังกู๊ (Recipe) -->
+        <a href="blog-angku.html" class="bcard cat-recipe">
+          <div class="bcard-img-wrap">
+            <img src="feature-2.jpg" alt="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" />
+            <span class="bcard-cat" data-th="🍵 ตำรับอาหาร" data-en="🍵 Recipes">🍵 ตำรับอาหาร</span>
+          </div>
+          <div class="bcard-body">
+            <div class="bcard-title"
+                 data-th="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต"
+                 data-en="Ang Ku Kueh: A Small Cake with an Enormous Story">อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+            <div class="bcard-excerpt"
+                 data-th="สีแดง รูปเต่า ไส้ถั่ว — ทุกองค์ประกอบของอังกู๊ไม่ได้ถูกเลือกโดยบังเอิญ แต่มีความหมายซ่อนอยู่ที่หลายคนไม่เคยรู้"
+                 data-en="Red, tortoise-shaped, mung bean filled — every element of ang ku kueh was chosen deliberately, each carrying meaning most people have never heard.">สีแดง รูปเต่า ไส้ถั่ว — ทุกองค์ประกอบของอังกู๊ไม่ได้ถูกเลือกโดยบังเอิญ แต่มีความหมายซ่อนอยู่ที่หลายคนไม่เคยรู้</div>
+            <div class="bcard-footer">
+              <span class="bcard-meta" data-th="📖 6 นาที · มี.ค. 2569" data-en="📖 6 min · Mar 2026">📖 6 นาที · มี.ค. 2569</span>
+              <span class="bcard-read" data-th="อ่านต่อ →" data-en="Read →">อ่านต่อ →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 — สถาปัตยกรรม (Architecture) -->
+        <a href="blog-phuket-architecture.html" class="bcard cat-arch">
+          <div class="bcard-img-wrap">
+            <img src="feature-1.jpg" alt="สถาปัตยกรรมเมืองเก่าภูเก็ต" />
+            <span class="bcard-cat" data-th="🏛 สถาปัตยกรรม" data-en="🏛 Architecture">🏛 สถาปัตยกรรม</span>
+          </div>
+          <div class="bcard-body">
+            <div class="bcard-title"
+                 data-th="สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก"
+                 data-en="Phuket Old Town Architecture: When East Met West">สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก</div>
+            <div class="bcard-excerpt"
+                 data-th="ซุ้มโค้ง หน้าต่างบานเฟี้ยม ลายปูนปั้นเพอรานากัน — อาคารในเมืองเก่าแต่ละหลังคือตำราประวัติศาสตร์ที่ยืนอยู่กลางแจ้ง"
+                 data-en="Arched colonnades, shuttered windows, Peranakan plasterwork — every shophouse in the old town is an open-air history textbook.">ซุ้มโค้ง หน้าต่างบานเฟี้ยม ลายปูนปั้นเพอรานากัน — อาคารในเมืองเก่าแต่ละหลังคือตำราประวัติศาสตร์ที่ยืนอยู่กลางแจ้ง</div>
+            <div class="bcard-footer">
+              <span class="bcard-meta" data-th="📖 7 นาที · มี.ค. 2569" data-en="📖 7 min · Mar 2026">📖 7 นาที · มี.ค. 2569</span>
+              <span class="bcard-read" data-th="อ่านต่อ →" data-en="Read →">อ่านต่อ →</span>
+            </div>
+          </div>
+        </a>
+
+      </div><!-- /.blog-cards-grid -->
+    </div><!-- /.blog-preview-inner -->
+  </section>
+
   <!-- ══ FINAL CTA ══ -->
   <section id="cta">
     <div class="cta-bg"></div>
@@ -755,7 +954,8 @@
     <div class="footer-logo">• LOR XAN HOUSE •</div>
     <div data-th="Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต" data-en="Lor Xan Premium Heritage Experience · A Living Century-Old Home">Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
     <div style="margin-top:14px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
-      <a href="#gallery" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="ภาพบรรยากาศ" data-en="Gallery">ภาพบรรยากาศ</a>
+      <a href="gallery.html" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="blog.html" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="บล็อก" data-en="Blog">บล็อก</a>
       <a href="#features" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="ประสบการณ์" data-en="Experiences">ประสบการณ์</a>
       <a href="#about" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="เกี่ยวกับเรา" data-en="About">เกี่ยวกับเรา</a>
       <a href="#pricing" style="color:#4a7aa8; font-size:.8rem; text-decoration:none;" data-th="ราคา" data-en="Pricing">ราคา</a>
