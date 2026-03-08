@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ของที่ระลึกที่เล่าเรื่องได้ทุกครั้งที่มอง — หล่อซานเฮ้าส์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #3B7EC8;
+      --blue-mid:    #2D6AAD;
+      --blue-dark:   #1E4D82;
+      --blue-deep:   #0F2D4E;
+      --sky:         #EBF4FD;
+      --sky-light:   #F5FAFF;
+      --sky-mid:     #D6EAFA;
+      --silver:      #F1F5F9;
+      --silver-mid:  #E2EAF2;
+      --border:      #C5D8EC;
+      --accent:      #56A3D9;
+      --accent-soft: #A8D4EF;
+      --text-muted:  #7A92A8;
+      --text-body:   #3D5A72;
+      --text-dark:   #0F2D4E;
+      /* Heritage accent */
+      --warm:        #B5523A;
+      --warm-soft:   #F8EDE9;
+      --warm-mid:    #E8B8AD;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+      background: var(--sky-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; }
+    img { display: block; }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,250,255,0.93);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 36px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: .08em; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { color: var(--text-body); font-size: .83rem; font-weight: 600; padding: 7px 13px; border-radius: 50px; transition: color .2s, background .2s; }
+    .nav-link:hover { color: var(--blue); background: var(--sky-mid); }
+    .nav-link.active { color: var(--blue); font-weight: 700; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .btn-lang {
+      background: transparent; color: var(--blue-dark); padding: 7px 16px; border-radius: 50px;
+      font-size: .82rem; font-weight: 700; border: 1.5px solid var(--border);
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+      display: flex; align-items: center; gap: 5px; font-family: 'Sarabun', sans-serif;
+    }
+    .btn-lang:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
+    .btn-nav { background: var(--blue); color: #fff; padding: 9px 22px; border-radius: 50px; font-size: .85rem; font-weight: 700; white-space: nowrap; transition: background .2s, transform .2s; }
+    .btn-nav:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+    @media (max-width: 400px) { nav { padding: 10px 16px; } .btn-nav { font-size: .75rem; padding: 8px 14px; } .btn-lang { font-size: .75rem; padding: 7px 11px; } }
+
+    /* ══ HERO ══ */
+    .post-hero { position: relative; height: 78vh; min-height: 500px; overflow: hidden; margin-top: 64px; }
+    .post-hero-img { width: 100%; height: 100%; object-fit: cover; animation: slowZoom 14s ease-out forwards; }
+    @keyframes slowZoom { from { transform: scale(1.1) } to { transform: scale(1) } }
+    .post-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(15,45,78,.12) 0%, rgba(30,15,10,.05) 30%, rgba(60,20,10,.80) 100%);
+    }
+    .post-hero-meta {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 48px 24px 40px; max-width: 820px; margin: 0 auto;
+    }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.6); letter-spacing: .07em; margin-bottom: 14px; }
+    .breadcrumb a { color: rgba(255,255,255,.6); transition: color .2s; }
+    .breadcrumb a:hover { color: #fff; }
+    .breadcrumb span { opacity: .4; }
+    .post-category {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--warm); color: #fff;
+      font-size: .7rem; font-weight: 800; letter-spacing: .1em;
+      padding: 5px 14px; border-radius: 50px; margin-bottom: 14px;
+    }
+    .post-hero-title {
+      font-family: 'Playfair Display', 'Sarabun', serif;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 700; color: #fff; line-height: 1.2;
+      margin-bottom: 18px; text-shadow: 0 2px 16px rgba(0,0,0,.3);
+    }
+    .post-hero-title em { font-style: italic; color: #F5C9A0; }
+    .post-byline { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .byline-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg,#B5523A,#E8A870); color: #fff; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 800; flex-shrink: 0; border: 2px solid rgba(255,255,255,.3); }
+    .byline-name { font-size: .85rem; font-weight: 700; color: #fff; }
+    .byline-date { font-size: .75rem; color: rgba(255,255,255,.6); }
+    .byline-sep { width: 1px; height: 28px; background: rgba(255,255,255,.2); }
+    .byline-read { font-size: .78rem; color: rgba(255,255,255,.6); display: flex; align-items: center; gap: 5px; }
+
+    /* ══ PROGRESS BAR ══ */
+    .progress-bar { position: fixed; top: 64px; left: 0; right: 0; height: 3px; background: rgba(181,82,58,.15); z-index: 99; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--warm), #E8A870); transition: width .1s linear; }
+
+    /* ══ LAYOUT ══ */
+    .post-layout {
+      max-width: 1100px; margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: grid; grid-template-columns: 1fr 280px; gap: 56px; align-items: start;
+    }
+    @media (max-width: 900px) { .post-layout { grid-template-columns: 1fr; gap: 0; } }
+
+    /* ══ ARTICLE ══ */
+    .post-body { font-size: 1.05rem; color: var(--text-body); line-height: 1.9; }
+    .post-body .lead {
+      font-size: 1.2rem; font-weight: 600; color: var(--text-dark); line-height: 1.78;
+      margin-bottom: 32px; padding-left: 20px;
+      border-left: 3px solid var(--warm);
+    }
+    .post-body p { margin-bottom: 24px; }
+    .post-body h2 {
+      font-family: 'Playfair Display', 'Sarabun', serif;
+      font-size: 1.6rem; font-weight: 700; color: var(--text-dark);
+      margin: 44px 0 18px; line-height: 1.3;
+    }
+    .post-body h3 { font-size: 1.08rem; font-weight: 700; color: var(--blue-dark); margin: 28px 0 10px; }
+
+    /* Fact box */
+    .fact-box {
+      background: var(--warm-soft); border: 1px solid var(--warm-mid);
+      border-left: 4px solid var(--warm);
+      border-radius: 0 14px 14px 0;
+      padding: 22px 24px; margin: 32px 0;
+    }
+    .fact-box-title {
+      font-size: .72rem; font-weight: 800; color: var(--warm);
+      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .fact-box p { font-size: .9rem; color: #6B2A10; margin-bottom: 0; line-height: 1.75; }
+
+    /* Pull quote */
+    .post-body blockquote {
+      background: var(--sky); border-left: 4px solid var(--blue);
+      border-radius: 0 14px 14px 0;
+      padding: 22px 26px; margin: 36px 0;
+      font-size: 1.12rem; font-style: italic; color: var(--blue-dark); line-height: 1.75;
+    }
+    .post-body blockquote cite { display: block; font-size: .8rem; font-style: normal; color: var(--text-muted); margin-top: 10px; font-weight: 600; }
+
+    /* Inline images */
+    .post-img-wrap { margin: 36px 0; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 40px rgba(59,126,200,.1); }
+    .post-img-wrap img { width: 100%; object-fit: cover; }
+    .post-img-caption { background: var(--silver); padding: 10px 16px; font-size: .78rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+
+    .img-2up { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 36px 0; }
+    .img-2up .post-img-wrap { margin: 0; }
+    .img-2up .post-img-wrap img { height: 230px; }
+    @media (max-width: 600px) { .img-2up { grid-template-columns: 1fr; } .img-2up .post-img-wrap img { height: 210px; } }
+
+    /* Feature list */
+    .feature-list { list-style: none; margin: 20px 0 28px; display: flex; flex-direction: column; gap: 14px; }
+    .feature-list li {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: #fff; border: 1.5px solid var(--silver-mid);
+      border-radius: 14px; padding: 16px 18px;
+    }
+    .feature-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      background: var(--warm-soft); color: var(--warm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .feature-text { font-size: .93rem; color: var(--text-body); line-height: 1.7; padding-top: 4px; }
+    .feature-text strong { color: var(--text-dark); }
+
+    /* Timeline */
+    .timeline { margin: 28px 0 36px; position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--warm-mid); }
+    .tl-item { position: relative; margin-bottom: 28px; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot { position: absolute; left: -24px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--warm); border: 3px solid var(--warm-soft); }
+    .tl-year { font-size: .7rem; font-weight: 800; color: var(--warm); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+    .tl-text { font-size: .9rem; color: var(--text-body); line-height: 1.7; }
+    .tl-text strong { color: var(--text-dark); }
+
+    /* Book preview card */
+    .book-card {
+      background: #fff; border: 1.5px solid var(--silver-mid);
+      border-radius: 20px; padding: 28px; margin: 36px 0;
+      box-shadow: 0 8px 40px rgba(59,126,200,.08);
+      display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start;
+    }
+    .book-cover {
+      width: 110px; height: 150px; border-radius: 8px;
+      background: linear-gradient(145deg, #B5523A, #7A2515);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #fff; text-align: center; padding: 12px;
+      box-shadow: 4px 4px 16px rgba(0,0,0,.2);
+      flex-shrink: 0;
+    }
+    .book-cover-title { font-family: 'Playfair Display', serif; font-size: .9rem; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+    .book-cover-sub { font-size: .62rem; opacity: .75; letter-spacing: .05em; }
+    .book-cover-line { width: 32px; height: 1px; background: rgba(255,255,255,.4); margin: 8px auto; }
+    .book-info h3 { font-size: 1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+    .book-info p { font-size: .88rem; color: var(--text-body); line-height: 1.72; margin-bottom: 0; }
+    .book-info ul { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .book-info ul li { font-size: .84rem; color: var(--text-body); display: flex; align-items: center; gap: 8px; }
+    .book-info ul li::before { content: '🏮'; font-size: .75rem; }
+    @media (max-width: 560px) { .book-card { grid-template-columns: 1fr; } .book-cover { width: 100%; height: 120px; flex-direction: row; gap: 14px; padding: 16px 20px; } }
+
+    /* Tags & share */
+    .post-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--silver-mid); }
+    .tag { background: var(--sky-mid); color: var(--blue-dark); padding: 6px 16px; border-radius: 50px; font-size: .78rem; font-weight: 600; border: 1px solid var(--border); transition: all .2s; cursor: pointer; }
+    .tag:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    .share-bar { margin-top: 40px; padding: 28px 0 0; border-top: 1px solid var(--silver-mid); }
+    .share-bar-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .share-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+    .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 50px; font-size: .82rem; font-weight: 700; border: none; cursor: pointer; transition: transform .2s, box-shadow .2s, filter .2s; font-family: 'Sarabun', sans-serif; white-space: nowrap; }
+    .share-btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 6px 20px rgba(0,0,0,.15); }
+    .share-btn.fb { background: #1877F2; color: #fff; }
+    .share-btn.tw { background: #000; color: #fff; }
+    .share-btn.ig { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: #fff; }
+    .share-btn.cp { background: var(--sky-mid); color: var(--blue-dark); border: 1.5px solid var(--border); }
+
+    /* ══ SIDEBAR ══ */
+    .sidebar { position: sticky; top: 88px; }
+    .sticky-share { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(59,126,200,.07); }
+    .sticky-share-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .sticky-share-btns { display: flex; flex-direction: column; gap: 8px; }
+    .sticky-share-btn { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; font-size: .82rem; font-weight: 700; border: none; cursor: pointer; transition: transform .2s, filter .15s; font-family: 'Sarabun', sans-serif; color: #fff; }
+    .sticky-share-btn:hover { transform: translateX(3px); filter: brightness(1.1); }
+    .sticky-share-btn.fb { background: #1877F2; }
+    .sticky-share-btn.tw { background: #111; }
+    .sticky-share-btn.ig { background: linear-gradient(135deg,#f09433,#dc2743,#bc1888); }
+    .sticky-share-btn.cp { background: var(--sky-mid); color: var(--blue-dark); border: 1.5px solid var(--border); }
+
+    /* TOC */
+    .toc-card { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(59,126,200,.07); }
+    .toc-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .toc-list a { display: block; font-size: .84rem; color: var(--text-body); padding: 7px 10px; border-radius: 8px; transition: all .2s; font-weight: 500; }
+    .toc-list a:hover { color: var(--blue); background: var(--sky-mid); }
+    .toc-list a.active-toc { color: var(--blue); background: var(--sky); font-weight: 700; }
+
+    /* Author card */
+    .author-card { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(59,126,200,.07); text-align: center; }
+    .author-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg,#B5523A,#E8A870); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin: 0 auto 12px; }
+    .author-name { font-size: .95rem; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+    .author-role { font-size: .78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+    .author-bio { font-size: .82rem; color: var(--text-body); line-height: 1.7; }
+
+    /* Related */
+    .related-card { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; box-shadow: 0 4px 24px rgba(59,126,200,.07); }
+    .related-card-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+    .related-item { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--silver-mid); cursor: pointer; transition: opacity .2s; }
+    .related-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .related-item:hover { opacity: .75; }
+    .related-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--sky-mid); }
+    .related-title { font-size: .82rem; font-weight: 700; color: var(--text-dark); line-height: 1.4; }
+    .related-date { font-size: .73rem; color: var(--text-muted); margin-top: 3px; }
+
+    @media (max-width: 900px) {
+      .sidebar { position: static; margin-top: 48px; }
+      .sticky-share-btns { flex-direction: row; flex-wrap: wrap; }
+      .sticky-share-btn { flex: 1; min-width: 120px; justify-content: center; }
+    }
+
+    /* ══ MORE POSTS ══ */
+    .more-posts { background: var(--sky); padding: 72px 24px; border-top: 1px solid var(--border); }
+    .more-posts-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .75rem; font-weight: 700; color: var(--blue); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
+    .section-h2 { font-size: clamp(1.4rem,3.5vw,2rem); font-weight: 800; color: var(--text-dark); margin-bottom: 36px; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 20px; }
+    .blog-card { background: #fff; border-radius: 20px; overflow: hidden; border: 1.5px solid var(--silver-mid); box-shadow: 0 2px 16px rgba(59,126,200,.06); transition: transform .25s, box-shadow .25s; }
+    .blog-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(59,126,200,.13); }
+    .card-img { width: 100%; height: 200px; object-fit: cover; background: var(--sky-mid); }
+    .card-body { padding: 20px; }
+    .card-cat { font-size: .68rem; font-weight: 800; color: var(--blue); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+    .card-title { font-size: .97rem; font-weight: 700; color: var(--text-dark); line-height: 1.45; margin-bottom: 8px; }
+    .card-excerpt { font-size: .83rem; color: var(--text-body); line-height: 1.65; }
+    .card-meta { display: flex; gap: 10px; margin-top: 14px; font-size: .75rem; color: var(--text-muted); }
+
+    /* ══ CTA + FOOTER ══ */
+    .cta-strip { background: var(--blue-deep); padding: 64px 24px; text-align: center; }
+    .cta-strip h2 { font-size: clamp(1.4rem,3.5vw,2rem); font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .cta-strip p { color: rgba(255,255,255,.55); font-size: .9rem; margin-bottom: 28px; }
+    .btn-cta { display: inline-block; background: var(--blue); color: #fff; padding: 16px 40px; border-radius: 50px; font-size: 1rem; font-weight: 700; box-shadow: 0 6px 28px rgba(59,126,200,.4); transition: all .2s; }
+    .btn-cta:hover { background: var(--accent); transform: translateY(-2px); }
+
+    footer { background: var(--blue-deep); color: #4a7aa8; text-align: center; padding: 28px 24px; font-size: .82rem; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-logo { color: var(--accent); font-weight: 800; font-size: .95rem; margin-bottom: 8px; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+    .footer-links a { color: #4a7aa8; transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+
+    .copy-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(12px); background: var(--blue-deep); color: #fff; padding: 11px 24px; border-radius: 50px; font-size: .85rem; font-weight: 600; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; z-index: 999; white-space: nowrap; }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ══ PROGRESS BAR ══ -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <a href="index.html" class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="gallery.html" class="nav-link" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="index.html#pricing" class="nav-link" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="blog.html" class="nav-link active" data-th="บทความ" data-en="Blog">บทความ</a>
+      <a href="booking.html" class="nav-link" style="color:var(--blue-dark);border:1.5px solid var(--border);border-radius:50px;padding:7px 14px;" data-th="📅 จองเลย" data-en="📅 Book Now">📅 จองเลย</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+      <a href="booking.html" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <div class="post-hero">
+    <img class="post-hero-img" src="lor-xan-house-gallery-022.jpg" alt="เตาไฟและพิมพ์ไม้โบราณของบ้านหล่อซาน" />
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-meta">
+      <div class="breadcrumb">
+        <a href="index.html" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+        <span>›</span>
+        <a href="blog.html" data-th="บทความ" data-en="Blog">บทความ</a>
+        <span>›</span>
+        <span data-th="มรดกวัฒนธรรม" data-en="Heritage">มรดกวัฒนธรรม</span>
+      </div>
+      <div class="post-category">🏮 <span data-th="มรดกวัฒนธรรม" data-en="Heritage & Story">มรดกวัฒนธรรม</span></div>
+      <h1 class="post-hero-title">
+        <span data-th="ของที่ระลึกที่เล่าเรื่องได้" data-en="A Souvenir That Tells a Story">ของที่ระลึกที่เล่าเรื่องได้</span><br>
+        <em data-th="ทุกครั้งที่มอง" data-en="Every Time You Look">ทุกครั้งที่มอง</em>
+      </h1>
+      <div class="post-byline">
+        <div class="byline-avatar">🏮</div>
+        <div>
+          <div class="byline-name" data-th="ทีมงานหล่อซานเฮ้าส์" data-en="Lor Xan House Team">ทีมงานหล่อซานเฮ้าส์</div>
+          <div class="byline-date" data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</div>
+        </div>
+        <div class="byline-sep"></div>
+        <div class="byline-read">📖 <span data-th="อ่าน 7 นาที" data-en="7 min read">อ่าน 7 นาที</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LAYOUT ══ -->
+  <div class="post-layout">
+
+    <!-- ARTICLE -->
+    <article class="post-body" id="article-body">
+
+      <p class="lead" data-th="เมื่อการเดินทางจบลง สิ่งที่เราหอบกลับบ้านคือความทรงจำ แต่ความทรงจำเลือนหายไปตามเวลา บ้านหล่อซานจึงเกิดคำถามว่า — มีอะไรที่เราจะมอบให้แขกพาออกไปได้ ซึ่งมันจะยังคงเล่าเรื่องให้ฟังได้อีกนานหลังจากวันที่มาเยือน?"
+           data-en="When a journey ends, what we carry home is memory. But memory fades with time. Lor Xan House began to wonder — is there something we can give our guests to take with them, that will keep telling its story long after the day of their visit?">
+        เมื่อการเดินทางจบลง สิ่งที่เราหอบกลับบ้านคือความทรงจำ แต่ความทรงจำเลือนหายไปตามเวลา บ้านหล่อซานจึงเกิดคำถามว่า — มีอะไรที่เราจะมอบให้แขกพาออกไปได้ ซึ่งมันจะยังคงเล่าเรื่องให้ฟังได้อีกนานหลังจากวันที่มาเยือน?
+      </p>
+
+      <h2 id="s1" data-th="ของฝากส่วนใหญ่ถูกลืมภายในหนึ่งเดือน" data-en="Most Souvenirs Are Forgotten Within a Month">ของฝากส่วนใหญ่ถูกลืมภายในหนึ่งเดือน</h2>
+
+      <p data-th="คุณเคยนึกถึงแม็กเน็ตติดตู้เย็นที่ซื้อมาจากสนามบินเมื่อหลายปีก่อนไหม? หรือแก้วที่มีชื่อเมืองสกรีนอยู่ที่ตอนนี้น่าจะอยู่ที่ก้นตู้ใดตู้หนึ่ง? ของที่ระลึกส่วนใหญ่ไม่ได้ถูกออกแบบให้มีความหมายกับผู้รับ มันถูกออกแบบให้ขาย"
+           data-en="Do you remember the fridge magnet you bought at an airport years ago? Or the cup with a city name printed on it, now probably buried in some cabinet? Most souvenirs aren't designed to be meaningful to the recipient. They're designed to sell.">
+        คุณเคยนึกถึงแม็กเน็ตติดตู้เย็นที่ซื้อมาจากสนามบินเมื่อหลายปีก่อนไหม? หรือแก้วที่มีชื่อเมืองสกรีนอยู่ที่ตอนนี้น่าจะอยู่ที่ก้นตู้ใดตู้หนึ่ง? ของที่ระลึกส่วนใหญ่ไม่ได้ถูกออกแบบให้มีความหมายกับผู้รับ มันถูกออกแบบให้ขาย
+      </p>
+
+      <p data-th="ของที่ระลึกที่ดีต้องมีเรื่องเล่า ต้องทำให้ผู้มองรู้สึกเชื่อมต่อกับบางสิ่ง ต้องให้ความรู้สึกว่าตัวเองได้เป็นส่วนหนึ่งของเรื่องราวที่ใหญ่กว่าตัวเอง หนังสือประวัติบ้านหล่อซานถูกสร้างขึ้นด้วยความคิดนี้"
+           data-en="A good souvenir must carry a story. It must make the viewer feel connected to something. It must give the feeling of having been part of a story larger than oneself. The Lor Xan House history book was created with exactly this in mind.">
+        ของที่ระลึกที่ดีต้องมีเรื่องเล่า ต้องทำให้ผู้มองรู้สึกเชื่อมต่อกับบางสิ่ง ต้องให้ความรู้สึกว่าตัวเองได้เป็นส่วนหนึ่งของเรื่องราวที่ใหญ่กว่าตัวเอง หนังสือประวัติบ้านหล่อซานถูกสร้างขึ้นด้วยความคิดนี้
+      </p>
+
+      <div class="post-img-wrap">
+        <img src="lor-xan-house-gallery-017.jpg" alt="โต๊ะอาหารในบ้านหล่อซาน" style="height:420px;" />
+        <div class="post-img-caption">📸 <span data-th="โต๊ะอาหารร้อยปีในบ้านหล่อซาน — ทุกร่องรอยมีเรื่องเล่า" data-en="The century-old dining table at Lor Xan House — every mark tells a story">โต๊ะอาหารร้อยปีในบ้านหล่อซาน — ทุกร่องรอยมีเรื่องเล่า</span></div>
+      </div>
+
+      <h2 id="s2" data-th="บ้านหล่อซาน: ร้อยปีที่ไม่ใช่แค่ตัวเลข" data-en="Lor Xan House: A Century That's More Than a Number">บ้านหล่อซาน: ร้อยปีที่ไม่ใช่แค่ตัวเลข</h2>
+
+      <p data-th="บ้านหล่อซานสร้างขึ้นในช่วงต้นรัตนโกสินทร์โดยบรรพบุรุษที่อพยพมาจากฝูเจี้ยน ประเทศจีน ชื่อ 'หล่อซาน' มาจากชื่อท้องถิ่นของเมืองต้นทางในภาษาฮกเกี้ยน ซึ่งสะท้อนถึงรากที่ไม่เคยถูกลืม แม้เวลาจะผ่านไปกว่าร้อยปี"
+           data-en="Lor Xan House was built in the early Rattanakosin era by an ancestor who migrated from Fujian, China. The name 'Lor Xan' derives from the Hokkien pronunciation of the hometown, reflecting roots that were never forgotten, even as a century passed.">
+        บ้านหล่อซานสร้างขึ้นในช่วงต้นรัตนโกสินทร์โดยบรรพบุรุษที่อพยพมาจากฝูเจี้ยน ประเทศจีน ชื่อ "หล่อซาน" มาจากชื่อท้องถิ่นของเมืองต้นทางในภาษาฮกเกี้ยน ซึ่งสะท้อนถึงรากที่ไม่เคยถูกลืม แม้เวลาจะผ่านไปกว่าร้อยปี
+      </p>
+
+      <div class="fact-box">
+        <div class="fact-box-title">🏮 <span data-th="ความหมายของ 'หล่อซาน'" data-en="The Meaning of 'Lor Xan'">ความหมายของ "หล่อซาน"</span></div>
+        <p data-th="'หล่อซาน' เป็นการออกเสียงแบบฮกเกี้ยนของชื่อเมืองในฝูเจี้ยน ประเทศจีน ที่บรรพบุรุษของครอบครัวเดินทางมาจาก ชื่อนี้ถูกตั้งให้กับบ้านเพื่อรำลึกถึงถิ่นฐานเดิม เป็นวิธีที่ครอบครัวรุ่นแรกยึดโยงกับรากเหง้าของตน แม้จะตั้งหลักปักฐานบนแผ่นดินไทยแล้วก็ตาม"
+             data-en="'Lor Xan' is the Hokkien pronunciation of a city name in Fujian, China — the place the family's ancestor came from. The house was named to honor that origin, a way the first generation anchored themselves to their roots, even as they built their new life on Thai soil.">
+          "หล่อซาน" เป็นการออกเสียงแบบฮกเกี้ยนของชื่อเมืองในฝูเจี้ยน ประเทศจีน ที่บรรพบุรุษของครอบครัวเดินทางมาจาก ชื่อนี้ถูกตั้งให้กับบ้านเพื่อรำลึกถึงถิ่นฐานเดิม เป็นวิธีที่ครอบครัวรุ่นแรกยึดโยงกับรากเหง้าของตน แม้จะตั้งหลักปักฐานบนแผ่นดินไทยแล้วก็ตาม
+        </p>
+      </div>
+
+      <p data-th="ตลอดกว่าร้อยปีที่ผ่านมา บ้านหลังนี้ผ่านทั้งความเจริญและความยากลำบาก ผ่านสงคราม เศรษฐกิจ การเปลี่ยนแปลงของเมือง และคนสี่รุ่นที่เกิด โต แต่งงาน และจากไปภายในกำแพงเดียวกัน ทว่าสิ่งที่ไม่เปลี่ยนแปลงคือเตาไฟ พิมพ์ไม้ และสูตรขนมที่ส่งต่อกันมาโดยไม่มีวันตาย"
+           data-en="Over the course of more than a century, this house has seen both prosperity and hardship — wars, economic upheaval, city changes, and four generations who were born, grew up, married, and passed on within the same walls. Yet what never changed were the stove, the wooden molds, and the recipes passed down without end.">
+        ตลอดกว่าร้อยปีที่ผ่านมา บ้านหลังนี้ผ่านทั้งความเจริญและความยากลำบาก ผ่านสงคราม เศรษฐกิจ การเปลี่ยนแปลงของเมือง และคนสี่รุ่นที่เกิด โต แต่งงาน และจากไปภายในกำแพงเดียวกัน ทว่าสิ่งที่ไม่เปลี่ยนแปลงคือเตาไฟ พิมพ์ไม้ และสูตรขนมที่ส่งต่อกันมาโดยไม่มีวันตาย
+      </p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year" data-th="ต้นรัตนโกสินทร์" data-en="Early Rattanakosin Era">ต้นรัตนโกสินทร์</div>
+          <div class="tl-text" data-th="<strong>บรรพบุรุษรุ่นแรก</strong> อพยพจากฝูเจี้ยน สร้างบ้านไม้หลังแรกในย่านเก่าของภูเก็ต นำพิมพ์ไม้และตำรับขนมติดมาเป็นสมบัติล้ำค่า"
+                               data-en="<strong>First-generation ancestor</strong> migrates from Fujian, builds the first wooden house in the old quarter of Phuket, bringing wooden molds and dessert recipes as prized possessions."><strong>บรรพบุรุษรุ่นแรก</strong> อพยพจากฝูเจี้ยน สร้างบ้านไม้หลังแรกในย่านเก่าของภูเก็ต นำพิมพ์ไม้และตำรับขนมติดมาเป็นสมบัติล้ำค่า</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year" data-th="รุ่นที่ 2" data-en="2nd Generation">รุ่นที่ 2</div>
+          <div class="tl-text" data-th="<strong>ขยายบ้านและขยายครอบครัว</strong> เพิ่มห้องครัวขนาดใหญ่ ติดตั้งเตาไฟกระเบื้องแบบดั้งเดิมที่ยังคงอยู่มาจนถึงวันนี้ ตำรับอังกู๊ถูกบันทึกครั้งแรกบนกระดาษโดยรุ่นที่ 2"
+                               data-en="<strong>House and family expanded.</strong> A large kitchen was added, the traditional tiled stove was installed — the same one standing to this day. The Ang Ku Kueh recipe was written down for the first time in this generation."><strong>ขยายบ้านและขยายครอบครัว</strong> เพิ่มห้องครัวขนาดใหญ่ ติดตั้งเตาไฟกระเบื้องแบบดั้งเดิมที่ยังคงอยู่มาจนถึงวันนี้ ตำรับอังกู๊ถูกบันทึกครั้งแรกบนกระดาษโดยรุ่นที่ 2</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year" data-th="รุ่นที่ 3" data-en="3rd Generation">รุ่นที่ 3</div>
+          <div class="tl-text" data-th="<strong>ยุคแห่งการสืบทอดผ่านวิกฤต</strong> รุ่นที่ 3 ผ่านช่วงสงครามและเศรษฐกิจตกต่ำโดยไม่ยอมทิ้งบ้าน สูตรขนมถูกซ่อนไว้ใต้พื้นบ้านช่วงสงคราม เป็นสมบัติที่ต้องปกป้องเท่ากับชีวิต"
+                               data-en="<strong>The era of inheritance through crisis.</strong> The third generation survived war and economic collapse without abandoning the house. Recipes were hidden beneath the floorboards during the war — treasures guarded as dearly as life itself."><strong>ยุคแห่งการสืบทอดผ่านวิกฤต</strong> รุ่นที่ 3 ผ่านช่วงสงครามและเศรษฐกิจตกต่ำโดยไม่ยอมทิ้งบ้าน สูตรขนมถูกซ่อนไว้ใต้พื้นบ้านช่วงสงคราม เป็นสมบัติที่ต้องปกป้องเท่ากับชีวิต</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year" data-th="รุ่นที่ 4 — ปัจจุบัน" data-en="4th Generation — Present">รุ่นที่ 4 — ปัจจุบัน</div>
+          <div class="tl-text" data-th="<strong>เปิดประตูบ้านให้โลก</strong> รุ่นที่ 4 เปลี่ยนบ้านจากพื้นที่ส่วนตัวให้กลายเป็นประสบการณ์ที่แบ่งปันได้ โดยไม่สูญเสียความเป็นบ้านที่มีชีวิต หนังสือประวัติบ้านเกิดขึ้นในยุคนี้"
+                               data-en="<strong>Opening the doors to the world.</strong> The fourth generation transformed the house from a private space into a shareable experience, without losing its soul as a living home. The house history book was born in this era."><strong>เปิดประตูบ้านให้โลก</strong> รุ่นที่ 4 เปลี่ยนบ้านจากพื้นที่ส่วนตัวให้กลายเป็นประสบการณ์ที่แบ่งปันได้ โดยไม่สูญเสียความเป็นบ้านที่มีชีวิต หนังสือประวัติบ้านเกิดขึ้นในยุคนี้</div>
+        </div>
+      </div>
+
+      <h2 id="s3" data-th="หนังสือที่เกิดจากความกลัว — กลัวว่าเรื่องราวจะสูญหาย" data-en="A Book Born from Fear — Fear That the Story Would Disappear">หนังสือที่เกิดจากความกลัว — กลัวว่าเรื่องราวจะสูญหาย</h2>
+
+      <blockquote>
+        <span data-th='"ถึงวันหนึ่งที่คุณยายไม่อยู่แล้ว ใครจะเล่าเรื่องให้ฟัง? เราเริ่มต้นจากคำถามง่ายๆ นี้ และมันใช้เวลาสามปีกว่าจะกลายเป็นหนังสือ"'
+              data-en='"When the day comes that grandmother is no longer here, who will tell the stories? We started with this simple question, and it took three years to become a book."'>
+          "ถึงวันหนึ่งที่คุณยายไม่อยู่แล้ว ใครจะเล่าเรื่องให้ฟัง? เราเริ่มต้นจากคำถามง่ายๆ นี้ และมันใช้เวลาสามปีกว่าจะกลายเป็นหนังสือ"
+        </span>
+        <cite data-th="— เจ้าของบ้านหล่อซาน, รุ่นที่ 4" data-en="— Lor Xan House Owner, 4th generation">— เจ้าของบ้านหล่อซาน, รุ่นที่ 4</cite>
+      </blockquote>
+
+      <p data-th="โครงการหนังสือประวัติบ้านหล่อซานเริ่มต้นจากการนั่งสัมภาษณ์คุณยายในช่วงบ่ายหลังอาหาร ทีละเรื่อง ทีละความทรงจำ บันทึกด้วยมือ บางครั้งบันทึกด้วยเสียง บางเรื่องถูกเล่าพร้อมน้ำตา บางเรื่องถูกเล่าพร้อมเสียงหัวเราะ ทุกเรื่องมีคุณค่าเท่ากัน"
+           data-en="The Lor Xan House history book project began with afternoon interviews with grandmother after meals — one story at a time, one memory at a time. Written by hand, sometimes recorded by voice. Some stories were told through tears. Some were told through laughter. Every story held equal value.">
+        โครงการหนังสือประวัติบ้านหล่อซานเริ่มต้นจากการนั่งสัมภาษณ์คุณยายในช่วงบ่ายหลังอาหาร ทีละเรื่อง ทีละความทรงจำ บันทึกด้วยมือ บางครั้งบันทึกด้วยเสียง บางเรื่องถูกเล่าพร้อมน้ำตา บางเรื่องถูกเล่าพร้อมเสียงหัวเราะ ทุกเรื่องมีคุณค่าเท่ากัน
+      </p>
+
+      <div class="img-2up">
+        <div class="post-img-wrap">
+          <img src="lor-xan-house-gallery-035.jpg" alt="พิมพ์ไม้โบราณหลายรุ่น" />
+          <div class="post-img-caption" data-th="พิมพ์ไม้ที่ผ่านมือมากกว่าสี่รุ่น — แต่ละชิ้นถูกบันทึกไว้ในหนังสือ" data-en="Molds that passed through more than four generations — each piece documented in the book">พิมพ์ไม้ที่ผ่านมือมากกว่าสี่รุ่น — แต่ละชิ้นถูกบันทึกไว้ในหนังสือ</div>
+        </div>
+        <div class="post-img-wrap">
+          <img src="lor-xan-house-gallery-001.jpg" alt="อังกู๊ทองจัดจาน" />
+          <div class="post-img-caption" data-th="ขนมทุกชิ้นมีตำรับที่บันทึกไว้ในหนังสือประวัติบ้าน" data-en="Every dessert has its recipe documented in the house history book">ขนมทุกชิ้นมีตำรับที่บันทึกไว้ในหนังสือประวัติบ้าน</div>
+        </div>
+      </div>
+
+      <h2 id="s4" data-th="ในหนังสือมีอะไรบ้าง?" data-en="What's Inside the Book?">ในหนังสือมีอะไรบ้าง?</h2>
+
+      <p data-th="หนังสือประวัติบ้านหล่อซานไม่ใช่แค่ลำดับวงศ์ตระกูลหรือเหตุการณ์ตามปีพ.ศ. มันคือการรวบรวมเรื่องราวของผู้คน สูตรอาหาร ภาพถ่าย และความทรงจำที่สะท้อนให้เห็นว่าคนกลุ่มหนึ่งใช้ชีวิตอย่างไรกันตลอดกว่าร้อยปีที่ผ่านมา"
+           data-en="The Lor Xan House history book is not merely a family tree or a list of dates. It is a collection of people's stories, recipes, photographs, and memories that reveal how one family lived across more than a century.">
+        หนังสือประวัติบ้านหล่อซานไม่ใช่แค่ลำดับวงศ์ตระกูลหรือเหตุการณ์ตามปีพ.ศ. มันคือการรวบรวมเรื่องราวของผู้คน สูตรอาหาร ภาพถ่าย และความทรงจำที่สะท้อนให้เห็นว่าคนกลุ่มหนึ่งใช้ชีวิตอย่างไรกันตลอดกว่าร้อยปีที่ผ่านมา
+      </p>
+
+      <div class="book-card">
+        <div class="book-cover">
+          <div class="book-cover-title">หล่อซานเฮ้าส์</div>
+          <div class="book-cover-line"></div>
+          <div class="book-cover-sub">ร้อยปีแห่งเรื่องราว</div>
+        </div>
+        <div class="book-info">
+          <h3 data-th="หนังสือประวัติบ้านหล่อซาน" data-en="The Lor Xan House History Book">หนังสือประวัติบ้านหล่อซาน</h3>
+          <p data-th="บันทึกเรื่องราวของครอบครัวและบ้านที่มีอายุกว่าร้อยปี ผ่านสายตาของทั้งสี่รุ่น" data-en="A record of a century-old family and home, seen through the eyes of all four generations.">บันทึกเรื่องราวของครอบครัวและบ้านที่มีอายุกว่าร้อยปี ผ่านสายตาของทั้งสี่รุ่น</p>
+          <ul>
+            <li><span data-th="ประวัติครอบครัวและการอพยพจากฝูเจี้ยน" data-en="Family history and migration from Fujian">ประวัติครอบครัวและการอพยพจากฝูเจี้ยน</span></li>
+            <li><span data-th="ตำรับดั้งเดิมที่บันทึกครั้งแรกในสี่รุ่น" data-en="Original recipes recorded for the first time in four generations">ตำรับดั้งเดิมที่บันทึกครั้งแรกในสี่รุ่น</span></li>
+            <li><span data-th="ภาพถ่ายโบราณและภาพปัจจุบันเปรียบเทียบ" data-en="Vintage photographs compared with present-day images">ภาพถ่ายโบราณและภาพปัจจุบันเปรียบเทียบ</span></li>
+            <li><span data-th="ความหมายของพิมพ์ไม้และลวดลายมงคลแต่ละชิ้น" data-en="The meaning behind each wooden mold and its auspicious pattern">ความหมายของพิมพ์ไม้และลวดลายมงคลแต่ละชิ้น</span></li>
+            <li><span data-th="เรื่องเล่าที่ไม่เคยถูกพูดถึงในที่สาธารณะ" data-en="Stories never shared in public before">เรื่องเล่าที่ไม่เคยถูกพูดถึงในที่สาธารณะ</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 id="s5" data-th="ทำไมหนังสือถึงเป็นของที่ระลึกที่ดีที่สุด" data-en="Why a Book Makes the Best Souvenir">ทำไมหนังสือถึงเป็นของที่ระลึกที่ดีที่สุด</h2>
+
+      <p data-th="แม็กเน็ตติดตู้เย็นเล่าเรื่องอะไรไม่ได้ แก้วกาแฟก็เช่นกัน แต่หนังสือเป็นสื่อที่เก็บเรื่องราวได้อย่างสมบูรณ์ที่สุด คุณสามารถนั่งอ่านมันซ้ำในคืนที่นึกถึงวันที่มาเยือน หรือวางไว้บนชั้นหนังสือให้คนในบ้านหยิบขึ้นมาถาม"
+           data-en="A fridge magnet tells no story. Neither does a coffee mug. But a book is the most complete medium for preserving stories. You can sit and read it again on the night you find yourself thinking of the day you visited, or leave it on a shelf for someone in the house to pick up and ask about.">
+        แม็กเน็ตติดตู้เย็นเล่าเรื่องอะไรไม่ได้ แก้วกาแฟก็เช่นกัน แต่หนังสือเป็นสื่อที่เก็บเรื่องราวได้อย่างสมบูรณ์ที่สุด คุณสามารถนั่งอ่านมันซ้ำในคืนที่นึกถึงวันที่มาเยือน หรือวางไว้บนชั้นหนังสือให้คนในบ้านหยิบขึ้นมาถาม
+      </p>
+
+      <ul class="feature-list">
+        <li>
+          <div class="feature-icon">📖</div>
+          <div class="feature-text"><strong data-th="เล่าเรื่องได้ทุกครั้งที่เปิด" data-en="Tells its story every time it's opened">เล่าเรื่องได้ทุกครั้งที่เปิด</strong><br><span data-th="ไม่เหมือนของฝากทั่วไปที่ถูกลืมในลิ้นชัก หนังสือถูกออกแบบให้มีชีวิตทุกครั้งที่มีคนหยิบมันขึ้นมา" data-en="Unlike generic souvenirs forgotten in drawers, a book is designed to come alive every time someone picks it up.">ไม่เหมือนของฝากทั่วไปที่ถูกลืมในลิ้นชัก หนังสือถูกออกแบบให้มีชีวิตทุกครั้งที่มีคนหยิบมันขึ้นมา</span></div>
+        </li>
+        <li>
+          <div class="feature-icon">🤝</div>
+          <div class="feature-text"><strong data-th="แบ่งปันได้โดยไม่สูญหาย" data-en="Shareable without being lost">แบ่งปันได้โดยไม่สูญหาย</strong><br><span data-th="คุณสามารถนั่งอ่านกับลูก หลาน หรือเพื่อน แล้วเรื่องราวของหล่อซานก็จะเดินทางต่อไปผ่านปากของพวกเขา" data-en="You can sit and read it with children, grandchildren, or friends — and the stories of Lor Xan will travel further through their voices.">คุณสามารถนั่งอ่านกับลูก หลาน หรือเพื่อน แล้วเรื่องราวของหล่อซานก็จะเดินทางต่อไปผ่านปากของพวกเขา</span></div>
+        </li>
+        <li>
+          <div class="feature-icon">⏳</div>
+          <div class="feature-text"><strong data-th="ยิ่งเวลาผ่านไป ยิ่งมีคุณค่า" data-en="The older it gets, the more it's worth">ยิ่งเวลาผ่านไป ยิ่งมีคุณค่า</strong><br><span data-th="หนังสือที่คุณได้รับวันนี้จะกลายเป็นสิ่งที่ล้ำค่าในอีกสิบปีข้างหน้า เมื่อเมืองเปลี่ยน บ้านเปลี่ยน แต่หน้ากระดาษจะยังคงเหมือนเดิม" data-en="The book you receive today will become something precious in ten years, when the city has changed, the house has changed, but the pages remain the same.">หนังสือที่คุณได้รับวันนี้จะกลายเป็นสิ่งที่ล้ำค่าในอีกสิบปีข้างหน้า เมื่อเมืองเปลี่ยน บ้านเปลี่ยน แต่หน้ากระดาษจะยังคงเหมือนเดิม</span></div>
+        </li>
+        <li>
+          <div class="feature-icon">🏡</div>
+          <div class="feature-text"><strong data-th="ทำให้คุณเป็นส่วนหนึ่งของเรื่องราว" data-en="Makes you part of the story">ทำให้คุณเป็นส่วนหนึ่งของเรื่องราว</strong><br><span data-th="ทุกคนที่ถือหนังสือเล่มนี้คือพยานของเรื่องราวร้อยปีที่บ้านหล่อซานเล่า และตอนนี้คุณก็เป็นส่วนหนึ่งของเรื่องราวนั้นด้วย" data-en="Every person who holds this book is a witness to the hundred-year story that Lor Xan House tells — and now, you are part of that story too.">ทุกคนที่ถือหนังสือเล่มนี้คือพยานของเรื่องราวร้อยปีที่บ้านหล่อซานเล่า และตอนนี้คุณก็เป็นส่วนหนึ่งของเรื่องราวนั้นด้วย</span></div>
+        </li>
+      </ul>
+
+      <div class="post-img-wrap">
+        <img src="lor-xan-house-gallery-042.jpg" alt="สองคนทำขนมด้วยกัน" style="height:380px;" />
+        <div class="post-img-caption">📸 <span data-th="ประสบการณ์ที่เปลี่ยนเป็นเรื่องเล่า — และเรื่องเล่าที่กลายเป็นหนังสือ" data-en="An experience that becomes a story — and a story that becomes a book">ประสบการณ์ที่เปลี่ยนเป็นเรื่องเล่า — และเรื่องเล่าที่กลายเป็นหนังสือ</span></div>
+      </div>
+
+      <h2 id="s6" data-th="ได้รับหนังสือนี้ได้อย่างไร?" data-en="How to Receive This Book?">ได้รับหนังสือนี้ได้อย่างไร?</h2>
+
+      <p data-th="หนังสือประวัติบ้านหล่อซานมอบให้เฉพาะแขกที่เข้าร่วมประสบการณ์ Premium เท่านั้น ไม่มีจำหน่ายในร้านทั่วไป ไม่มีในแพลตฟอร์มออนไลน์ เพราะเราเชื่อว่าหนังสือเล่มนี้มีคุณค่ามากที่สุดเมื่ออยู่ในมือของคนที่ได้สัมผัสบ้านหลังนี้ด้วยตัวเอง"
+           data-en="The Lor Xan House history book is given exclusively to guests who join the Premium experience. It is not available in shops or online platforms — because we believe this book has the most value when it is in the hands of someone who has experienced this home themselves.">
+        หนังสือประวัติบ้านหล่อซานมอบให้เฉพาะแขกที่เข้าร่วมประสบการณ์ Premium เท่านั้น ไม่มีจำหน่ายในร้านทั่วไป ไม่มีในแพลตฟอร์มออนไลน์ เพราะเราเชื่อว่าหนังสือเล่มนี้มีคุณค่ามากที่สุดเมื่ออยู่ในมือของคนที่ได้สัมผัสบ้านหลังนี้ด้วยตัวเอง
+      </p>
+
+      <div class="fact-box">
+        <div class="fact-box-title">🎁 <span data-th="สิ่งที่แขก Premium จะได้รับกลับบ้าน" data-en="What Premium Guests Take Home">สิ่งที่แขก Premium จะได้รับกลับบ้าน</span></div>
+        <p data-th="นอกจากหนังสือประวัติบ้าน แขกที่เข้าร่วมประสบการณ์ Premium ยังได้รับ: ขนมอังกู๊ที่ทำด้วยมือตัวเองบรรจุในกล่องงานฝีมือ, สูตรลับพิมพ์พิเศษในกระดาษหัวจดหมายของบ้านหล่อซาน, ภาพถ่าย Portrait ในชุดไทยเพอรานากัน และประสบการณ์ที่เล่าได้อีกนาน"
+             data-en="Beyond the history book, Premium experience guests also receive: handmade Ang Ku Kueh packaged in artisan boxes, a secret recipe printed on Lor Xan House letterhead, a Portrait photograph in Peranakan Thai dress, and an experience they'll be telling stories about for years.">
+          นอกจากหนังสือประวัติบ้าน แขกที่เข้าร่วมประสบการณ์ Premium ยังได้รับ: ขนมอังกู๊ที่ทำด้วยมือตัวเองบรรจุในกล่องงานฝีมือ, สูตรลับพิมพ์พิเศษในกระดาษหัวจดหมายของบ้านหล่อซาน, ภาพถ่าย Portrait ในชุดไทยเพอรานากัน และประสบการณ์ที่เล่าได้อีกนาน
+        </p>
+      </div>
+
+      <!-- TAGS -->
+      <div class="post-tags">
+        <span class="tag">#หล่อซานเฮ้าส์</span>
+        <span class="tag">#ของที่ระลึก</span>
+        <span class="tag">#มรดกวัฒนธรรม</span>
+        <span class="tag">#ภูเก็ต</span>
+        <span class="tag">#Heritage</span>
+        <span class="tag">#Souvenir</span>
+        <span class="tag">#Peranakan</span>
+        <span class="tag">#LorXanHouse</span>
+      </div>
+
+      <!-- SHARE BAR -->
+      <div class="share-bar">
+        <div class="share-bar-label" data-th="แชร์บทความนี้" data-en="Share this article">แชร์บทความนี้</div>
+        <div class="share-buttons">
+          <button class="share-btn fb" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href))">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </button>
+          <button class="share-btn ig" onclick="window.open('https://www.instagram.com/')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </button>
+          <button class="share-btn cp" onclick="navigator.clipboard.writeText(location.href).then(()=>{const t=document.getElementById('copyToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-th="คัดลอกลิงก์" data-en="Copy link">คัดลอกลิงก์</span>
+          </button>
+        </div>
+      </div>
+
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- TOC -->
+      <div class="toc-card">
+        <div class="toc-label" data-th="สารบัญ" data-en="Contents">สารบัญ</div>
+        <ul class="toc-list">
+          <li><a href="#s1" data-th="ของฝากส่วนใหญ่ถูกลืม" data-en="Most Souvenirs Are Forgotten">ของฝากส่วนใหญ่ถูกลืม</a></li>
+          <li><a href="#s2" data-th="บ้านหล่อซาน: ร้อยปี" data-en="Lor Xan House: A Century">บ้านหล่อซาน: ร้อยปี</a></li>
+          <li><a href="#s3" data-th="หนังสือที่เกิดจากความกลัว" data-en="A Book Born from Fear">หนังสือที่เกิดจากความกลัว</a></li>
+          <li><a href="#s4" data-th="ในหนังสือมีอะไรบ้าง?" data-en="What's Inside?">ในหนังสือมีอะไรบ้าง?</a></li>
+          <li><a href="#s5" data-th="ทำไมหนังสือถึงดีที่สุด" data-en="Why a Book Is Best">ทำไมหนังสือถึงดีที่สุด</a></li>
+          <li><a href="#s6" data-th="ได้รับหนังสือได้อย่างไร?" data-en="How to Receive It?">ได้รับหนังสือได้อย่างไร?</a></li>
+        </ul>
+      </div>
+
+      <!-- STICKY SHARE -->
+      <div class="sticky-share">
+        <div class="sticky-share-label" data-th="แชร์" data-en="Share">แชร์</div>
+        <div class="sticky-share-btns">
+          <button class="sticky-share-btn fb" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href))">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </button>
+          <button class="sticky-share-btn ig" onclick="window.open('https://www.instagram.com/')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </button>
+          <button class="sticky-share-btn cp" onclick="navigator.clipboard.writeText(location.href).then(()=>{const t=document.getElementById('copyToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-th="คัดลอกลิงก์" data-en="Copy">คัดลอกลิงก์</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- AUTHOR -->
+      <div class="author-card">
+        <div class="author-avatar">🏮</div>
+        <div class="author-name" data-th="ทีมงานหล่อซานเฮ้าส์" data-en="Lor Xan House Team">ทีมงานหล่อซานเฮ้าส์</div>
+        <div class="author-role" data-th="เจ้าของและผู้ดูแลมรดกวัฒนธรรม<br>บ้านไม้โบราณอายุกว่าร้อยปี ภูเก็ต" data-en="Owners & Heritage Custodians<br>Century-old wooden house, Phuket">เจ้าของและผู้ดูแลมรดกวัฒนธรรม<br>บ้านไม้โบราณอายุกว่าร้อยปี ภูเก็ต</div>
+        <div class="author-bio" data-th="เราเชื่อว่าเรื่องราวของบ้านหลังนี้ควรได้รับการบอกเล่าต่อ ไม่ใช่เก็บไว้แค่ภายในครอบครัว" data-en="We believe the stories of this house deserve to be shared, not kept only within the family.">เราเชื่อว่าเรื่องราวของบ้านหลังนี้ควรได้รับการบอกเล่าต่อ ไม่ใช่เก็บไว้แค่ภายในครอบครัว</div>
+      </div>
+
+      <!-- RELATED -->
+      <div class="related-card">
+        <div class="related-card-label" data-th="บทความที่เกี่ยวข้อง" data-en="Related Articles">บทความที่เกี่ยวข้อง</div>
+        <a href="blog-post-heritage-house.html" class="related-item" style="text-decoration:none;">
+          <img class="related-thumb" src="lor-xan-house-gallery-017.jpg" alt="บ้านร้อยปี" />
+          <div>
+            <div class="related-title" data-th="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง" data-en="A Century-Old Home and Memories That Never Fade">บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง</div>
+            <div class="related-date">📅 <span data-th="15 กุมภาพันธ์ 2569" data-en="15 Feb 2026">15 กุมภาพันธ์ 2569</span></div>
+          </div>
+        </a>
+        <a href="blog-angku.html" class="related-item" style="text-decoration:none;">
+          <img class="related-thumb" src="lor-xan-house-gallery-001.jpg" alt="อังกู๊" />
+          <div>
+            <div class="related-title" data-th="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" data-en="Ang Ku Kueh: A Small Dessert with a Big Story">อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+            <div class="related-date">📅 <span data-th="1 มีนาคม 2569" data-en="1 Mar 2026">1 มีนาคม 2569</span></div>
+          </div>
+        </a>
+        <a href="blog-phuket-architecture.html" class="related-item" style="text-decoration:none;">
+          <img class="related-thumb" src="lor-xan-house-gallery-022.jpg" alt="สถาปัตยกรรมภูเก็ต" />
+          <div>
+            <div class="related-title" data-th="สถาปัตยกรรมชิโน-โปรตุกีส: บ้านที่เล่าประวัติศาสตร์" data-en="Sino-Portuguese Architecture: Houses That Tell History">สถาปัตยกรรมชิโน-โปรตุกีส: บ้านที่เล่าประวัติศาสตร์</div>
+            <div class="related-date">📅 <span data-th="20 กุมภาพันธ์ 2569" data-en="20 Feb 2026">20 กุมภาพันธ์ 2569</span></div>
+          </div>
+        </a>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ══ MORE POSTS ══ -->
+  <section class="more-posts">
+    <div class="more-posts-inner">
+      <p class="section-label" data-th="อ่านต่อ" data-en="KEEP READING">อ่านต่อ</p>
+      <h2 class="section-h2" data-th="บทความอื่นที่คุณอาจสนใจ" data-en="Other Articles You May Enjoy">บทความอื่นที่คุณอาจสนใจ</h2>
+      <div class="cards-grid">
+        <a href="blog-post-heritage-house.html" class="blog-card" style="text-decoration:none;">
+          <img class="card-img" src="lor-xan-house-gallery-017.jpg" alt="บ้านร้อยปี" />
+          <div class="card-body">
+            <div class="card-cat" data-th="🏮 มรดกวัฒนธรรม" data-en="🏮 HERITAGE">🏮 มรดกวัฒนธรรม</div>
+            <div class="card-title" data-th="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง" data-en="A Century-Old Home and Memories That Never Fade">บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง</div>
+            <div class="card-excerpt" data-th="เดินเข้ามาในบ้านหลังนี้เหมือนก้าวเข้าสู่อีกยุคหนึ่ง ทุกมุมมีเรื่องเล่า" data-en="Walking into this house feels like stepping into another era. Every corner has a story to tell.">เดินเข้ามาในบ้านหลังนี้เหมือนก้าวเข้าสู่อีกยุคหนึ่ง ทุกมุมมีเรื่องเล่า</div>
+            <div class="card-meta"><span>📅 15 ก.พ. 2569</span><span>⏱ 5 นาที</span></div>
+          </div>
+        </a>
+        <a href="blog-angku.html" class="blog-card" style="text-decoration:none;">
+          <img class="card-img" src="lor-xan-house-gallery-001.jpg" alt="อังกู๊" />
+          <div class="card-body">
+            <div class="card-cat" data-th="🍵 ตำรับอาหาร" data-en="🍵 RECIPES">🍵 ตำรับอาหาร</div>
+            <div class="card-title" data-th="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" data-en="Ang Ku Kueh: A Small Dessert with a Big Story">อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+            <div class="card-excerpt" data-th="ทำไมขนมชิ้นเล็กนิดเดียวถึงซ่อนความหมายไว้มากมายถึงเพียงนี้?" data-en="Why does this tiny dessert carry so much meaning?">ทำไมขนมชิ้นเล็กนิดเดียวถึงซ่อนความหมายไว้มากมายถึงเพียงนี้?</div>
+            <div class="card-meta"><span>📅 1 มี.ค. 2569</span><span>⏱ 6 นาที</span></div>
+          </div>
+        </a>
+        <a href="blog-phuket-architecture.html" class="blog-card" style="text-decoration:none;">
+          <img class="card-img" src="lor-xan-house-gallery-035.jpg" alt="สถาปัตยกรรม" />
+          <div class="card-body">
+            <div class="card-cat" data-th="🏛 สถาปัตยกรรม" data-en="🏛 ARCHITECTURE">🏛 สถาปัตยกรรม</div>
+            <div class="card-title" data-th="สถาปัตยกรรมชิโน-โปรตุกีส: บ้านที่เล่าประวัติศาสตร์" data-en="Sino-Portuguese Architecture: Houses That Tell History">สถาปัตยกรรมชิโน-โปรตุกีส: บ้านที่เล่าประวัติศาสตร์</div>
+            <div class="card-excerpt" data-th="หน้าต่างที่มีเรื่องเล่า ซุ้มที่บันทึกยุคสมัย สถาปัตยกรรมภูเก็ตเก่าคืออะไร?" data-en="Windows that tell stories, arches that record eras. What is old Phuket architecture?">หน้าต่างที่มีเรื่องเล่า ซุ้มที่บันทึกยุคสมัย สถาปัตยกรรมภูเก็ตเก่าคืออะไร?</div>
+            <div class="card-meta"><span>📅 20 ก.พ. 2569</span><span>⏱ 5 นาที</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta-strip">
+    <h2 data-th="อยากพาหนังสือเล่มนี้กลับบ้านด้วยไหม?" data-en="Would You Like to Take This Book Home?">อยากพาหนังสือเล่มนี้กลับบ้านด้วยไหม?</h2>
+    <p data-th="สำรองที่นั่ง Premium และรับหนังสือประวัติบ้านหล่อซาน พร้อมประสบการณ์ที่คุณจะเล่าให้ฟังได้อีกนาน" data-en="Reserve a Premium seat and receive the Lor Xan House history book, along with an experience you'll be telling stories about for years.">สำรองที่นั่ง Premium และรับหนังสือประวัติบ้านหล่อซาน พร้อมประสบการณ์ที่คุณจะเล่าให้ฟังได้อีกนาน</p>
+    <a href="booking.html" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">LOR XAN HOUSE</div>
+    <div data-th="บ้านไม้โบราณอายุกว่าร้อยปี • ภูเก็ต ประเทศไทย" data-en="Century-Old Wooden House • Phuket, Thailand">บ้านไม้โบราณอายุกว่าร้อยปี • ภูเก็ต ประเทศไทย</div>
+    <div class="footer-links">
+      <a href="index.html" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="gallery.html" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="blog.html" data-th="บทความ" data-en="Blog">บทความ</a>
+      <a href="booking.html" data-th="จองเลย" data-en="Book Now">จองเลย</a>
+    </div>
+  </footer>
+
+  <div class="copy-toast" id="copyToast" data-th="คัดลอกลิงก์แล้ว ✓" data-en="Link copied ✓">คัดลอกลิงก์แล้ว ✓</div>
+
+  <script>
+    // Reading progress
+    window.addEventListener('scroll', () => {
+      const article = document.getElementById('article-body');
+      if (!article) return;
+      const rect = article.getBoundingClientRect();
+      const total = article.offsetHeight;
+      const scrolled = Math.max(0, -rect.top);
+      const pct = Math.min(100, (scrolled / total) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+    });
+
+    // TOC active tracking
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    const headings = Array.from(document.querySelectorAll('.post-body h2[id]'));
+    window.addEventListener('scroll', () => {
+      let active = 0;
+      headings.forEach((h, i) => { if (window.scrollY >= h.offsetTop - 120) active = i; });
+      tocLinks.forEach((a, i) => a.classList.toggle('active-toc', i === active));
+    });
+
+    // Language toggle
+    let currentLang = 'th';
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      document.getElementById('langToggle').textContent = currentLang === 'th' ? '🌐 EN' : '🌐 TH';
+      document.querySelectorAll('[data-th][data-en]').forEach(el => {
+        el.innerHTML = el.getAttribute('data-' + currentLang);
+      });
+      document.documentElement.lang = currentLang;
+    }
+  </script>
+
+</body>
+</html>
