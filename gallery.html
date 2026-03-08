@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — หล่อซานเฮ้าส์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #3B7EC8;
+      --blue-mid:    #2D6AAD;
+      --blue-dark:   #1E4D82;
+      --blue-deep:   #0F2D4E;
+      --sky:         #EBF4FD;
+      --sky-light:   #F5FAFF;
+      --sky-mid:     #D6EAFA;
+      --border:      #C5D8EC;
+      --accent:      #56A3D9;
+      --accent-soft: #A8D4EF;
+      --text-muted:  #7A92A8;
+      --text-body:   #3D5A72;
+      --text-dark:   #0F2D4E;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+      background: var(--blue-deep);
+      color: #fff;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; }
+    img { display: block; }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15,45,78,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 14px 36px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: .08em; color: #fff;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link {
+      color: rgba(255,255,255,.65); font-size: .83rem; font-weight: 600;
+      padding: 7px 13px; border-radius: 50px;
+      transition: color .2s, background .2s;
+    }
+    .nav-link:hover, .nav-link.active { color: #fff; background: rgba(255,255,255,.1); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .btn-lang {
+      background: transparent; color: rgba(255,255,255,.7);
+      padding: 7px 16px; border-radius: 50px;
+      font-size: .82rem; font-weight: 700; letter-spacing: .05em;
+      border: 1.5px solid rgba(255,255,255,.2);
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+      display: flex; align-items: center; gap: 5px;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .btn-lang:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); color: #fff; }
+    .btn-nav {
+      background: var(--blue); color: #fff;
+      padding: 9px 22px; border-radius: 50px;
+      font-size: .85rem; font-weight: 700; letter-spacing: .03em;
+      white-space: nowrap; transition: background .2s, transform .2s;
+    }
+    .btn-nav:hover { background: var(--accent); transform: translateY(-1px); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+    @media (max-width: 400px) {
+      .btn-nav { font-size: .75rem; padding: 8px 14px; }
+      .btn-lang { font-size: .75rem; padding: 7px 11px; }
+      nav { padding: 10px 16px; }
+    }
+
+    /* ══════════════════════════════════════
+       HERO HEADER
+    ══════════════════════════════════════ */
+    .gallery-hero {
+      position: relative; padding: 140px 24px 72px;
+      text-align: center; overflow: hidden;
+    }
+    .gallery-hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('hero-bg.jpg');
+      background-size: cover; background-position: center;
+    }
+    .gallery-hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(15,45,78,.8) 0%, rgba(15,45,78,.95) 100%);
+    }
+    .gallery-hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.1); color: rgba(255,255,255,.85);
+      font-size: .75rem; font-weight: 700;
+      padding: 7px 20px; border-radius: 50px;
+      margin-bottom: 20px; letter-spacing: .12em;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .gallery-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; color: #fff; line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .gallery-hero h1 em { font-style: normal; color: var(--accent-soft); }
+    .gallery-hero p {
+      color: rgba(255,255,255,.6); font-size: .95rem;
+      max-width: 440px; margin: 0 auto; line-height: 1.75;
+    }
+
+    /* ══════════════════════════════════════
+       FILTER TABS
+    ══════════════════════════════════════ */
+    .filter-wrap {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 36px 24px 0; flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.6);
+      padding: 8px 22px; border-radius: 50px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: .83rem; font-weight: 600;
+      cursor: pointer; transition: all .25s; letter-spacing: .02em;
+    }
+    .filter-btn:hover { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.25); }
+    .filter-btn.active {
+      background: var(--blue); color: #fff;
+      border-color: var(--blue);
+      box-shadow: 0 4px 16px rgba(59,126,200,.4);
+    }
+
+    /* ══════════════════════════════════════
+       MASONRY GALLERY
+    ══════════════════════════════════════ */
+    .gallery-section {
+      padding: 36px 32px 80px;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    /* Featured row */
+    .featured-row {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 14px; margin-bottom: 14px;
+    }
+    .featured-row .gi { height: 480px; }
+
+    /* Standard grid */
+    .grid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px; margin-bottom: 14px;
+    }
+    .grid-row .gi { height: 300px; }
+
+    /* Tall grid */
+    .tall-row {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      gap: 14px; margin-bottom: 14px;
+    }
+    .tall-row .gi:nth-child(1),
+    .tall-row .gi:nth-child(3) { height: 340px; }
+    .tall-row .gi:nth-child(2) { height: 340px; }
+
+    /* Wide + 2 stacked */
+    .wide-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 14px;
+    }
+    .wide-row .gi { height: 360px; }
+
+    /* Gallery item base */
+    .gi {
+      position: relative; overflow: hidden;
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      cursor: zoom-in;
+    }
+    .gi img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .gi:hover img { transform: scale(1.07); }
+
+    /* Overlay */
+    .gi-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,45,78,.75) 0%, rgba(15,45,78,.1) 50%, transparent 100%);
+      opacity: 0; transition: opacity .35s;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 20px;
+    }
+    .gi:hover .gi-overlay { opacity: 1; }
+    .gi-label {
+      font-size: .78rem; font-weight: 700;
+      color: rgba(255,255,255,.6); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .gi-title {
+      font-size: 1rem; font-weight: 700; color: #fff; line-height: 1.35;
+    }
+    .gi-subtitle { font-size: .8rem; color: rgba(255,255,255,.65); margin-top: 3px; }
+
+    /* Gold accent badge */
+    .gi-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(15,45,78,.7); backdrop-filter: blur(8px);
+      color: var(--accent-soft); border: 1px solid rgba(86,163,217,.3);
+      font-size: .68rem; font-weight: 800; letter-spacing: .08em;
+      padding: 5px 12px; border-radius: 50px;
+      opacity: 0; transition: opacity .3s;
+    }
+    .gi:hover .gi-badge { opacity: 1; }
+
+    /* Section label */
+    .section-divider {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 28px; margin-top: 48px;
+    }
+    .section-divider:first-child { margin-top: 0; }
+    .sdiv-line { flex: 1; height: 1px; background: rgba(255,255,255,.08); }
+    .sdiv-label {
+      font-size: .73rem; font-weight: 700; letter-spacing: .14em;
+      color: var(--accent); text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════
+       LIGHTBOX
+    ══════════════════════════════════════ */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(8,20,40,.96);
+      backdrop-filter: blur(24px);
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .lightbox.open { display: flex; }
+    .lb-inner {
+      position: relative; max-width: 900px; width: 100%;
+      animation: lbIn .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes lbIn { from { opacity:0; transform: scale(.9) } to { opacity:1; transform: scale(1) } }
+    .lb-img {
+      width: 100%; max-height: 82vh;
+      object-fit: contain; border-radius: 16px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.6);
+    }
+    .lb-caption {
+      text-align: center; margin-top: 18px;
+      color: rgba(255,255,255,.75); font-size: .9rem; line-height: 1.6;
+    }
+    .lb-caption strong { color: #fff; font-size: 1rem; display: block; margin-bottom: 4px; }
+    .lb-close {
+      position: absolute; top: -14px; right: -14px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      color: #fff; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s; backdrop-filter: blur(8px);
+    }
+    .lb-close:hover { background: rgba(255,255,255,.22); }
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      color: #fff; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,.2); }
+    .lb-prev { left: -58px; }
+    .lb-next { right: -58px; }
+    @media (max-width: 960px) {
+      .lb-prev { left: 0; }
+      .lb-next { right: 0; }
+      .lb-inner { padding: 0 54px; }
+    }
+    .lb-counter {
+      text-align: center; color: rgba(255,255,255,.4);
+      font-size: .78rem; margin-top: 10px; letter-spacing: .1em;
+    }
+
+    /* ══════════════════════════════════════
+       CTA STRIP
+    ══════════════════════════════════════ */
+    .cta-strip {
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 64px 24px;
+      text-align: center;
+      background: linear-gradient(to bottom, transparent, rgba(30,77,130,.2));
+    }
+    .cta-strip h2 {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800; color: #fff; margin-bottom: 10px;
+    }
+    .cta-strip p { color: rgba(255,255,255,.55); font-size: .9rem; margin-bottom: 28px; }
+    .btn-cta {
+      display: inline-block;
+      background: var(--blue); color: #fff;
+      padding: 16px 40px; border-radius: 50px;
+      font-size: 1rem; font-weight: 700;
+      box-shadow: 0 6px 28px rgba(59,126,200,.4);
+      transition: all .2s;
+    }
+    .btn-cta:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(59,126,200,.5); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.06);
+      text-align: center; padding: 28px 24px; font-size: .82rem;
+      color: rgba(255,255,255,.25);
+    }
+    .footer-logo { color: var(--accent); font-weight: 800; font-size: .95rem; margin-bottom: 8px; }
+    footer a { color: rgba(255,255,255,.3); transition: color .2s; }
+    footer a:hover { color: rgba(255,255,255,.7); }
+    footer .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .gallery-section { padding: 28px 16px 64px; }
+      .featured-row { grid-template-columns: 1fr; }
+      .featured-row .gi { height: 260px; }
+      .grid-row { grid-template-columns: 1fr 1fr; }
+      .grid-row .gi { height: 220px; }
+      .tall-row { grid-template-columns: 1fr 1fr; }
+      .tall-row .gi:nth-child(2) { grid-column: span 2; }
+      .wide-row { grid-template-columns: 1fr; }
+      .wide-row .gi { height: 240px; }
+    }
+    @media (max-width: 480px) {
+      .grid-row { grid-template-columns: 1fr; }
+      .grid-row .gi { height: 240px; }
+      .tall-row { grid-template-columns: 1fr; }
+      .tall-row .gi:nth-child(2) { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <div class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="index.html#features" class="nav-link" data-th="ประสบการณ์" data-en="Experiences">ประสบการณ์</a>
+      <a href="index.html#pricing" class="nav-link" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="gallery.html" class="nav-link active" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="booking.html" class="nav-link" style="color:var(--accent-soft);" data-th="📅 จองเลย" data-en="📅 Book Now">📅 จองเลย</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+      <a href="booking.html" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO HEADER ══ -->
+  <div class="gallery-hero">
+    <div class="gallery-hero-bg"></div>
+    <div class="gallery-hero-content">
+      <div class="hero-tag" data-th="✦ GALLERY · ภาพบรรยากาศ ✦" data-en="✦ GALLERY · Behind the Scenes ✦">✦ GALLERY · ภาพบรรยากาศ ✦</div>
+      <h1>
+        <span data-th="สัมผัสบรรยากาศ" data-en="Feel the Atmosphere">สัมผัสบรรยากาศ</span><br>
+        <em data-th="บ้านร้อยปีของหล่อซาน" data-en="of Lor Xan's Century-Old Home">บ้านร้อยปีของหล่อซาน</em>
+      </h1>
+      <p data-th="ทุกภาพคือเรื่องราวที่รอให้คุณมาสัมผัสด้วยตัวเอง" data-en="Every image is a story waiting for you to experience in person.">ทุกภาพคือเรื่องราวที่รอให้คุณมาสัมผัสด้วยตัวเอง</p>
+    </div>
+  </div>
+
+  <!-- ══ GALLERY GRID ══ -->
+  <div class="gallery-section">
+
+    <!-- ─── Section 1: บ้านและบรรยากาศ ─── -->
+    <div class="section-divider">
+      <div class="sdiv-line"></div>
+      <div class="sdiv-label" data-th="บ้านและบรรยากาศ" data-en="HOME & ATMOSPHERE">บ้านและบรรยากาศ</div>
+      <div class="sdiv-line"></div>
+    </div>
+    <div class="grid-row">
+      <div class="gi" onclick="openLightbox(0)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-017.jpg" alt="โต๊ะอาหารในบ้านโบราณ" loading="lazy" />
+        <div class="gi-badge" data-th="INTERIOR" data-en="INTERIOR">INTERIOR</div>
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ห้องอาหาร" data-en="DINING ROOM">ห้องอาหาร</div>
+          <div class="gi-title" data-th="โต๊ะอาหารร้อยปี" data-en="A Century-Old Dining Table">โต๊ะอาหารร้อยปี</div>
+          <div class="gi-subtitle" data-th="บรรยากาศในบ้านโบราณที่ยังมีชีวิต" data-en="Living atmosphere of an antique home">บรรยากาศในบ้านโบราณที่ยังมีชีวิต</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(1)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-022.jpg" alt="พิมพ์ไม้และเตาโบราณ" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ห้องครัวโบราณ" data-en="HERITAGE KITCHEN">ห้องครัวโบราณ</div>
+          <div class="gi-title" data-th="เตาไฟและพิมพ์ไม้โบราณ" data-en="Traditional Stove & Wooden Molds">เตาไฟและพิมพ์ไม้โบราณ</div>
+          <div class="gi-subtitle" data-th="อุปกรณ์จากยุคที่ไม่มีไฟฟ้า" data-en="Tools from an era without electricity">อุปกรณ์จากยุคที่ไม่มีไฟฟ้า</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(2)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-035.jpg" alt="พิมพ์ไม้โบราณหลายอัน" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="มรดกตกทอด" data-en="HERITAGE">มรดกตกทอด</div>
+          <div class="gi-title" data-th="พิมพ์ไม้หลายรุ่น" data-en="Multi-Generation Wooden Molds">พิมพ์ไม้หลายรุ่น</div>
+          <div class="gi-subtitle" data-th="สะสมมาจากบรรพบุรุษหลายชั่วอายุ" data-en="Collected across many ancestral generations">สะสมมาจากบรรพบุรุษหลายชั่วอายุ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Section 2: ตำรับและกรรมวิธี ─── -->
+    <div class="section-divider">
+      <div class="sdiv-line"></div>
+      <div class="sdiv-label" data-th="ตำรับและกรรมวิธี" data-en="RECIPES & PROCESS">ตำรับและกรรมวิธี</div>
+      <div class="sdiv-line"></div>
+    </div>
+    <div class="featured-row">
+      <div class="gi" onclick="openLightbox(3)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-014.jpg" alt="แป้ง 4 สี" loading="lazy" />
+        <div class="gi-badge" data-th="SIGNATURE" data-en="SIGNATURE">SIGNATURE</div>
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="เตรียมแป้ง" data-en="DOUGH PREP">เตรียมแป้ง</div>
+          <div class="gi-title" data-th="แป้ง 4 สีธรรมชาติ" data-en="4 Natural Color Doughs">แป้ง 4 สีธรรมชาติ</div>
+          <div class="gi-subtitle" data-th="สีจากพืชพื้นถิ่น — ไม่มีสีเคมี" data-en="Plant-based colors — no artificial dyes">สีจากพืชพื้นถิ่น — ไม่มีสีเคมี</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(4)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-021.jpg" alt="มือถืออังกู๊ยังไม่สุก" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ลงมือทำ" data-en="HANDS-ON">ลงมือทำ</div>
+          <div class="gi-title" data-th="จากมือสู่พิมพ์" data-en="From Hands to Mold">จากมือสู่พิมพ์</div>
+          <div class="gi-subtitle" data-th="ทุกชิ้นปั้นด้วยมือทีละชิ้น" data-en="Each piece hand-shaped one by one">ทุกชิ้นปั้นด้วยมือทีละชิ้น</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="gi" onclick="openLightbox(5)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-020.jpg" alt="อังกู๊ยังไม่สุกบนถาด" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ก่อนนึ่ง" data-en="PRE-STEAMING">ก่อนนึ่ง</div>
+          <div class="gi-title" data-th="รอเข้าซึ้ง" data-en="Ready for the Steamer">รอเข้าซึ้ง</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(6)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-029.jpg" alt="อังกู๊สีม่วงและทองในซึ้ง" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="กำลังนึ่ง" data-en="STEAMING">กำลังนึ่ง</div>
+          <div class="gi-title" data-th="สีม่วง + สีทอง" data-en="Purple & Golden Ang Ku">สีม่วง + สีทอง</div>
+          <div class="gi-subtitle" data-th="หลากสี หลากรูปทรง หลากความหมาย" data-en="Many colors, shapes, and meanings">หลากสี หลากรูปทรง หลากความหมาย</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(7)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-034.jpg" alt="อังกู๊หลากสีบนใบตอง" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="หลากสี" data-en="MULTICOLOR">หลากสี</div>
+          <div class="gi-title" data-th="อังกู๊หลากตำรับ" data-en="Multi-Recipe Ang Ku Kueh">อังกู๊หลากตำรับ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Section 3: ขนมเพอรานากัน ─── -->
+    <div class="section-divider">
+      <div class="sdiv-line"></div>
+      <div class="sdiv-label" data-th="ขนมเพอรานากัน" data-en="PERANAKAN DESSERTS">ขนมเพอรานากัน</div>
+      <div class="sdiv-line"></div>
+    </div>
+    <div class="featured-row">
+      <div class="gi" onclick="openLightbox(8)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-001.jpg" alt="อังกู๊สีทองจัดสวย" loading="lazy" />
+        <div class="gi-badge" data-th="CHEF'S PLATING" data-en="CHEF'S PLATING">CHEF'S PLATING</div>
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="จัดจาน" data-en="PLATED">จัดจาน</div>
+          <div class="gi-title" data-th="อังกู๊ทอง — จัดจานพิเศษ" data-en="Golden Ang Ku — Special Plating">อังกู๊ทอง — จัดจานพิเศษ</div>
+          <div class="gi-subtitle" data-th="ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" data-en="A small dessert hiding an enormous story">ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(9)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-005.jpg" alt="หมูฮ้อง" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="อาหารหลัก" data-en="MAIN DISH">อาหารหลัก</div>
+          <div class="gi-title" data-th="หมูฮ้อง สูตรบ้านหล่อซาน" data-en="Lor Xan House Braised Pork">หมูฮ้อง สูตรบ้านหล่อซาน</div>
+          <div class="gi-subtitle" data-th="ต้มนาน 4 ชั่วโมง สูตรที่ไม่เคยเปลี่ยน" data-en="4-hour braise, a recipe that never changes">ต้มนาน 4 ชั่วโมง สูตรที่ไม่เคยเปลี่ยน</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="gi" onclick="openLightbox(10)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-009.jpg" alt="อังกู๊บรรจุกล่อง" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ของฝาก" data-en="TAKEAWAY">ของฝาก</div>
+          <div class="gi-title" data-th="บรรจุพร้อมฝาก" data-en="Packaged to Take Home">บรรจุพร้อมฝาก</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(11)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-011.jpg" alt="อังกู๊แดง close-up" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="CLOSE-UP" data-en="CLOSE-UP">CLOSE-UP</div>
+          <div class="gi-title" data-th="อังกู๊แดง — สีมงคล" data-en="Red Ang Ku — Auspicious Color">อังกู๊แดง — สีมงคล</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(12)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-016.jpg" alt="อังกู๊บนถาดแดง" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="งานมงคล" data-en="CEREMONIAL">งานมงคล</div>
+          <div class="gi-title" data-th="อังกู๊บนถาดแดงโบราณ" data-en="Ang Ku on Antique Red Tray">อังกู๊บนถาดแดงโบราณ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Section 4: ประสบการณ์ ─── -->
+    <div class="section-divider">
+      <div class="sdiv-line"></div>
+      <div class="sdiv-label" data-th="ประสบการณ์ Premium" data-en="PREMIUM EXPERIENCE">ประสบการณ์ Premium</div>
+      <div class="sdiv-line"></div>
+    </div>
+    <div class="featured-row">
+      <div class="gi" onclick="openLightbox(13)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-042.jpg" alt="สองคนทำขนมด้วยกัน" loading="lazy" />
+        <div class="gi-badge" data-th="TOGETHER" data-en="TOGETHER">TOGETHER</div>
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ประสบการณ์ร่วมกัน" data-en="SHARED EXPERIENCE">ประสบการณ์ร่วมกัน</div>
+          <div class="gi-title" data-th="ทำด้วยกัน เรียนรู้ด้วยกัน" data-en="Make Together, Learn Together">ทำด้วยกัน เรียนรู้ด้วยกัน</div>
+          <div class="gi-subtitle" data-th="ทุกรอบเปิดเฉพาะ 4–6 คน" data-en="Only 4–6 guests per session">ทุกรอบเปิดเฉพาะ 4–6 คน</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(14)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-028.jpg" alt="หญิงสาวยิ้มกับพิมพ์ไม้" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="Workshop" data-en="WORKSHOP">Workshop</div>
+          <div class="gi-title" data-th="ฝึกปั้นด้วยพิมพ์โบราณ" data-en="Practice with Antique Molds">ฝึกปั้นด้วยพิมพ์โบราณ</div>
+          <div class="gi-subtitle" data-th="ชุดผ้าถุงและเครื่องทองแบบดั้งเดิม" data-en="Traditional Thai dress & gold jewelry">ชุดผ้าถุงและเครื่องทองแบบดั้งเดิม</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="gi" onclick="openLightbox(15)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-040.jpg" alt="หญิงสาวปั้นขนม" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ลงมือทำ" data-en="HANDS-ON">ลงมือทำ</div>
+          <div class="gi-title" data-th="ปั้นด้วยมือตัวเอง" data-en="Shape it Yourself">ปั้นด้วยมือตัวเอง</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(16)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-039.jpg" alt="สองคนถือจานขนม" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ผลลัพธ์" data-en="RESULT">ผลลัพธ์</div>
+          <div class="gi-title" data-th="ภูมิใจในสิ่งที่ทำเอง" data-en="Proud of What You Made">ภูมิใจในสิ่งที่ทำเอง</div>
+        </div>
+      </div>
+      <div class="gi" onclick="openLightbox(17)">
+        <img src="raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-031.jpg" alt="อังกู๊ทองบนจานขาว" loading="lazy" />
+        <div class="gi-overlay">
+          <div class="gi-label" data-th="ผลงานสำเร็จ" data-en="FINISHED WORK">ผลงานสำเร็จ</div>
+          <div class="gi-title" data-th="จากมือคุณสู่จาน" data-en="From Your Hands to the Plate">จากมือคุณสู่จาน</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /gallery-section -->
+
+  <!-- ══ LIGHTBOX ══ -->
+  <div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+    <div class="lb-inner">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+      <button class="lb-nav lb-prev" onclick="shiftLightbox(-1)">‹</button>
+      <button class="lb-nav lb-next" onclick="shiftLightbox(1)">›</button>
+      <img class="lb-img" id="lbImg" src="" alt="" />
+      <div class="lb-caption">
+        <strong id="lbTitle"></strong>
+        <span id="lbSub"></span>
+      </div>
+      <div class="lb-counter" id="lbCounter"></div>
+    </div>
+  </div>
+
+  <!-- ══ CTA STRIP ══ -->
+  <div class="cta-strip">
+    <h2 data-th="พร้อมสัมผัสประสบการณ์นี้ด้วยตัวเองหรือยัง?" data-en="Ready to Experience This Yourself?">พร้อมสัมผัสประสบการณ์นี้ด้วยตัวเองหรือยัง?</h2>
+    <p data-th="ที่นั่งมีจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า" data-en="Seats are limited — available only for specially scheduled sessions.">ที่นั่งมีจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า</p>
+    <a href="booking.html" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">• LOR XAN HOUSE •</div>
+    <div data-th="Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต" data-en="Lor Xan Premium Heritage Experience · A Living Century-Old Home">Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
+    <div class="footer-links">
+      <a href="index.html" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="index.html#features" data-th="ประสบการณ์" data-en="Experiences">ประสบการณ์</a>
+      <a href="index.html#pricing" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="gallery.html" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="booking.html" style="color:var(--accent);" data-th="📅 สำรองที่นั่ง" data-en="📅 Reserve Now">📅 สำรองที่นั่ง</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Language toggle ──
+    let currentLang = 'th';
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      const btn = document.getElementById('langToggle');
+      btn.textContent = currentLang === 'th' ? '🌐 EN' : '🌐 TH';
+      document.querySelectorAll('[data-th][data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+      document.documentElement.lang = currentLang;
+      // Re-sync lightbox if open
+      if (document.getElementById('lightbox').classList.contains('open')) {
+        openLightbox(currentIndex);
+      }
+    }
+
+    // ── Lightbox data ──
+    const images = [
+      // ── Section 1: บ้านและบรรยากาศ ──
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-017.jpg', th: 'โต๊ะอาหารร้อยปี',          en: 'A Century-Old Dining Table',       sub_th: 'บรรยากาศภายในบ้านโบราณที่ยังมีชีวิต',         sub_en: 'Atmosphere inside a living antique home' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-022.jpg', th: 'เตาไฟและพิมพ์ไม้โบราณ',    en: 'Traditional Stove & Wooden Molds', sub_th: 'เครื่องมือทำขนมที่สืบทอดมากว่าร้อยปี',          sub_en: 'Confectionery tools passed down over a century' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-035.jpg', th: 'พิมพ์ไม้หลายรุ่น',         en: 'Multi-Generation Wooden Molds',    sub_th: 'แต่ละบล็อกเล่าเรื่องราวของตัวเอง',              sub_en: 'Each block tells its own story' },
+      // ── Section 2: ตำรับและกรรมวิธี ──
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-014.jpg', th: 'แป้ง 4 สีธรรมชาติ',        en: '4 Natural Color Doughs',           sub_th: 'สีจากธรรมชาติ — ใบเตย บีทรูท ฟักทอง และแป้งขาว', sub_en: 'Colors from nature — pandan, beetroot, pumpkin & plain' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-021.jpg', th: 'จากมือสู่พิมพ์',           en: 'From Hands to Mold',               sub_th: 'ทักษะที่ฝึกได้เฉพาะในบ้านหล่อซาน',              sub_en: 'A skill you can only learn at Lor Xan House' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-020.jpg', th: 'รอเข้าซึ้ง',               en: 'Ready for the Steamer',            sub_th: 'ขั้นตอนสำคัญที่ต้องอาศัยเวลาและความชำนาญ',      sub_en: 'A critical step requiring time and skill' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-029.jpg', th: 'สีม่วง + สีทอง',           en: 'Purple & Golden Ang Ku',           sub_th: 'ความสวยงามของสีสันที่ผสมผสานอย่างลงตัว',         sub_en: 'The beauty of perfectly blended colors' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-034.jpg', th: 'อังกู๊หลากตำรับ',         en: 'Multi-Recipe Ang Ku Kueh',         sub_th: 'หลากหลายสีสัน บนใบตองสด',                        sub_en: 'A variety of colors on fresh banana leaves' },
+      // ── Section 3: ขนมเพอรานากัน ──
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-001.jpg', th: 'อังกู๊ทอง — จัดจานพิเศษ', en: 'Golden Ang Ku — Special Plating',  sub_th: 'ขนมมงคลที่สวยงามที่สุดในรูปลักษณ์ดั้งเดิม',     sub_en: 'The most beautiful auspicious dessert in its original form' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-005.jpg', th: 'หมูฮ้อง สูตรบ้านหล่อซาน', en: 'Lor Xan House Braised Pork',       sub_th: 'สูตรลับที่สืบทอดมากว่า 3 รุ่น',                  sub_en: 'A secret recipe passed down for over 3 generations' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-009.jpg', th: 'บรรจุพร้อมฝาก',           en: 'Packaged to Take Home',            sub_th: 'ของขวัญจากใจ ส่งตรงถึงคนที่คุณรัก',              sub_en: 'A gift from the heart, straight to your loved ones' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-011.jpg', th: 'อังกู๊แดง — สีมงคล',      en: 'Red Ang Ku — Auspicious Color',    sub_th: 'สีแดงแห่งความโชคดีในงานมงคลทุกประเภท',           sub_en: 'The red of good fortune for all auspicious occasions' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-016.jpg', th: 'อังกู๊บนถาดแดงโบราณ',    en: 'Ang Ku on Antique Red Tray',       sub_th: 'ขนมบนภาชนะโบราณ — สวยงามทุกมุมมอง',             sub_en: 'Dessert on antique ware — beautiful from every angle' },
+      // ── Section 4: ประสบการณ์ Premium ──
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-042.jpg', th: 'ทำด้วยกัน เรียนรู้ด้วยกัน', en: 'Make Together, Learn Together',   sub_th: 'ประสบการณ์ที่แบ่งปันได้และจำไม่รู้ลืม',          sub_en: 'A shareable and unforgettable experience' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-028.jpg', th: 'ฝึกปั้นด้วยพิมพ์โบราณ',  en: 'Practice with Antique Molds',      sub_th: 'ชุดผ้าถุงและเครื่องทองแบบดั้งเดิม',              sub_en: 'Traditional Thai dress & gold jewelry' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-040.jpg', th: 'ปั้นด้วยมือตัวเอง',       en: 'Shape it Yourself',                sub_th: 'สัมผัสแป้งอ่อนนุ่ม ค่อย ๆ กดลงพิมพ์',           sub_en: 'Feel the soft dough, gently press into the mold' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-039.jpg', th: 'ภูมิใจในสิ่งที่ทำเอง',   en: 'Proud of What You Made',           sub_th: 'จากมือสองข้าง กลายเป็นของขวัญที่มีความหมาย',    sub_en: 'From two hands, into a meaningful gift' },
+      { src: 'raw%20media%20files/lor-xan-house-gallery/lor-xan-house-gallery-031.jpg', th: 'จากมือคุณสู่จาน',         en: 'From Your Hands to the Plate',     sub_th: 'ผลลัพธ์ที่คุณภาคภูมิใจได้ทุกครั้งที่มอง',       sub_en: 'A result you can be proud of every time you see it' },
+    ];
+
+    let currentIndex = 0;
+
+    function openLightbox(idx) {
+      currentIndex = idx;
+      const d = images[idx];
+      document.getElementById('lbImg').src = d.src;
+      document.getElementById('lbImg').alt = currentLang === 'th' ? d.th : d.en;
+      document.getElementById('lbTitle').textContent = currentLang === 'th' ? d.th : d.en;
+      document.getElementById('lbSub').textContent   = currentLang === 'th' ? d.sub_th : d.sub_en;
+      document.getElementById('lbCounter').textContent = `${idx + 1} / ${images.length}`;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function closeLightboxOnBg(e) {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    }
+
+    function shiftLightbox(dir) {
+      openLightbox((currentIndex + dir + images.length) % images.length);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowLeft')  shiftLightbox(-1);
+      if (e.key === 'ArrowRight') shiftLightbox(1);
+      if (e.key === 'Escape')     closeLightbox();
+    });
+  </script>
+</body>
+</html>
