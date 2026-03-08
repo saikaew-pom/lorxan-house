@@ -1090,6 +1090,64 @@
 
     document.addEventListener('DOMContentLoaded', buildSlider);
   </script>
+  <a href="https://maps.app.goo.gl/zz78p44QUWnm82mn7" target="_blank" rel="noopener" class="map-float" aria-label="Find us on map">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/>
+    </svg>
+    <span class="map-label" data-th="ดูแผนที่" data-en="Get directions">ดูแผนที่</span>
+  </a>
+  <style>
+    .map-float {
+      position: fixed; bottom: 148px; right: 28px; z-index: 9999;
+      background: linear-gradient(135deg, #F4511E, #C0392B);
+      color: #fff; border-radius: 50px;
+      padding: 13px 20px 13px 15px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 6px 24px rgba(244,81,30,.38);
+      text-decoration: none; font-family: 'Sarabun', sans-serif;
+      font-size: .88rem; font-weight: 700; letter-spacing: .02em;
+      transition: transform .22s, box-shadow .22s;
+    }
+    .map-float:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(244,81,30,.50);
+    }
+    .map-float svg { flex-shrink: 0; }
+    @media (max-width: 480px) {
+      .map-float { padding: 13px; border-radius: 50%; bottom: 148px; }
+      .map-label { display: none; }
+    }
+  </style>
+
+  <a href="tel:+660982969989" class="ph-float" aria-label="Call us">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C9.61 21 3 14.39 3 6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/>
+    </svg>
+    <span class="ph-label" data-th="โทรหาเรา" data-en="Call us">โทรหาเรา</span>
+  </a>
+  <style>
+    .ph-float {
+      position: fixed; bottom: 88px; right: 28px; z-index: 9999;
+      background: linear-gradient(135deg, #2ECC71, #1A9E52);
+      color: #fff; border-radius: 50px;
+      padding: 13px 20px 13px 15px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 6px 24px rgba(46,204,113,.38);
+      text-decoration: none; font-family: 'Sarabun', sans-serif;
+      font-size: .88rem; font-weight: 700; letter-spacing: .02em;
+      transition: transform .22s, box-shadow .22s;
+    }
+    .ph-float:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(46,204,113,.50);
+    }
+    .ph-float svg { flex-shrink: 0; }
+    @media (max-width: 480px) {
+      .ph-float { padding: 13px; border-radius: 50%; bottom: 88px; }
+      .ph-label { display: none; }
+    }
+  </style>
+
   <!-- ══ MESSENGER FLOAT ══ -->
   <a href="https://m.me/wirintra.aoom" target="_blank" rel="noopener" class="ms-float" aria-label="Chat on Messenger">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
