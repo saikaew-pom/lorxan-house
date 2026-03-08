@@ -1090,93 +1090,120 @@
 
     document.addEventListener('DOMContentLoaded', buildSlider);
   </script>
-  <a href="https://maps.app.goo.gl/zz78p44QUWnm82mn7" target="_blank" rel="noopener" class="map-float" aria-label="Find us on map">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/>
-    </svg>
-    <span class="map-label" data-th="ดูแผนที่" data-en="Get directions">ดูแผนที่</span>
-  </a>
-  <style>
-    .map-float {
-      position: fixed; bottom: 148px; right: 28px; z-index: 9999;
-      background: linear-gradient(135deg, #F4511E, #C0392B);
-      color: #fff; border-radius: 50px;
-      padding: 13px 20px 13px 15px;
-      display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 6px 24px rgba(244,81,30,.38);
-      text-decoration: none; font-family: 'Sarabun', sans-serif;
-      font-size: .88rem; font-weight: 700; letter-spacing: .02em;
-      transition: transform .22s, box-shadow .22s;
-    }
-    .map-float:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 36px rgba(244,81,30,.50);
-    }
-    .map-float svg { flex-shrink: 0; }
-    @media (max-width: 480px) {
-      .map-float { padding: 13px; border-radius: 50%; bottom: 148px; }
-      .map-label { display: none; }
-    }
-  </style>
+  <!-- ══ FLOATING ACTION BUTTON ══ -->
+  <div class="fab-wrap" id="fabWrap">
+    <div class="fab-options" id="fabOptions">
 
-  <a href="tel:+660982969989" class="ph-float" aria-label="Call us">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C9.61 21 3 14.39 3 6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/>
-    </svg>
-    <span class="ph-label" data-th="โทรหาเรา" data-en="Call us">โทรหาเรา</span>
-  </a>
-  <style>
-    .ph-float {
-      position: fixed; bottom: 88px; right: 28px; z-index: 9999;
-      background: linear-gradient(135deg, #2ECC71, #1A9E52);
-      color: #fff; border-radius: 50px;
-      padding: 13px 20px 13px 15px;
-      display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 6px 24px rgba(46,204,113,.38);
-      text-decoration: none; font-family: 'Sarabun', sans-serif;
-      font-size: .88rem; font-weight: 700; letter-spacing: .02em;
-      transition: transform .22s, box-shadow .22s;
-    }
-    .ph-float:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 36px rgba(46,204,113,.50);
-    }
-    .ph-float svg { flex-shrink: 0; }
-    @media (max-width: 480px) {
-      .ph-float { padding: 13px; border-radius: 50%; bottom: 88px; }
-      .ph-label { display: none; }
-    }
-  </style>
+      <div class="fab-row">
+        <span class="fab-opt-label" data-th="ดูแผนที่" data-en="Get directions">ดูแผนที่</span>
+        <a href="https://maps.app.goo.gl/zz78p44QUWnm82mn7" target="_blank" rel="noopener" class="fab-opt fab-map" aria-label="Map">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>
+        </a>
+      </div>
 
-  <!-- ══ MESSENGER FLOAT ══ -->
-  <a href="https://m.me/wirintra.aoom" target="_blank" rel="noopener" class="ms-float" aria-label="Chat on Messenger">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.928 1.463 5.542 3.755 7.255V21l2.388-1.312A10.6 10.6 0 0 0 12 20.518c5.523 0 10-4.145 10-9.259S17.523 2 12 2Zm1.005 12.466-2.548-2.718-4.976 2.718 5.476-5.812 2.61 2.718 4.913-2.718-5.475 5.812Z"/>
-    </svg>
-    <span class="ms-label" data-th="คุยกับเรา" data-en="Chat with us">คุยกับเรา</span>
-  </a>
+      <div class="fab-row">
+        <span class="fab-opt-label" data-th="โทรหาเรา" data-en="Call us">โทรหาเรา</span>
+        <a href="tel:+660982969989" class="fab-opt fab-phone" aria-label="Phone">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C9.61 21 3 14.39 3 6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
+        </a>
+      </div>
+
+      <div class="fab-row">
+        <span class="fab-opt-label" data-th="Messenger" data-en="Messenger">Messenger</span>
+        <a href="https://m.me/wirintra.aoom" target="_blank" rel="noopener" class="fab-opt fab-msg" aria-label="Messenger">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.928 1.463 5.542 3.755 7.255V21l2.388-1.312A10.6 10.6 0 0 0 12 20.518c5.523 0 10-4.145 10-9.259S17.523 2 12 2Zm1.005 12.466-2.548-2.718-4.976 2.718 5.476-5.812 2.61 2.718 4.913-2.718-5.475 5.812Z"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <button class="fab-main" id="fabMain" onclick="toggleFab()" aria-label="Contact us">
+      <svg class="fab-icon-chat" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>
+      <svg class="fab-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      <span class="fab-main-label" data-th="คุยกับเรา" data-en="Chat with us">คุยกับเรา</span>
+    </button>
+  </div>
+
   <style>
-    .ms-float {
+    .fab-wrap {
       position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-      background: linear-gradient(135deg, #0084FF, #0050D0);
-      color: #fff; border-radius: 50px;
-      padding: 13px 20px 13px 15px;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    /* Options container */
+    .fab-options {
+      display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
+      opacity: 0; pointer-events: none;
+      transform: translateY(10px) scale(.97);
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .fab-options.open {
+      opacity: 1; pointer-events: all;
+      transform: translateY(0) scale(1);
+    }
+    /* Each option row: label + button */
+    .fab-row { display: flex; align-items: center; gap: 10px; }
+    .fab-opt-label {
+      background: rgba(15,45,78,.82); backdrop-filter: blur(8px);
+      color: #fff; font-family: 'Sarabun', sans-serif;
+      font-size: .82rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 50px;
+      white-space: nowrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+    }
+    /* Icon buttons */
+    .fab-opt {
+      width: 50px; height: 50px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .fab-opt:hover { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,0,0,.28); }
+    .fab-map   { background: linear-gradient(135deg,#F4511E,#C0392B); }
+    .fab-phone { background: linear-gradient(135deg,#2ECC71,#1A9E52); }
+    .fab-msg   { background: linear-gradient(135deg,#0084FF,#0050D0); }
+    /* Main button */
+    .fab-main {
       display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 6px 24px rgba(0,132,255,.38);
-      text-decoration: none; font-family: 'Sarabun', sans-serif;
-      font-size: .88rem; font-weight: 700; letter-spacing: .02em;
+      padding: 14px 22px 14px 16px; border-radius: 50px; border: none; cursor: pointer;
+      background: linear-gradient(135deg,#1E4D82,#0F2D4E);
+      color: #fff; font-family: 'Sarabun', sans-serif;
+      font-size: .92rem; font-weight: 700;
+      box-shadow: 0 6px 24px rgba(15,45,78,.45);
       transition: transform .22s, box-shadow .22s;
     }
-    .ms-float:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 36px rgba(0,132,255,.50);
+    .fab-main:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(15,45,78,.55); }
+    .fab-icon-close { display: none; }
+    .fab-main.active .fab-icon-chat  { display: none; }
+    .fab-main.active .fab-icon-close { display: block; }
+    /* Backdrop */
+    .fab-backdrop {
+      position: fixed; inset: 0; z-index: 9998;
+      display: none;
     }
-    .ms-float svg { flex-shrink: 0; }
-    @media (max-width: 480px) {
-      .ms-float { padding: 13px; border-radius: 50%; }
-      .ms-label { display: none; }
-    }
+    .fab-backdrop.open { display: block; }
   </style>
+
+  <div class="fab-backdrop" id="fabBackdrop" onclick="closeFab()"></div>
+
+  <script>
+    function toggleFab() {
+      const opts = document.getElementById('fabOptions');
+      const btn  = document.getElementById('fabMain');
+      const bd   = document.getElementById('fabBackdrop');
+      const isOpen = opts.classList.contains('open');
+      if (isOpen) { closeFab(); } else {
+        opts.classList.add('open');
+        btn.classList.add('active');
+        bd.classList.add('open');
+      }
+    }
+    function closeFab() {
+      document.getElementById('fabOptions').classList.remove('open');
+      document.getElementById('fabMain').classList.remove('active');
+      document.getElementById('fabBackdrop').classList.remove('open');
+    }
+  </script>
 
 </body>
 </html>
