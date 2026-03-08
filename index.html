@@ -194,36 +194,68 @@
     .stat-label { font-size: .78rem; color: var(--text-muted); margin-top: 2px; }
 
     /* ══════════════════════════════════════
-       GALLERY STRIP
+       GALLERY SLIDER
     ══════════════════════════════════════ */
-    #gallery { padding: 72px 24px 0; max-width: 1200px; margin: 0 auto; }
-    .gallery-label { text-align: center; margin-bottom: 28px; }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      grid-template-rows: 280px;
-      gap: 12px; border-radius: 20px; overflow: hidden;
+    #gallery { padding: 72px 0 0; }
+    .slider-header { text-align: center; margin-bottom: 32px; }
+    .slider-wrap {
+      position: relative; overflow: hidden; width: 100%; line-height: 0;
     }
-    .gallery-item {
-      position: relative; overflow: hidden;
-      background: var(--sky-mid);
+    .slider-track {
+      display: flex;
+      transition: transform 0.65s cubic-bezier(.4,0,.2,1);
+      will-change: transform;
     }
-    .gallery-item:first-child { border-radius: 20px 0 0 20px; }
-    .gallery-item:last-child { border-radius: 0 20px 20px 0; }
-    .gallery-item img {
+    .sl-slide {
+      min-width: 25%; position: relative; overflow: hidden;
+      height: 320px;
+    }
+    .sl-slide img {
       width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform .5s ease;
+      object-fit: cover; display: block;
     }
-    .gallery-item:hover img { transform: scale(1.06); }
-    .gallery-caption {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(to top, rgba(15,45,78,.7), transparent);
-      padding: 14px 14px 10px;
-      color: #fff; font-size: .72rem; font-weight: 600;
-      letter-spacing: .06em; opacity: 0; transition: opacity .3s;
+    .sl-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,30,55,.6) 0%, rgba(10,30,55,.05) 55%, transparent 100%);
+      pointer-events: none;
     }
-    .gallery-item:hover .gallery-caption { opacity: 1; }
+    .sl-caption-inner {
+      position: absolute; bottom: 44px; left: 8px; right: 8px;
+      text-align: center; color: #fff; white-space: normal;
+      text-shadow: 0 1px 6px rgba(0,0,0,.6); pointer-events: none;
+    }
+    .sl-caption-inner .sl-title {
+      font-family: 'Noto Serif Thai', Georgia, serif;
+      font-size: 1rem; font-weight: 700; margin-bottom: 3px; display: block;
+      line-height: 1.4;
+    }
+    .sl-caption-inner .sl-sub {
+      font-size: .75rem; opacity: .85; display: block; letter-spacing: .01em;
+      line-height: 1.4;
+    }
+    .sl-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.18); backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,.4);
+      color: #fff; font-size: 2rem; line-height: 1;
+      width: 52px; height: 52px; border-radius: 50%;
+      cursor: pointer; transition: background .2s, transform .2s;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+    }
+    .sl-btn:hover { background: rgba(255,255,255,.32); transform: translateY(-50%) scale(1.05); }
+    .sl-prev { left: 24px; }
+    .sl-next { right: 24px; }
+    .sl-dots {
+      position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 10;
+    }
+    .sl-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.4); border: none; cursor: pointer;
+      transition: background .3s, transform .3s; padding: 0;
+    }
+    .sl-dot.active { background: #fff; transform: scale(1.35); }
 
     /* ══════════════════════════════════════
        SECTION COMMONS
@@ -453,9 +485,9 @@
     ══════════════════════════════════════ */
     @media (max-width: 768px) {
       nav { padding: 12px 20px; }
-      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 180px; }
-      .gallery-item:first-child { border-radius: 20px 0 0 0; }
-      .gallery-item:last-child { border-radius: 0 0 20px 0; }
+      .sl-slide { min-width: 50%; height: 280px; }
+      .sl-caption-inner .sl-title { font-size: .95rem; }
+      .sl-caption-inner .sl-sub { font-size: .72rem; }
       #about { grid-template-columns: 1fr; gap: 32px; }
       .about-img { height: 300px; }
       .highlight-grid { grid-template-columns: 1fr; }
@@ -465,10 +497,9 @@
       .stat-item + .stat-item { border-left: none; border-top: 1px solid var(--border); }
     }
     @media (max-width: 480px) {
-      .gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(4, 200px); border-radius: 20px; }
-      .gallery-item:first-child, .gallery-item:last-child { border-radius: 0; }
-      .gallery-item:first-child { border-radius: 20px 20px 0 0; }
-      .gallery-item:last-child { border-radius: 0 0 20px 20px; }
+      .sl-slide { min-width: 100%; height: 260px; }
+      .sl-btn { width: 40px; height: 40px; font-size: 1.5rem; }
+      .sl-prev { left: 10px; } .sl-next { right: 10px; }
     }
 
     /* ══════════════════════════════════════
@@ -636,36 +667,16 @@
     </div>
   </div>
 
-  <!-- ══ GALLERY ══ -->
+  <!-- ══ GALLERY SLIDER ══ -->
   <section id="gallery">
-    <div class="gallery-label">
+    <div class="slider-header">
       <p class="section-label" style="text-align:center;" data-th="ภาพบรรยากาศ" data-en="GALLERY">ภาพบรรยากาศ</p>
     </div>
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <img src="gallery-1.jpg"
-             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
-             alt="บ้านหล่อซาน" />
-        <div class="gallery-caption" data-th="บ้านร้อยปีของหล่อซาน" data-en="Lor Xan's Century-Old Home">บ้านร้อยปีของหล่อซาน</div>
-      </div>
-      <div class="gallery-item">
-        <img src="gallery-2.jpg"
-             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
-             alt="คลาสทำอาหาร" />
-        <div class="gallery-caption" data-th="คลาสลงมือทำจริง" data-en="Hands-On Class">คลาสลงมือทำจริง</div>
-      </div>
-      <div class="gallery-item">
-        <img src="gallery-3.jpg"
-             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
-             alt="ขนมไทย" />
-        <div class="gallery-caption" data-th="ขนมสืบทอดตำรับ" data-en="Heirloom Recipes">ขนมสืบทอดตำรับ</div>
-      </div>
-      <div class="gallery-item">
-        <img src="gallery-4.jpg"
-             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
-             alt="ของที่ระลึก" />
-        <div class="gallery-caption" data-th="ของที่ระลึกพิเศษ" data-en="Special Keepsakes">ของที่ระลึกพิเศษ</div>
-      </div>
+    <div class="slider-wrap" id="sliderWrap">
+      <div class="slider-track" id="sliderTrack"></div>
+      <button class="sl-btn sl-prev" onclick="sliderShift(-1)" aria-label="Previous">&#8249;</button>
+      <button class="sl-btn sl-next" onclick="sliderShift(1)" aria-label="Next">&#8250;</button>
+      <div class="sl-dots" id="slDots"></div>
     </div>
   </section>
 
@@ -977,6 +988,107 @@
 
       document.documentElement.lang = currentLang;
     }
+  </script>
+
+  <script>
+    // ── Gallery Slider ──
+    const sliderImages = [
+      { src: 'lor-xan-house-gallery-017.jpg', th: 'โต๊ะอาหารร้อยปี',           en: 'A Century-Old Dining Table',      sub_th: 'บรรยากาศภายในบ้านโบราณที่ยังมีชีวิต',           sub_en: 'Atmosphere inside a living antique home' },
+      { src: 'lor-xan-house-gallery-022.jpg', th: 'เตาไฟและพิมพ์ไม้โบราณ',     en: 'Traditional Stove & Wooden Molds', sub_th: 'เครื่องมือทำขนมที่สืบทอดมากว่าร้อยปี',            sub_en: 'Confectionery tools passed down over a century' },
+      { src: 'lor-xan-house-gallery-035.jpg', th: 'พิมพ์ไม้หลายรุ่น',          en: 'Multi-Generation Wooden Molds',   sub_th: 'แต่ละบล็อกเล่าเรื่องราวของตัวเอง',                sub_en: 'Each block tells its own story' },
+      { src: 'lor-xan-house-gallery-014.jpg', th: 'แป้ง 4 สีธรรมชาติ',         en: '4 Natural Color Doughs',          sub_th: 'ใบเตย · บีทรูท · ฟักทอง · แป้งขาว',              sub_en: 'Pandan · Beetroot · Pumpkin · Plain' },
+      { src: 'lor-xan-house-gallery-021.jpg', th: 'จากมือสู่พิมพ์',            en: 'From Hands to Mold',              sub_th: 'ทักษะที่ฝึกได้เฉพาะในบ้านหล่อซาน',                sub_en: 'A skill you can only learn at Lor Xan House' },
+      { src: 'lor-xan-house-gallery-020.jpg', th: 'รอเข้าซึ้ง',                en: 'Ready for the Steamer',           sub_th: 'ขั้นตอนสำคัญที่ต้องอาศัยเวลาและความชำนาญ',        sub_en: 'A critical step requiring time and skill' },
+      { src: 'lor-xan-house-gallery-029.jpg', th: 'สีม่วง + สีทอง',            en: 'Purple & Golden Ang Ku',          sub_th: 'ความสวยงามของสีสันที่ผสมผสานอย่างลงตัว',           sub_en: 'The beauty of perfectly blended colors' },
+      { src: 'lor-xan-house-gallery-034.jpg', th: 'อังกู๊หลากตำรับ',          en: 'Multi-Recipe Ang Ku Kueh',        sub_th: 'หลากหลายสีสัน บนใบตองสด',                          sub_en: 'A variety of colors on fresh banana leaves' },
+      { src: 'lor-xan-house-gallery-001.jpg', th: 'อังกู๊ทอง — จัดจานพิเศษ',  en: 'Golden Ang Ku — Special Plating', sub_th: 'ขนมมงคลในรูปลักษณ์ดั้งเดิม',                      sub_en: 'The auspicious dessert in its original form' },
+      { src: 'lor-xan-house-gallery-005.jpg', th: 'หมูฮ้อง สูตรบ้านหล่อซาน',  en: 'Lor Xan House Braised Pork',      sub_th: 'สูตรลับที่สืบทอดมากว่า 3 รุ่น',                    sub_en: 'A secret recipe passed down over 3 generations' },
+      { src: 'lor-xan-house-gallery-009.jpg', th: 'บรรจุพร้อมฝาก',            en: 'Packaged to Take Home',           sub_th: 'ของขวัญจากใจ ส่งตรงถึงคนที่คุณรัก',                sub_en: 'A heartfelt gift for your loved ones' },
+      { src: 'lor-xan-house-gallery-011.jpg', th: 'อังกู๊แดง — สีมงคล',       en: 'Red Ang Ku — Auspicious Color',   sub_th: 'สีแดงแห่งความโชคดีในงานมงคล',                     sub_en: 'The red of good fortune for auspicious occasions' },
+      { src: 'lor-xan-house-gallery-016.jpg', th: 'อังกู๊บนถาดแดงโบราณ',     en: 'Ang Ku on Antique Red Tray',      sub_th: 'ขนมบนภาชนะโบราณ — สวยงามทุกมุมมอง',              sub_en: 'Dessert on antique ware — beautiful from every angle' },
+      { src: 'lor-xan-house-gallery-042.jpg', th: 'ทำด้วยกัน เรียนรู้ด้วยกัน',en: 'Make Together, Learn Together',   sub_th: 'ประสบการณ์ที่แบ่งปันและจำไม่รู้ลืม',              sub_en: 'A shareable and unforgettable experience' },
+      { src: 'lor-xan-house-gallery-028.jpg', th: 'ฝึกปั้นด้วยพิมพ์โบราณ',   en: 'Practice with Antique Molds',     sub_th: 'ชุดผ้าถุงและเครื่องทองแบบดั้งเดิม',                sub_en: 'Traditional Thai dress & gold jewelry' },
+      { src: 'lor-xan-house-gallery-040.jpg', th: 'ปั้นด้วยมือตัวเอง',        en: 'Shape it Yourself',               sub_th: 'สัมผัสแป้งอ่อนนุ่ม ค่อย ๆ กดลงพิมพ์',             sub_en: 'Feel the soft dough, gently press into the mold' },
+      { src: 'lor-xan-house-gallery-039.jpg', th: 'ภูมิใจในสิ่งที่ทำเอง',    en: 'Proud of What You Made',          sub_th: 'จากมือสองข้าง กลายเป็นของขวัญที่มีความหมาย',      sub_en: 'From two hands, into a meaningful gift' },
+      { src: 'lor-xan-house-gallery-031.jpg', th: 'จากมือคุณสู่จาน',          en: 'From Your Hands to the Plate',    sub_th: 'ผลลัพธ์ที่คุณภาคภูมิใจได้ทุกครั้งที่มอง',         sub_en: 'A result you can be proud of every time you see it' },
+    ];
+
+    let slCurrent = 0, slTimer;
+
+    function getColCount() {
+      if (window.innerWidth <= 480) return 1;
+      if (window.innerWidth <= 768) return 2;
+      return 4;
+    }
+
+    function buildDots() {
+      const dots = document.getElementById('slDots');
+      if (!dots) return;
+      const cols  = getColCount();
+      const count = sliderImages.length - cols + 1;
+      dots.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'sl-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+        dot.onclick = () => { sliderGo(i); slResetAuto(); };
+        dots.appendChild(dot);
+      }
+    }
+
+    function buildSlider() {
+      const track = document.getElementById('sliderTrack');
+      if (!track) return;
+      sliderImages.forEach((img, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'sl-slide';
+        slide.innerHTML =
+          `<img src="${img.src}" alt="${img.th}" loading="${i === 0 ? 'eager' : 'lazy'}" />` +
+          `<div class="sl-overlay"></div>` +
+          `<div class="sl-caption-inner">` +
+            `<span class="sl-title" data-th="${img.th}" data-en="${img.en}">${img.th}</span>` +
+            `<span class="sl-sub"   data-th="${img.sub_th}" data-en="${img.sub_en}">${img.sub_th}</span>` +
+          `</div>`;
+        track.appendChild(slide);
+      });
+      buildDots();
+      sliderGo(0);
+      slStartAuto();
+
+      // Touch/swipe support
+      let touchX = 0;
+      const wrap = document.getElementById('sliderWrap');
+      wrap.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+      wrap.addEventListener('touchend',   e => {
+        const diff = touchX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 48) sliderShift(diff > 0 ? 1 : -1);
+      });
+      wrap.addEventListener('mouseenter', () => clearInterval(slTimer));
+      wrap.addEventListener('mouseleave', slStartAuto);
+
+      // Rebuild dots on resize
+      window.addEventListener('resize', () => { buildDots(); sliderGo(slCurrent); });
+    }
+
+    function sliderGo(idx) {
+      const cols   = getColCount();
+      const maxIdx = sliderImages.length - cols;
+      slCurrent = Math.max(0, Math.min(idx, maxIdx));
+      const pct = 100 / cols;
+      document.getElementById('sliderTrack').style.transform = `translateX(-${slCurrent * pct}%)`;
+      document.querySelectorAll('.sl-dot').forEach((d, i) => d.classList.toggle('active', i === slCurrent));
+    }
+    function sliderShift(dir) { sliderGo(slCurrent + dir); slResetAuto(); }
+    function slStartAuto()    { slTimer = setInterval(() => sliderGo(slCurrent + 1), 4500); }
+    function slResetAuto()    { clearInterval(slTimer); slStartAuto(); }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  sliderShift(-1);
+      if (e.key === 'ArrowRight') sliderShift(1);
+    });
+
+    document.addEventListener('DOMContentLoaded', buildSlider);
   </script>
 </body>
 </html>
