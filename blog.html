@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>บทความ — หล่อซานเฮ้าส์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #3B7EC8;
+      --blue-mid:    #2D6AAD;
+      --blue-dark:   #1E4D82;
+      --blue-deep:   #0F2D4E;
+      --sky:         #EBF4FD;
+      --sky-light:   #F5FAFF;
+      --sky-mid:     #D6EAFA;
+      --silver:      #F1F5F9;
+      --silver-mid:  #E2EAF2;
+      --border:      #C5D8EC;
+      --accent:      #56A3D9;
+      --accent-soft: #A8D4EF;
+      --text-muted:  #7A92A8;
+      --text-body:   #3D5A72;
+      --text-dark:   #0F2D4E;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Sarabun','Noto Sans Thai',sans-serif; background: var(--sky-light); color: var(--text-dark); line-height: 1.6; }
+    a { text-decoration: none; }
+    img { display: block; }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,250,255,.93); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 36px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: .08em; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { color: var(--text-body); font-size: .83rem; font-weight: 600; padding: 7px 13px; border-radius: 50px; transition: color .2s, background .2s; }
+    .nav-link:hover { color: var(--blue); background: var(--sky-mid); }
+    .nav-link.active { color: var(--blue); font-weight: 700; background: var(--sky-mid); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .btn-lang { background: transparent; color: var(--blue-dark); padding: 7px 16px; border-radius: 50px; font-size: .82rem; font-weight: 700; border: 1.5px solid var(--border); cursor: pointer; transition: all .2s; white-space: nowrap; display: flex; align-items: center; gap: 5px; font-family: 'Sarabun',sans-serif; }
+    .btn-lang:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
+    .btn-nav { background: var(--blue); color: #fff; padding: 9px 22px; border-radius: 50px; font-size: .85rem; font-weight: 700; white-space: nowrap; transition: background .2s, transform .2s; }
+    .btn-nav:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+    @media (max-width: 400px) { nav { padding: 10px 16px; } .btn-nav { font-size: .75rem; padding: 8px 14px; } .btn-lang { font-size: .75rem; padding: 7px 11px; } }
+
+    /* ══ PAGE HEADER ══ */
+    .page-header {
+      background: var(--blue-deep);
+      padding: 110px 24px 64px;
+      position: relative; overflow: hidden;
+      text-align: center;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('hero-bg.jpg');
+      background-size: cover; background-position: center 30%;
+      opacity: .12;
+    }
+    .page-header::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(86,163,217,.4), transparent);
+    }
+    .page-header-inner { position: relative; z-index: 1; }
+    .page-header-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.08); color: rgba(255,255,255,.75);
+      font-size: .72rem; font-weight: 800; letter-spacing: .14em;
+      padding: 6px 18px; border-radius: 50px; margin-bottom: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display','Sarabun',serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.25;
+    }
+    .page-header h1 em { font-style: italic; color: var(--accent-soft); }
+    .page-header p { color: rgba(255,255,255,.55); font-size: .95rem; max-width: 440px; margin: 0 auto; line-height: 1.75; }
+
+    /* ══ FEATURED POST ══ */
+    .featured-wrap { max-width: 1100px; margin: 0 auto; padding: 56px 24px 0; }
+    .featured-label { font-size: .72rem; font-weight: 800; color: var(--blue); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .featured-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .featured-card {
+      display: grid; grid-template-columns: 1.1fr 1fr; border-radius: 24px; overflow: hidden;
+      background: #fff; border: 1.5px solid var(--silver-mid);
+      box-shadow: 0 12px 56px rgba(59,126,200,.1);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .featured-card:hover { transform: translateY(-4px); box-shadow: 0 20px 72px rgba(59,126,200,.15); }
+    .featured-img-wrap { position: relative; overflow: hidden; }
+    .featured-img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; transition: transform .6s ease; }
+    .featured-card:hover .featured-img { transform: scale(1.04); }
+    .featured-badge {
+      position: absolute; top: 18px; left: 18px;
+      background: var(--blue-deep); color: #fff;
+      font-size: .68rem; font-weight: 800; letter-spacing: .1em;
+      padding: 5px 14px; border-radius: 50px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .featured-body { padding: 44px 40px; display: flex; flex-direction: column; justify-content: center; }
+    .featured-cat { font-size: .7rem; font-weight: 800; color: var(--blue); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .featured-title {
+      font-family: 'Playfair Display','Sarabun',serif;
+      font-size: clamp(1.4rem, 2.8vw, 2rem); font-weight: 700;
+      color: var(--text-dark); line-height: 1.3; margin-bottom: 16px;
+    }
+    .featured-title em { font-style: italic; color: var(--blue); }
+    .featured-excerpt { font-size: .92rem; color: var(--text-body); line-height: 1.8; margin-bottom: 28px; }
+    .featured-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .meta-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,var(--blue-dark),var(--accent)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 800; flex-shrink: 0; }
+    .meta-info { font-size: .8rem; color: var(--text-muted); }
+    .meta-info strong { color: var(--text-body); display: block; }
+    .meta-sep { width: 1px; height: 22px; background: var(--border); }
+    .meta-read { font-size: .78rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+    .read-more-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: #fff;
+      padding: 13px 28px; border-radius: 50px;
+      font-size: .88rem; font-weight: 700;
+      box-shadow: 0 4px 16px rgba(59,126,200,.3);
+      transition: all .2s; align-self: flex-start;
+    }
+    .read-more-btn:hover { background: var(--blue-dark); transform: translateX(3px); }
+    @media (max-width: 820px) {
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-img { min-height: 260px; }
+      .featured-body { padding: 28px 24px 32px; }
+    }
+
+    /* ══ FILTER TABS ══ */
+    .filter-section { max-width: 1100px; margin: 0 auto; padding: 48px 24px 0; }
+    .filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .filter-btn {
+      background: #fff; border: 1.5px solid var(--border);
+      color: var(--text-body); padding: 8px 20px; border-radius: 50px;
+      font-family: 'Sarabun',sans-serif; font-size: .82rem; font-weight: 600;
+      cursor: pointer; transition: all .22s; white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--sky-mid); }
+    .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); box-shadow: 0 4px 14px rgba(59,126,200,.3); }
+    .post-count { margin-left: auto; font-size: .8rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+
+    /* ══ POSTS GRID ══ */
+    .posts-section { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* Main 3-col grid */
+    .posts-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    @media (max-width: 900px) { .posts-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px) { .posts-grid { grid-template-columns: 1fr; } }
+
+    /* Post card */
+    .post-card {
+      background: #fff; border-radius: 20px; overflow: hidden;
+      border: 1.5px solid var(--silver-mid);
+      box-shadow: 0 2px 16px rgba(59,126,200,.06);
+      transition: transform .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .post-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(59,126,200,.14); }
+    .post-card-img-wrap { position: relative; overflow: hidden; }
+    .post-card-img { width: 100%; height: 220px; object-fit: cover; transition: transform .5s ease; background: var(--sky-mid); }
+    .post-card:hover .post-card-img { transform: scale(1.05); }
+    .post-card-cat {
+      position: absolute; top: 14px; left: 14px;
+      font-size: .65rem; font-weight: 800; letter-spacing: .1em;
+      padding: 5px 12px; border-radius: 50px; color: #fff;
+      backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.2);
+    }
+    .cat-heritage { background: rgba(30,77,130,.75); }
+    .cat-recipe   { background: rgba(194,113,58,.85); }
+    .cat-arch     { background: rgba(42,122,110,.85); }
+    .cat-exp      { background: rgba(59,126,200,.8); }
+    .post-card-body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+    .post-card-cat-text { font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+    .post-card-cat-text.heritage { color: var(--blue-dark); }
+    .post-card-cat-text.recipe   { color: #C2713A; }
+    .post-card-cat-text.arch     { color: #2A7A6E; }
+    .post-card-cat-text.exp      { color: var(--blue); }
+    .post-card-title { font-size: 1rem; font-weight: 700; color: var(--text-dark); line-height: 1.45; margin-bottom: 10px; }
+    .post-card-excerpt { font-size: .84rem; color: var(--text-body); line-height: 1.7; flex: 1; }
+    .post-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--silver-mid); }
+    .post-card-date { font-size: .75rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+    .post-card-read { font-size: .75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+    .post-card-arrow {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--sky-mid); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; transition: all .2s; flex-shrink: 0;
+      border: 1.5px solid var(--border);
+    }
+    .post-card:hover .post-card-arrow { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    /* ── Wide card (spans 2 cols) ── */
+    .post-card.wide { grid-column: span 2; flex-direction: row; }
+    .post-card.wide .post-card-img-wrap { width: 45%; flex-shrink: 0; }
+    .post-card.wide .post-card-img { height: 100%; min-height: 240px; }
+    .post-card.wide .post-card-body { padding: 28px 28px 28px; justify-content: center; }
+    .post-card.wide .post-card-title { font-size: 1.1rem; }
+    @media (max-width: 900px) { .post-card.wide { grid-column: span 2; } }
+    @media (max-width: 560px) { .post-card.wide { grid-column: span 1; flex-direction: column; } .post-card.wide .post-card-img-wrap { width: 100%; } .post-card.wide .post-card-img { min-height: 200px; } }
+
+    /* ══ NEWSLETTER STRIP ══ */
+    .newsletter {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-deep));
+      margin: 0 24px 60px; border-radius: 24px; padding: 44px 48px;
+      display: flex; align-items: center; justify-content: space-between; gap: 32px;
+      box-shadow: 0 12px 48px rgba(30,77,130,.25);
+      max-width: 1052px; margin-left: auto; margin-right: auto;
+      position: relative; overflow: hidden;
+    }
+    .newsletter::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 240px; height: 240px; border-radius: 50%;
+      background: rgba(86,163,217,.08); pointer-events: none;
+    }
+    .newsletter-text { position: relative; z-index: 1; }
+    .newsletter-text h3 { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .newsletter-text p { font-size: .88rem; color: rgba(255,255,255,.6); line-height: 1.6; }
+    .newsletter-form { display: flex; gap: 10px; flex-shrink: 0; position: relative; z-index: 1; }
+    .newsletter-input {
+      padding: 11px 18px; border-radius: 50px; border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.08); color: #fff; font-size: .88rem;
+      font-family: 'Sarabun',sans-serif; outline: none; transition: border-color .2s;
+      min-width: 220px;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,.4); }
+    .newsletter-input:focus { border-color: rgba(255,255,255,.5); }
+    .newsletter-btn {
+      background: #fff; color: var(--blue-dark); padding: 11px 24px; border-radius: 50px;
+      font-size: .88rem; font-weight: 700; border: none; cursor: pointer;
+      font-family: 'Sarabun',sans-serif; transition: all .2s; white-space: nowrap;
+    }
+    .newsletter-btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
+    @media (max-width: 720px) {
+      .newsletter { flex-direction: column; padding: 32px 28px; text-align: center; }
+      .newsletter-form { flex-direction: column; width: 100%; }
+      .newsletter-input { width: 100%; }
+      .newsletter-btn { width: 100%; }
+    }
+
+    /* ══ TOPIC TAGS ══ */
+    .topics-section { max-width: 1100px; margin: 0 auto 64px; padding: 0 24px; }
+    .topics-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+    .topics-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+    .topic-tag { background: #fff; border: 1.5px solid var(--border); color: var(--text-body); padding: 7px 16px; border-radius: 50px; font-size: .8rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .topic-tag:hover { background: var(--blue); color: #fff; border-color: var(--blue); transform: translateY(-2px); }
+    .topic-tag .tag-count { font-size: .7rem; color: var(--text-muted); margin-left: 4px; }
+    .topic-tag:hover .tag-count { color: rgba(255,255,255,.7); }
+
+    /* ══ CTA ══ */
+    .cta-strip { background: var(--blue-deep); padding: 64px 24px; text-align: center; }
+    .cta-strip h2 { font-size: clamp(1.4rem,3.5vw,2rem); font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .cta-strip p { color: rgba(255,255,255,.55); font-size: .9rem; margin-bottom: 28px; }
+    .btn-cta { display: inline-block; background: var(--blue); color: #fff; padding: 16px 40px; border-radius: 50px; font-size: 1rem; font-weight: 700; box-shadow: 0 6px 28px rgba(59,126,200,.4); transition: all .2s; }
+    .btn-cta:hover { background: var(--accent); transform: translateY(-2px); }
+
+    /* ══ FOOTER ══ */
+    footer { background: var(--blue-deep); color: #4a7aa8; text-align: center; padding: 28px 24px; font-size: .82rem; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-logo { color: var(--accent); font-weight: 800; font-size: .95rem; margin-bottom: 8px; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+    .footer-links a { color: #4a7aa8; transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* ── No-results state ── */
+    .no-results { grid-column: 1/-1; text-align: center; padding: 64px 24px; color: var(--text-muted); }
+    .no-results p { font-size: 1rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <a href="index.html" class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="gallery.html" class="nav-link" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="index.html#pricing" class="nav-link" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="blog.html" class="nav-link active" data-th="บทความ" data-en="Blog">บทความ</a>
+      <a href="booking.html" class="nav-link" style="color:var(--blue-dark);border:1.5px solid var(--border);border-radius:50px;padding:7px 14px;" data-th="📅 จองเลย" data-en="📅 Book Now">📅 จองเลย</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+      <a href="booking.html" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
+    </div>
+  </nav>
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="page-header-tag">✦ <span data-th="STORIES FROM LOR XAN HOUSE" data-en="STORIES FROM LOR XAN HOUSE">STORIES FROM LOR XAN HOUSE</span> ✦</div>
+      <h1>
+        <span data-th="เรื่องราวจาก" data-en="Stories from">เรื่องราวจาก</span><br>
+        <em data-th="หล่อซานเฮ้าส์" data-en="Lor Xan House">หล่อซานเฮ้าส์</em>
+      </h1>
+      <p data-th="มรดก ตำรับ สถาปัตยกรรม และความทรงจำที่รอให้คุณได้มาสัมผัส" data-en="Heritage, recipes, architecture, and memories waiting for you to discover.">มรดก ตำรับ สถาปัตยกรรม และความทรงจำที่รอให้คุณได้มาสัมผัส</p>
+    </div>
+  </div>
+
+  <!-- ══ FEATURED ══ -->
+  <div class="featured-wrap">
+    <div class="featured-label" data-th="บทความแนะนำ" data-en="FEATURED ARTICLE">บทความแนะนำ</div>
+    <a href="blog-phuket-architecture.html" style="display:block;">
+      <div class="featured-card">
+        <div class="featured-img-wrap">
+          <img class="featured-img" src="gallery-1.jpg" alt="สถาปัตยกรรมเมืองเก่าภูเก็ต" />
+          <div class="featured-badge">⭐ <span data-th="บทความแนะนำ" data-en="Featured">บทความแนะนำ</span></div>
+        </div>
+        <div class="featured-body">
+          <div class="featured-cat">🏛 <span data-th="สถาปัตยกรรม" data-en="Architecture">สถาปัตยกรรม</span></div>
+          <h2 class="featured-title">
+            <span data-th="สถาปัตยกรรมเมืองเก่าภูเก็ต" data-en="Old Town Phuket Architecture">สถาปัตยกรรมเมืองเก่าภูเก็ต</span><br>
+            <em data-th="เมื่อตะวันออกพบตะวันตก" data-en="When East Met West">เมื่อตะวันออกพบตะวันตก</em>
+          </h2>
+          <p class="featured-excerpt" data-th="เมืองเก่าภูเก็ตไม่ได้แค่เก่า มันคือบทกวีสามมิติที่เขียนด้วยปูนปั้น โค้งประตู และสีทาผนังร้อยกว่าปีก่อน ในทุกอาคารมีเรื่องราวของผู้คนสองโลกที่เลือกจะสร้างสิ่งใหม่ร่วมกัน" data-en="Old Town Phuket is not simply old — it is a three-dimensional poem written in plaster, archways, and paint applied over a century ago. In every building lives the story of people from two worlds who chose to build something new together.">เมืองเก่าภูเก็ตไม่ได้แค่เก่า มันคือบทกวีสามมิติที่เขียนด้วยปูนปั้น โค้งประตู และสีทาผนังร้อยกว่าปีก่อน ในทุกอาคารมีเรื่องราวของผู้คนสองโลกที่เลือกจะสร้างสิ่งใหม่ร่วมกัน</p>
+          <div class="featured-meta">
+            <div class="meta-avatar">LX</div>
+            <div class="meta-info"><strong data-th="ทีมงานหล่อซานเฮ้าส์" data-en="Lor Xan House Team">ทีมงานหล่อซานเฮ้าส์</strong><span data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</span></div>
+            <div class="meta-sep"></div>
+            <div class="meta-read">📖 <span data-th="อ่าน 7 นาที" data-en="7 min read">อ่าน 7 นาที</span></div>
+          </div>
+          <span class="read-more-btn">
+            <span data-th="อ่านบทความ" data-en="Read Article">อ่านบทความ</span> →
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ══ FILTER ══ -->
+  <div class="filter-section">
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all" onclick="filterPosts('all',this)" data-th="ทั้งหมด" data-en="All">ทั้งหมด</button>
+      <button class="filter-btn" data-filter="heritage" onclick="filterPosts('heritage',this)" data-th="🏮 มรดก" data-en="🏮 Heritage">🏮 มรดก</button>
+      <button class="filter-btn" data-filter="recipe" onclick="filterPosts('recipe',this)" data-th="🍵 ตำรับอาหาร" data-en="🍵 Recipes">🍵 ตำรับอาหาร</button>
+      <button class="filter-btn" data-filter="arch" onclick="filterPosts('arch',this)" data-th="🏛 สถาปัตยกรรม" data-en="🏛 Architecture">🏛 สถาปัตยกรรม</button>
+      <button class="filter-btn" data-filter="exp" onclick="filterPosts('exp',this)" data-th="✨ ประสบการณ์" data-en="✨ Experience">✨ ประสบการณ์</button>
+      <span class="post-count" id="postCount" data-th="4 บทความ" data-en="4 articles">4 บทความ</span>
+    </div>
+  </div>
+
+  <!-- ══ POSTS GRID ══ -->
+  <div class="posts-section">
+    <div class="posts-grid" id="postsGrid">
+
+      <!-- Post 1: บ้านร้อยปี — heritage, wide -->
+      <a href="blog-post.html" class="post-card wide" data-cat="heritage">
+        <div class="post-card-img-wrap">
+          <img class="post-card-img" src="about.jpg" alt="บ้านร้อยปี" />
+          <span class="post-card-cat cat-heritage" data-th="🏮 มรดกและวัฒนธรรม" data-en="🏮 Heritage & Culture">🏮 มรดกและวัฒนธรรม</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat-text heritage" data-th="มรดกและวัฒนธรรม" data-en="Heritage & Culture">มรดกและวัฒนธรรม</div>
+          <div class="post-card-title" data-th="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง" data-en="A Century-Old Home and Memories That Never Fade">บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง</div>
+          <div class="post-card-excerpt" data-th="เมื่อคุณก้าวเข้ามาในบ้านหล่อซาน คุณไม่ได้แค่เข้ามาในอาคารเก่า — คุณกำลังเดินเข้าไปในชีวิตที่ยังคงเต็มไปด้วยเรื่องราว รอยขีดบนเสาไม้ กลิ่นน้ำตาลโตนดจากครัว ล้วนเป็นส่วนหนึ่งของมรดกที่สืบทอดมาหลายรุ่น" data-en="When you step into Lor Xan House, you're not just entering an old building — you're walking into a life still full of stories. The marks on the wooden pillars, the scent of palm sugar from the kitchen — all are part of a heritage passed through generations.">เมื่อคุณก้าวเข้ามาในบ้านหล่อซาน คุณไม่ได้แค่เข้ามาในอาคารเก่า — คุณกำลังเดินเข้าไปในชีวิตที่ยังคงเต็มไปด้วยเรื่องราว รอยขีดบนเสาไม้ กลิ่นน้ำตาลโตนดจากครัว ล้วนเป็นส่วนหนึ่งของมรดกที่สืบทอดมาหลายรุ่น</div>
+          <div class="post-card-footer">
+            <div class="post-card-date">📅 <span data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</span></div>
+            <div class="post-card-read">📖 <span data-th="5 นาที" data-en="5 min">5 นาที</span></div>
+            <div class="post-card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Post 2: อังกู๊ — recipe -->
+      <a href="blog-angku.html" class="post-card" data-cat="recipe">
+        <div class="post-card-img-wrap">
+          <img class="post-card-img" src="feature-2.jpg" alt="อังกู๊" />
+          <span class="post-card-cat cat-recipe" data-th="🍵 ตำรับอาหาร" data-en="🍵 Recipes">🍵 ตำรับอาหาร</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat-text recipe" data-th="ตำรับอาหาร" data-en="Recipes">ตำรับอาหาร</div>
+          <div class="post-card-title" data-th="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" data-en="Ang Ku Kueh: A Small Dessert with a Big Story">อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+          <div class="post-card-excerpt" data-th="อังกู๊คือขนมที่เล็กพอจะวางบนฝ่ามือ แต่ความหมายในตัวมันใหญ่โตพอจะเชื่อมคนเป็นรุ่นๆ ทุกสีทุกรูปทรงของอังกู๊มีเรื่องจะเล่า" data-en="Ang Ku Kueh is small enough to hold in your palm — but the meaning within it is vast enough to connect generations. Every color and shape has a story to tell.">อังกู๊คือขนมที่เล็กพอจะวางบนฝ่ามือ แต่ความหมายในตัวมันใหญ่โตพอจะเชื่อมคนเป็นรุ่นๆ ทุกสีทุกรูปทรงของอังกู๊มีเรื่องจะเล่า</div>
+          <div class="post-card-footer">
+            <div class="post-card-date">📅 <span data-th="1 มีนาคม 2569" data-en="1 March 2026">1 มีนาคม 2569</span></div>
+            <div class="post-card-read">📖 <span data-th="6 นาที" data-en="6 min">6 นาที</span></div>
+            <div class="post-card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Post 3: สถาปัตยกรรม — arch -->
+      <a href="blog-phuket-architecture.html" class="post-card" data-cat="arch">
+        <div class="post-card-img-wrap">
+          <img class="post-card-img" src="gallery-1.jpg" alt="สถาปัตยกรรมเมืองเก่าภูเก็ต" />
+          <span class="post-card-cat cat-arch" data-th="🏛 สถาปัตยกรรม" data-en="🏛 Architecture">🏛 สถาปัตยกรรม</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat-text arch" data-th="สถาปัตยกรรม" data-en="Architecture">สถาปัตยกรรม</div>
+          <div class="post-card-title" data-th="สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก" data-en="Old Town Phuket Architecture: When East Met West">สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก</div>
+          <div class="post-card-excerpt" data-th="บทกวีสามมิติที่เขียนด้วยปูนปั้น โค้งประตู และสีสัน Peranakan ทำไมสถาปัตยกรรมชิโน-โปรตุกีสจึงเป็นมากกว่าแค่อาคารสวยงาม" data-en="A three-dimensional poem written in plaster, archways, and Peranakan color — why Sino-Portuguese architecture is far more than just beautiful buildings.">บทกวีสามมิติที่เขียนด้วยปูนปั้น โค้งประตู และสีสัน Peranakan ทำไมสถาปัตยกรรมชิโน-โปรตุกีสจึงเป็นมากกว่าแค่อาคารสวยงาม</div>
+          <div class="post-card-footer">
+            <div class="post-card-date">📅 <span data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</span></div>
+            <div class="post-card-read">📖 <span data-th="7 นาที" data-en="7 min">7 นาที</span></div>
+            <div class="post-card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Placeholder cards (coming soon) -->
+      <div class="post-card" style="opacity:.45; pointer-events:none; cursor:default;" data-cat="recipe">
+        <div class="post-card-img-wrap">
+          <img class="post-card-img" src="feature-3.jpg" alt="หมูฮ้อง" style="filter:grayscale(.3)" />
+          <span class="post-card-cat cat-recipe" data-th="🍵 ตำรับอาหาร" data-en="🍵 Recipes">🍵 ตำรับอาหาร</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat-text recipe" data-th="ตำรับอาหาร" data-en="Recipes">ตำรับอาหาร</div>
+          <div class="post-card-title" data-th="สูตรหมูฮ้องที่ไม่เคยถูกเขียน" data-en="The Braised Pork Recipe Never Written Down">สูตรหมูฮ้องที่ไม่เคยถูกเขียน</div>
+          <div class="post-card-excerpt" data-th="สูตรที่อยู่ในความทรงจำ ถ่ายทอดด้วยมือ ไม่มีในหนังสือ ไม่มีในอินเทอร์เน็ต มีเพียงในบ้านหล่อซาน" data-en="A recipe held in memory, passed through hands — not found in books, not online. Only at Lor Xan House.">สูตรที่อยู่ในความทรงจำ ถ่ายทอดด้วยมือ ไม่มีในหนังสือ ไม่มีในอินเทอร์เน็ต มีเพียงในบ้านหล่อซาน</div>
+          <div class="post-card-footer">
+            <div class="post-card-date" style="background:var(--silver);padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:700;color:var(--text-muted);" data-th="🔜 เร็วๆ นี้" data-en="🔜 Coming Soon">🔜 เร็วๆ นี้</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 4: ของที่ระลึก — heritage -->
+      <a href="blog-souvenir.html" class="post-card" data-cat="heritage">
+        <div class="post-card-img-wrap">
+          <img class="post-card-img" src="lor-xan-house-gallery-022.jpg" alt="ของที่ระลึกบ้านหล่อซาน" />
+          <span class="post-card-cat cat-heritage" data-th="🏮 มรดกวัฒนธรรม" data-en="🏮 Heritage">🏮 มรดกวัฒนธรรม</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat-text heritage" data-th="มรดกวัฒนธรรม" data-en="Heritage">มรดกวัฒนธรรม</div>
+          <div class="post-card-title" data-th="ของที่ระลึกที่เล่าเรื่องได้ทุกครั้งที่มอง" data-en="A Souvenir That Tells a Story Every Time You Look">ของที่ระลึกที่เล่าเรื่องได้ทุกครั้งที่มอง</div>
+          <div class="post-card-excerpt" data-th="หนังสือประวัติบ้านหล่อซาน — ร้อยปีที่ไม่ใช่แค่ตัวเลข แต่คือเรื่องราวที่ควรได้รับการบอกเล่าต่อ" data-en="The Lor Xan House history book — a century that's more than a number, it's a story that deserves to be told on.">หนังสือประวัติบ้านหล่อซาน — ร้อยปีที่ไม่ใช่แค่ตัวเลข แต่คือเรื่องราวที่ควรได้รับการบอกเล่าต่อ</div>
+          <div class="post-card-footer">
+            <div class="post-card-date">📅 <span data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</span></div>
+            <div class="post-card-read">📖 <span data-th="7 นาที" data-en="7 min">7 นาที</span></div>
+            <div class="post-card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <div class="post-card" style="opacity:.45; pointer-events:none; cursor:default;" data-cat="heritage">
+        <div class="post-card-img-wrap">
+          <img class="post-card-img" src="gallery-4.jpg" alt="ลวดลายไม้โบราณ" style="filter:grayscale(.3)" />
+          <span class="post-card-cat cat-heritage" data-th="🏮 มรดกและวัฒนธรรม" data-en="🏮 Heritage & Culture">🏮 มรดกและวัฒนธรรม</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-cat-text heritage" data-th="มรดกและวัฒนธรรม" data-en="Heritage & Culture">มรดกและวัฒนธรรม</div>
+          <div class="post-card-title" data-th="ลวดลายไม้โบราณ: ภาษาที่ไม่มีคำแปล" data-en="Antique Wood Patterns: A Language Without Translation">ลวดลายไม้โบราณ: ภาษาที่ไม่มีคำแปล</div>
+          <div class="post-card-excerpt" data-th="ทุกเส้นลายแกะสลักบนไม้มีความหมาย อ่านเรื่องราวที่ซ่อนอยู่บนผนังบ้านร้อยปี" data-en="Every carved line in the wood carries meaning — read the stories hidden on the walls of the century-old home.">ทุกเส้นลายแกะสลักบนไม้มีความหมาย อ่านเรื่องราวที่ซ่อนอยู่บนผนังบ้านร้อยปี</div>
+          <div class="post-card-footer">
+            <div class="post-card-date" style="background:var(--silver);padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:700;color:var(--text-muted);" data-th="🔜 เร็วๆ นี้" data-en="🔜 Coming Soon">🔜 เร็วๆ นี้</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ NEWSLETTER ══ -->
+  <div class="newsletter">
+    <div class="newsletter-text">
+      <h3 data-th="ติดตามเรื่องราวใหม่จากหล่อซาน" data-en="Follow New Stories from Lor Xan">ติดตามเรื่องราวใหม่จากหล่อซาน</h3>
+      <p data-th="รับบทความใหม่ เรื่องราว และกิจกรรมพิเศษส่งตรงถึงกล่องจดหมายของคุณ" data-en="Get new articles, stories, and special events delivered directly to your inbox.">รับบทความใหม่ เรื่องราว และกิจกรรมพิเศษส่งตรงถึงกล่องจดหมายของคุณ</p>
+    </div>
+    <div class="newsletter-form">
+      <input class="newsletter-input" type="email" id="nlEmail" placeholder="your@email.com" />
+      <button class="newsletter-btn" onclick="subscribeNewsletter()" data-th="ติดตาม" data-en="Subscribe">ติดตาม</button>
+    </div>
+  </div>
+
+  <!-- ══ TOPIC TAGS ══ -->
+  <div class="topics-section">
+    <div class="topics-label" data-th="หัวข้อที่น่าสนใจ" data-en="EXPLORE TOPICS">หัวข้อที่น่าสนใจ</div>
+    <div class="topics-cloud">
+      <span class="topic-tag">#อังกู๊ <span class="tag-count">(1)</span></span>
+      <span class="topic-tag">#เมืองเก่าภูเก็ต <span class="tag-count">(1)</span></span>
+      <span class="topic-tag">#บ้านโบราณ <span class="tag-count">(2)</span></span>
+      <span class="topic-tag">#มรดกวัฒนธรรม <span class="tag-count">(3)</span></span>
+      <span class="topic-tag">#ชิโนโปรตุกีส <span class="tag-count">(1)</span></span>
+      <span class="topic-tag">#ตำรับอาหาร <span class="tag-count">(1)</span></span>
+      <span class="topic-tag">#Peranakan <span class="tag-count">(2)</span></span>
+      <span class="topic-tag">#Heritage <span class="tag-count">(3)</span></span>
+      <span class="topic-tag">#หล่อซานเฮ้าส์ <span class="tag-count">(3)</span></span>
+      <span class="topic-tag">#LorXanHouse <span class="tag-count">(3)</span></span>
+    </div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta-strip">
+    <h2 data-th="อ่านแล้ว อยากสัมผัสด้วยตัวเองหรือยัง?" data-en="Read Enough? Ready to Experience It Yourself?">อ่านแล้ว อยากสัมผัสด้วยตัวเองหรือยัง?</h2>
+    <p data-th="ที่นั่งมีจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า" data-en="Seats are limited — available only for specially scheduled sessions.">ที่นั่งมีจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า</p>
+    <a href="booking.html" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">• LOR XAN HOUSE •</div>
+    <div data-th="Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต" data-en="Lor Xan Premium Heritage Experience · A Living Century-Old Home">Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
+    <div class="footer-links">
+      <a href="index.html" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="gallery.html" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="index.html#pricing" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="booking.html" style="color:var(--accent);" data-th="📅 สำรองที่นั่ง" data-en="📅 Reserve Now">📅 สำรองที่นั่ง</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Language ──
+    let currentLang = 'th';
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      document.getElementById('langToggle').textContent = currentLang === 'th' ? '🌐 EN' : '🌐 TH';
+      document.querySelectorAll('[data-th][data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+      document.documentElement.lang = currentLang;
+    }
+
+    // ── Filter ──
+    function filterPosts(cat, btn) {
+      // Update button states
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('#postsGrid .post-card');
+      let visible = 0;
+
+      cards.forEach(card => {
+        const match = cat === 'all' || card.dataset.cat === cat;
+        card.style.display = match ? '' : 'none';
+        if (match && card.style.opacity !== '0.45') visible++;
+        else if (match) visible++; // count coming-soon too for display
+      });
+
+      // Only count non-placeholder cards
+      const live = [...cards].filter(c => cat === 'all' || c.dataset.cat === cat)
+                              .filter(c => parseFloat(c.style.opacity||1) > 0.5).length;
+      const countEl = document.getElementById('postCount');
+      countEl.textContent = currentLang === 'th'
+        ? `${live} บทความ`
+        : `${live} article${live !== 1 ? 's' : ''}`;
+
+      // Handle wide card in filtered view
+      const wideCard = document.querySelector('.post-card.wide');
+      if (wideCard) {
+        const wideVisible = cat === 'all' || wideCard.dataset.cat === cat;
+        if (!wideVisible) {
+          wideCard.style.display = 'none';
+        } else {
+          wideCard.style.display = '';
+        }
+      }
+    }
+
+    // ── Newsletter ──
+    function subscribeNewsletter() {
+      const email = document.getElementById('nlEmail').value.trim();
+      if (!email || !email.includes('@')) {
+        alert(currentLang === 'th' ? 'กรุณากรอกอีเมลที่ถูกต้อง' : 'Please enter a valid email address.');
+        return;
+      }
+      const btn = document.querySelector('.newsletter-btn');
+      btn.textContent = currentLang === 'th' ? '✓ ติดตามแล้ว!' : '✓ Subscribed!';
+      btn.style.background = '#D1FAE5';
+      btn.style.color = '#065F46';
+      document.getElementById('nlEmail').value = '';
+      setTimeout(() => {
+        btn.textContent = currentLang === 'th' ? 'ติดตาม' : 'Subscribe';
+        btn.style.background = '';
+        btn.style.color = '';
+      }, 3000);
+    }
+
+    // Enter key on newsletter
+    document.getElementById('nlEmail').addEventListener('keydown', e => {
+      if (e.key === 'Enter') subscribeNewsletter();
+    });
+  </script>
+</body>
+</html>
