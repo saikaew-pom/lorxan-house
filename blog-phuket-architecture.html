@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก — หล่อซานเฮ้าส์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #3B7EC8;
+      --blue-mid:    #2D6AAD;
+      --blue-dark:   #1E4D82;
+      --blue-deep:   #0F2D4E;
+      --sky:         #EBF4FD;
+      --sky-light:   #F5FAFF;
+      --sky-mid:     #D6EAFA;
+      --silver:      #F1F5F9;
+      --silver-mid:  #E2EAF2;
+      --border:      #C5D8EC;
+      --accent:      #56A3D9;
+      --accent-soft: #A8D4EF;
+      --text-muted:  #7A92A8;
+      --text-body:   #3D5A72;
+      --text-dark:   #0F2D4E;
+      /* Phuket-specific palette: terracotta + teal */
+      --terra:       #B5523A;
+      --terra-soft:  #F7EAE6;
+      --terra-mid:   #E8BFB5;
+      --teal:        #2A7A6E;
+      --teal-soft:   #E0F2F0;
+      --gold:        #C4962A;
+      --gold-soft:   #FDF4DC;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Sarabun','Noto Sans Thai',sans-serif; background: var(--sky-light); color: var(--text-dark); line-height: 1.6; }
+    a { text-decoration: none; }
+    img { display: block; }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,250,255,.93); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 36px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: .08em; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { color: var(--text-body); font-size: .83rem; font-weight: 600; padding: 7px 13px; border-radius: 50px; transition: color .2s, background .2s; }
+    .nav-link:hover { color: var(--blue); background: var(--sky-mid); }
+    .nav-link.active { color: var(--blue); font-weight: 700; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .btn-lang { background: transparent; color: var(--blue-dark); padding: 7px 16px; border-radius: 50px; font-size: .82rem; font-weight: 700; border: 1.5px solid var(--border); cursor: pointer; transition: all .2s; white-space: nowrap; display: flex; align-items: center; gap: 5px; font-family: 'Sarabun',sans-serif; }
+    .btn-lang:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
+    .btn-nav { background: var(--blue); color: #fff; padding: 9px 22px; border-radius: 50px; font-size: .85rem; font-weight: 700; white-space: nowrap; transition: background .2s, transform .2s; }
+    .btn-nav:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+    @media (max-width: 400px) { nav { padding: 10px 16px; } .btn-nav { font-size: .75rem; padding: 8px 14px; } .btn-lang { font-size: .75rem; padding: 7px 11px; } }
+
+    /* ══ PROGRESS BAR ══ */
+    .progress-bar { position: fixed; top: 64px; left: 0; right: 0; height: 3px; background: rgba(181,82,58,.12); z-index: 99; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--terra), var(--gold)); transition: width .1s linear; }
+
+    /* ══ HERO ══ */
+    .post-hero { position: relative; height: 82vh; min-height: 520px; overflow: hidden; margin-top: 64px; }
+    .post-hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; animation: slowZoom 16s ease-out forwards; }
+    @keyframes slowZoom { from { transform: scale(1.1) } to { transform: scale(1) } }
+    .post-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(175deg, rgba(15,45,78,.1) 0%, rgba(0,0,0,.04) 40%, rgba(10,22,38,.88) 100%);
+    }
+    /* Decorative pattern strip */
+    .hero-pattern {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(90deg, var(--terra) 0px, var(--terra) 24px, var(--gold) 24px, var(--gold) 48px, var(--teal) 48px, var(--teal) 72px, var(--terra) 72px);
+      opacity: .9;
+    }
+    .post-hero-meta { position: absolute; bottom: 0; left: 0; right: 0; padding: 52px 24px 48px; max-width: 820px; margin: 0 auto; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.6); letter-spacing: .07em; margin-bottom: 14px; }
+    .breadcrumb a { color: rgba(255,255,255,.6); transition: color .2s; }
+    .breadcrumb a:hover { color: #fff; }
+    .breadcrumb span { opacity: .4; }
+    .post-category { display: inline-flex; align-items: center; gap: 6px; background: var(--terra); color: #fff; font-size: .7rem; font-weight: 800; letter-spacing: .1em; padding: 5px 14px; border-radius: 50px; margin-bottom: 14px; }
+    .post-hero-title { font-family: 'Playfair Display','Sarabun',serif; font-size: clamp(1.9rem,5.5vw,3.4rem); font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 18px; text-shadow: 0 2px 20px rgba(0,0,0,.3); }
+    .post-hero-title em { font-style: italic; color: #F5CEB0; }
+    .post-byline { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .byline-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg,#B5523A,#C4962A); color: #fff; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 800; flex-shrink: 0; border: 2px solid rgba(255,255,255,.3); }
+    .byline-name { font-size: .85rem; font-weight: 700; color: #fff; }
+    .byline-date { font-size: .75rem; color: rgba(255,255,255,.6); }
+    .byline-sep { width: 1px; height: 28px; background: rgba(255,255,255,.2); }
+    .byline-read { font-size: .78rem; color: rgba(255,255,255,.6); display: flex; align-items: center; gap: 5px; }
+
+    /* ══ LAYOUT ══ */
+    .post-layout { max-width: 1100px; margin: 0 auto; padding: 64px 24px 80px; display: grid; grid-template-columns: 1fr 280px; gap: 56px; align-items: start; }
+    @media (max-width: 900px) { .post-layout { grid-template-columns: 1fr; gap: 0; } }
+
+    /* ══ ARTICLE ══ */
+    .post-body { font-size: 1.05rem; color: var(--text-body); line-height: 1.92; }
+    .post-body .lead { font-size: 1.2rem; font-weight: 600; color: var(--text-dark); line-height: 1.78; margin-bottom: 32px; padding-left: 20px; border-left: 3px solid var(--terra); }
+    .post-body p { margin-bottom: 24px; }
+    .post-body h2 { font-family: 'Playfair Display','Sarabun',serif; font-size: 1.65rem; font-weight: 700; color: var(--text-dark); margin: 48px 0 18px; line-height: 1.28; }
+    .post-body h2::after { content: ''; display: block; width: 40px; height: 3px; background: linear-gradient(90deg,var(--terra),var(--gold)); border-radius: 2px; margin-top: 8px; }
+    .post-body h3 { font-size: 1.08rem; font-weight: 700; color: var(--blue-dark); margin: 28px 0 10px; }
+
+    /* Callout boxes */
+    .callout {
+      border-radius: 0 16px 16px 0; padding: 22px 26px; margin: 32px 0;
+    }
+    .callout.terra { background: var(--terra-soft); border-left: 4px solid var(--terra); }
+    .callout.teal  { background: var(--teal-soft);  border-left: 4px solid var(--teal); }
+    .callout.gold  { background: var(--gold-soft);  border-left: 4px solid var(--gold); }
+    .callout-title { font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+    .callout.terra .callout-title { color: var(--terra); }
+    .callout.teal  .callout-title { color: var(--teal); }
+    .callout.gold  .callout-title { color: var(--gold); }
+    .callout p { font-size: .9rem; line-height: 1.78; margin-bottom: 0; }
+    .callout.terra p { color: #7A2E1E; }
+    .callout.teal  p { color: #1A4E46; }
+    .callout.gold  p { color: #6B4A10; }
+
+    /* Pull quote */
+    .post-body blockquote { background: linear-gradient(135deg,var(--sky),#fff); border-left: 4px solid var(--blue); border-radius: 0 16px 16px 0; padding: 24px 28px; margin: 36px 0; font-size: 1.12rem; font-style: italic; color: var(--blue-dark); line-height: 1.78; }
+    .post-body blockquote cite { display: block; font-size: .8rem; font-style: normal; color: var(--text-muted); margin-top: 10px; font-weight: 600; }
+
+    /* Style comparison table */
+    .style-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: .88rem; border-radius: 16px; overflow: hidden; }
+    .style-table thead tr { background: var(--blue-deep); }
+    .style-table th { padding: 13px 18px; text-align: left; color: #fff; font-size: .76rem; font-weight: 800; letter-spacing: .07em; }
+    .style-table td { padding: 13px 18px; border-bottom: 1px solid var(--silver-mid); color: var(--text-body); vertical-align: top; line-height: 1.65; }
+    .style-table tr:last-child td { border-bottom: none; }
+    .style-table tr:nth-child(even) td { background: var(--silver); }
+    .style-table .label-cell { font-weight: 700; color: var(--text-dark); }
+
+    /* Inline images */
+    .post-img-wrap { margin: 36px 0; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 48px rgba(59,126,200,.1); }
+    .post-img-wrap img { width: 100%; object-fit: cover; }
+    .post-img-caption { background: var(--silver); padding: 10px 16px; font-size: .78rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+
+    /* 2-up & 3-up grids */
+    .img-2up { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 36px 0; }
+    .img-2up .post-img-wrap { margin: 0; }
+    .img-2up .post-img-wrap img { height: 240px; }
+    .img-3up { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 36px 0; }
+    .img-3up .post-img-wrap { margin: 0; }
+    .img-3up .post-img-wrap img { height: 190px; }
+    @media (max-width: 680px) {
+      .img-2up { grid-template-columns: 1fr; }
+      .img-2up .post-img-wrap img { height: 220px; }
+      .img-3up { grid-template-columns: 1fr 1fr; }
+      .img-3up .post-img-wrap img { height: 160px; }
+    }
+    @media (max-width: 420px) {
+      .img-3up { grid-template-columns: 1fr; }
+      .img-3up .post-img-wrap img { height: 200px; }
+    }
+
+    /* Feature boxes (3-col) */
+    .feature-boxes { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 14px; margin: 28px 0; }
+    .fbox {
+      background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 16px;
+      padding: 20px; text-align: center;
+      box-shadow: 0 2px 12px rgba(59,126,200,.06);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .fbox:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(59,126,200,.12); }
+    .fbox-icon { font-size: 2rem; margin-bottom: 10px; }
+    .fbox-title { font-size: .92rem; font-weight: 800; color: var(--text-dark); margin-bottom: 6px; }
+    .fbox-desc { font-size: .82rem; color: var(--text-body); line-height: 1.65; }
+
+    /* Numbered steps */
+    .step-list { list-style: none; margin: 20px 0 28px; display: flex; flex-direction: column; gap: 12px; }
+    .step-list li { display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 14px; padding: 16px 18px; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; background: var(--terra); color: #fff; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 800; }
+    .step-text { font-size: .9rem; color: var(--text-body); line-height: 1.72; padding-top: 4px; }
+    .step-text strong { color: var(--text-dark); }
+
+    /* Tags + share */
+    .post-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--silver-mid); }
+    .tag { background: var(--sky-mid); color: var(--blue-dark); padding: 6px 16px; border-radius: 50px; font-size: .78rem; font-weight: 600; border: 1px solid var(--border); transition: all .2s; cursor: pointer; }
+    .tag:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .share-bar { margin-top: 40px; padding: 28px 0 0; border-top: 1px solid var(--silver-mid); }
+    .share-bar-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .share-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+    .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 50px; font-size: .82rem; font-weight: 700; border: none; cursor: pointer; transition: transform .2s, box-shadow .2s, filter .2s; font-family: 'Sarabun',sans-serif; white-space: nowrap; }
+    .share-btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 6px 20px rgba(0,0,0,.15); }
+    .share-btn svg { flex-shrink: 0; }
+    .share-btn.fb { background: #1877F2; color: #fff; }
+    .share-btn.tw { background: #000; color: #fff; }
+    .share-btn.li { background: #0A66C2; color: #fff; }
+    .share-btn.ig { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: #fff; }
+    .share-btn.em { background: var(--silver); color: var(--text-dark); border: 1.5px solid var(--border); }
+    .share-btn.cp { background: var(--sky-mid); color: var(--blue-dark); border: 1.5px solid var(--border); }
+
+    /* ══ SIDEBAR ══ */
+    .sidebar { position: sticky; top: 88px; }
+    .toc-card { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(59,126,200,.07); }
+    .toc-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .toc-list a { display: block; font-size: .84rem; color: var(--text-body); padding: 7px 10px; border-radius: 8px; transition: all .2s; font-weight: 500; }
+    .toc-list a:hover { color: var(--blue); background: var(--sky-mid); }
+    .toc-list a.active-toc { color: var(--terra); background: var(--terra-soft); font-weight: 700; }
+    .sticky-share { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(59,126,200,.07); }
+    .sticky-share-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .sticky-share-btns { display: flex; flex-direction: column; gap: 8px; }
+    .sticky-share-btn { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; font-size: .82rem; font-weight: 700; border: none; cursor: pointer; transition: transform .2s, filter .15s; font-family: 'Sarabun',sans-serif; color: #fff; }
+    .sticky-share-btn:hover { transform: translateX(3px); filter: brightness(1.1); }
+    .sticky-share-btn.fb { background: #1877F2; }
+    .sticky-share-btn.tw { background: #111; }
+    .sticky-share-btn.li { background: #0A66C2; }
+    .sticky-share-btn.ig { background: linear-gradient(135deg,#f09433,#dc2743,#bc1888); }
+    .sticky-share-btn.em { background: #fff; color: var(--text-dark); border: 1.5px solid var(--border); }
+    .sticky-share-btn.cp { background: var(--sky-mid); color: var(--blue-dark); border: 1.5px solid var(--border); }
+    .author-card { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 24px rgba(59,126,200,.07); text-align: center; }
+    .author-avatar-wrap { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg,#B5523A,#C4962A); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 12px; }
+    .author-name { font-size: .95rem; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+    .author-role { font-size: .78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+    .author-bio { font-size: .82rem; color: var(--text-body); line-height: 1.7; }
+    .related-card { background: #fff; border: 1.5px solid var(--silver-mid); border-radius: 20px; padding: 22px; box-shadow: 0 4px 24px rgba(59,126,200,.07); }
+    .related-card-label { font-size: .72rem; font-weight: 800; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+    .related-item { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--silver-mid); cursor: pointer; transition: opacity .2s; }
+    .related-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .related-item:hover { opacity: .75; }
+    .related-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--sky-mid); }
+    .related-title { font-size: .82rem; font-weight: 700; color: var(--text-dark); line-height: 1.4; }
+    .related-date { font-size: .73rem; color: var(--text-muted); margin-top: 3px; }
+    @media (max-width: 900px) {
+      .sidebar { position: static; margin-top: 48px; }
+      .sticky-share-btns { flex-direction: row; flex-wrap: wrap; }
+      .sticky-share-btn { flex: 1; min-width: 120px; justify-content: center; }
+    }
+
+    /* ══ MORE POSTS ══ */
+    .more-posts { background: var(--sky); padding: 72px 24px; border-top: 1px solid var(--border); }
+    .more-posts-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .75rem; font-weight: 700; color: var(--blue); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
+    .section-h2 { font-size: clamp(1.4rem,3.5vw,2rem); font-weight: 800; color: var(--text-dark); margin-bottom: 36px; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 20px; }
+    .blog-card { background: #fff; border-radius: 20px; overflow: hidden; border: 1.5px solid var(--silver-mid); box-shadow: 0 2px 16px rgba(59,126,200,.06); transition: transform .25s, box-shadow .25s; cursor: pointer; }
+    .blog-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(59,126,200,.13); }
+    .card-img { width: 100%; height: 200px; object-fit: cover; background: var(--sky-mid); }
+    .card-body { padding: 20px; }
+    .card-cat { font-size: .68rem; font-weight: 800; color: var(--blue); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+    .card-title { font-size: .97rem; font-weight: 700; color: var(--text-dark); line-height: 1.45; margin-bottom: 8px; }
+    .card-excerpt { font-size: .83rem; color: var(--text-body); line-height: 1.65; }
+    .card-meta { display: flex; gap: 10px; margin-top: 14px; font-size: .75rem; color: var(--text-muted); }
+
+    /* ══ CTA + FOOTER ══ */
+    .cta-strip { background: var(--blue-deep); padding: 64px 24px; text-align: center; position: relative; overflow: hidden; }
+    .cta-strip::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(181,82,58,.08) 0px, rgba(181,82,58,.08) 4px, transparent 4px, transparent 24px); }
+    .cta-strip-inner { position: relative; z-index: 1; }
+    .cta-strip h2 { font-size: clamp(1.4rem,3.5vw,2rem); font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .cta-strip p { color: rgba(255,255,255,.55); font-size: .9rem; margin-bottom: 28px; }
+    .btn-cta { display: inline-block; background: var(--blue); color: #fff; padding: 16px 40px; border-radius: 50px; font-size: 1rem; font-weight: 700; box-shadow: 0 6px 28px rgba(59,126,200,.4); transition: all .2s; }
+    .btn-cta:hover { background: var(--accent); transform: translateY(-2px); }
+    footer { background: var(--blue-deep); color: #4a7aa8; text-align: center; padding: 28px 24px; font-size: .82rem; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-logo { color: var(--accent); font-weight: 800; font-size: .95rem; margin-bottom: 8px; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+    .footer-links a { color: #4a7aa8; transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* Toast */
+    .copy-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(12px); background: var(--blue-deep); color: #fff; padding: 11px 24px; border-radius: 50px; font-size: .85rem; font-weight: 600; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; z-index: 999; white-space: nowrap; }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <a href="index.html" class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="gallery.html" class="nav-link" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="index.html#pricing" class="nav-link" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="blog-post.html" class="nav-link active" data-th="บทความ" data-en="Blog">บทความ</a>
+      <a href="booking.html" class="nav-link" style="color:var(--blue-dark);border:1.5px solid var(--border);border-radius:50px;padding:7px 14px;" data-th="📅 จองเลย" data-en="📅 Book Now">📅 จองเลย</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+      <a href="booking.html" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <div class="post-hero">
+    <img class="post-hero-img" src="gallery-1.jpg" alt="สถาปัตยกรรมเมืองเก่าภูเก็ต" />
+    <div class="post-hero-overlay"></div>
+    <div class="hero-pattern"></div>
+    <div class="post-hero-meta">
+      <div class="breadcrumb">
+        <a href="index.html" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+        <span>›</span>
+        <a href="blog-post.html" data-th="บทความ" data-en="Blog">บทความ</a>
+        <span>›</span>
+        <span data-th="สถาปัตยกรรม" data-en="Architecture">สถาปัตยกรรม</span>
+      </div>
+      <div class="post-category">🏛 <span data-th="สถาปัตยกรรม" data-en="Architecture">สถาปัตยกรรม</span></div>
+      <h1 class="post-hero-title">
+        <span data-th="สถาปัตยกรรมเมืองเก่าภูเก็ต" data-en="Old Town Phuket Architecture">สถาปัตยกรรมเมืองเก่าภูเก็ต</span><br>
+        <em data-th="เมื่อตะวันออกพบตะวันตก" data-en="When East Met West">เมื่อตะวันออกพบตะวันตก</em>
+      </h1>
+      <div class="post-byline">
+        <div class="byline-avatar">LX</div>
+        <div>
+          <div class="byline-name" data-th="ทีมงานหล่อซานเฮ้าส์" data-en="Lor Xan House Team">ทีมงานหล่อซานเฮ้าส์</div>
+          <div class="byline-date" data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</div>
+        </div>
+        <div class="byline-sep"></div>
+        <div class="byline-read">📖 <span data-th="อ่าน 7 นาที" data-en="7 min read">อ่าน 7 นาที</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LAYOUT ══ -->
+  <div class="post-layout">
+
+    <!-- ARTICLE -->
+    <article class="post-body" id="article-body">
+
+      <p class="lead" data-th="เมืองเก่าภูเก็ตไม่ได้แค่เก่า มันคือบทกวีสามมิติที่เขียนด้วยปูนปั้น โค้งประตู และสีทาผนังร้อยกว่าปีก่อน ในทุกอาคารมีเรื่องราวของผู้คนสองโลกที่เลือกจะสร้างสิ่งใหม่ร่วมกัน แทนที่จะยืนฝ่ายตรงข้ามกัน"
+           data-en="Old Town Phuket is not simply old — it is a three-dimensional poem written in plaster, archways, and paint applied over a century ago. In every building lives the story of people from two worlds who chose to build something new together, rather than stand in opposition.">
+        เมืองเก่าภูเก็ตไม่ได้แค่เก่า มันคือบทกวีสามมิติที่เขียนด้วยปูนปั้น โค้งประตู และสีทาผนังร้อยกว่าปีก่อน ในทุกอาคารมีเรื่องราวของผู้คนสองโลกที่เลือกจะสร้างสิ่งใหม่ร่วมกัน แทนที่จะยืนฝ่ายตรงข้ามกัน
+      </p>
+
+      <!-- ── Section 1 ── -->
+      <h2 id="s1" data-th="รากเหง้าของเมืองเก่า" data-en="The Roots of the Old Town">รากเหง้าของเมืองเก่า</h2>
+
+      <p data-th="ในช่วงปลายศตวรรษที่ 19 ภูเก็ตคือหนึ่งในศูนย์กลางเหมืองแร่ดีบุกที่สำคัญที่สุดในภูมิภาค เงินทองที่ไหลเข้ามาจากแร่ดีบุกดึงดูดทั้งชาวจีนฮกเกี้ยน พ่อค้าชาวยุโรป และเจ้าอาณานิคมโปรตุเกสและอังกฤษเข้ามาตั้งรกราก การผสมผสานของวัฒนธรรมเหล่านี้ไม่ได้เกิดขึ้นแค่ในอาหาร ภาษา และประเพณี แต่ยังถูกแสดงออกอย่างชัดเจนที่สุดในสถาปัตยกรรม"
+           data-en="In the late 19th century, Phuket was one of the most important tin mining centers in the region. The wealth flowing from tin attracted Hokkien Chinese merchants, European traders, and Portuguese and British colonizers to settle here. The blending of these cultures did not only manifest in food, language, and tradition — it was expressed most visibly in architecture.">
+        ในช่วงปลายศตวรรษที่ 19 ภูเก็ตคือหนึ่งในศูนย์กลางเหมืองแร่ดีบุกที่สำคัญที่สุดในภูมิภาค เงินทองที่ไหลเข้ามาจากแร่ดีบุกดึงดูดทั้งชาวจีนฮกเกี้ยน พ่อค้าชาวยุโรป และเจ้าอาณานิคมโปรตุเกสและอังกฤษเข้ามาตั้งรกราก การผสมผสานของวัฒนธรรมเหล่านี้ไม่ได้เกิดขึ้นแค่ในอาหาร ภาษา และประเพณี แต่ยังถูกแสดงออกอย่างชัดเจนที่สุดในสถาปัตยกรรม
+      </p>
+
+      <div class="callout terra">
+        <div class="callout-title">🏛 <span data-th="รู้หรือไม่?" data-en="Did You Know?">รู้หรือไม่?</span></div>
+        <p data-th="ชุมชนบาบ๋าและยารา (Peranakan) ในภูเก็ตเกิดจากการแต่งงานระหว่างชายชาวจีนฮกเกี้ยนกับหญิงชาวพื้นเมือง วัฒนธรรมลูกครึ่งนี้มีภาษา อาหาร ชุด และสถาปัตยกรรมเป็นของตัวเอง ที่ไม่ได้จัดอยู่ในวัฒนธรรมไหนเพียงวัฒนธรรมเดียว"
+             data-en="The Peranakan (Baba-Nyonya) community in Phuket emerged from marriages between Hokkien Chinese men and local women. This hybrid culture developed its own language, food, dress, and architecture that belongs entirely to neither parent culture alone.">
+          ชุมชนบาบ๋าและยารา (Peranakan) ในภูเก็ตเกิดจากการแต่งงานระหว่างชายชาวจีนฮกเกี้ยนกับหญิงชาวพื้นเมือง วัฒนธรรมลูกครึ่งนี้มีภาษา อาหาร ชุด และสถาปัตยกรรมเป็นของตัวเองที่ไม่ได้จัดอยู่ในวัฒนธรรมไหนเพียงวัฒนธรรมเดียว
+        </p>
+      </div>
+
+      <div class="post-img-wrap">
+        <img src="hero-bg.jpg" alt="เมืองเก่าภูเก็ต" style="height:440px; object-position: center 30%;" />
+        <div class="post-img-caption">📸 <span data-th="บรรยากาศถนนในเมืองเก่าภูเก็ต ที่ยังคงรักษาสภาพไว้ได้อย่างงดงาม" data-en="A street in Phuket Old Town, beautifully preserved to this day">บรรยากาศถนนในเมืองเก่าภูเก็ต ที่ยังคงรักษาสภาพไว้ได้อย่างงดงาม</span></div>
+      </div>
+
+      <!-- ── Section 2 ── -->
+      <h2 id="s2" data-th="ชิโน-โปรตุกีส: สไตล์ที่เกิดจากการประนีประนอม" data-en="Sino-Portuguese: A Style Born of Compromise">ชิโน-โปรตุกีส: สไตล์ที่เกิดจากการประนีประนอม</h2>
+
+      <p data-th="สถาปัตยกรรมที่เป็นเอกลักษณ์ของเมืองเก่าภูเก็ตถูกเรียกว่า 'ชิโน-โปรตุกีส' (Sino-Portuguese) แต่ที่จริงแล้วมันซับซ้อนกว่านั้น มันคือการผสมอย่างน้อยสามวัฒนธรรม ได้แก่ สถาปัตยกรรมจีนใต้จากฮกเกี้ยน ความโรแมนติกของโคโลเนียลยุโรป และความสำอางของสไตล์ Peranakan ที่พัฒนาขึ้นในคาบสมุทรมลายู"
+           data-en="The distinctive architecture of Phuket Old Town is called 'Sino-Portuguese' — but it is actually more complex than that. It is a blend of at least three cultures: southern Chinese architecture from Hokkien, the romance of European colonial style, and the elegance of the Peranakan style that developed across the Malay Peninsula.">
+        สถาปัตยกรรมที่เป็นเอกลักษณ์ของเมืองเก่าภูเก็ตถูกเรียกว่า "ชิโน-โปรตุกีส" (Sino-Portuguese) แต่ที่จริงแล้วมันซับซ้อนกว่านั้น มันคือการผสมอย่างน้อยสามวัฒนธรรม ได้แก่ สถาปัตยกรรมจีนใต้จากฮกเกี้ยน ความโรแมนติกของโคโลเนียลยุโรป และความสำอางของสไตล์ Peranakan ที่พัฒนาขึ้นในคาบสมุทรมลายู
+      </p>
+
+      <table class="style-table">
+        <thead>
+          <tr>
+            <th data-th="รูปแบบ" data-en="Element">รูปแบบ</th>
+            <th data-th="มาจาก" data-en="Origin">มาจาก</th>
+            <th data-th="ลักษณะที่เห็นได้" data-en="Visible Characteristics">ลักษณะที่เห็นได้</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell" data-th="โค้งหน้าต่าง" data-en="Arched windows">โค้งหน้าต่าง</td>
+            <td data-th="โปรตุกีส / ยุโรป" data-en="Portuguese / European">โปรตุกีส / ยุโรป</td>
+            <td data-th="หน้าต่างโค้งสูง ประดับปูนปั้น ให้ความรู้สึกสง่างาม" data-en="Tall arched windows, decorated with plasterwork, conveying grandeur">หน้าต่างโค้งสูง ประดับปูนปั้น ให้ความรู้สึกสง่างาม</td>
+          </tr>
+          <tr>
+            <td class="label-cell" data-th="ห้องแถวหน้ากว้าง" data-en="Five-foot ways">ห้องแถวหน้ากว้าง</td>
+            <td data-th="จีนฮกเกี้ยน" data-en="Hokkien Chinese">จีนฮกเกี้ยน</td>
+            <td data-th="ทางเดินใต้หลังคาหน้าอาคาร ให้ร่มเงาและพื้นที่พักในสภาพอากาศร้อน" data-en="Covered walkways beneath the building's front, providing shade and shelter in the heat">ทางเดินใต้หลังคาหน้าอาคาร ให้ร่มเงาและพื้นที่พักในสภาพอากาศร้อน</td>
+          </tr>
+          <tr>
+            <td class="label-cell" data-th="ปูนปั้นดอกไม้" data-en="Floral stucco">ปูนปั้นดอกไม้</td>
+            <td data-th="Peranakan / ไทย-มาเลย์" data-en="Peranakan / Thai-Malay">Peranakan / ไทย-มาเลย์</td>
+            <td data-th="ลวดลายดอกไม้นูนสูงรอบกรอบหน้าต่างและประตู สีสันสดใส" data-en="High-relief floral patterns around window and door frames, in vivid colors">ลวดลายดอกไม้นูนสูงรอบกรอบหน้าต่างและประตู สีสันสดใส</td>
+          </tr>
+          <tr>
+            <td class="label-cell" data-th="หลังคาทรงจั่ว" data-en="Pitched roof">หลังคาทรงจั่ว</td>
+            <td data-th="จีน / เอเชียตะวันออกเฉียงใต้" data-en="Chinese / Southeast Asian">จีน / เอเชียตะวันออกเฉียงใต้</td>
+            <td data-th="หลังคาลาดชัน ระบายความร้อนได้ดี บางหลังมีกระเบื้องตกแต่งปลายจั่ว" data-en="Steeply pitched, allowing heat to rise and dissipate; some feature decorative ridgeline tiles">หลังคาลาดชัน ระบายความร้อนได้ดี บางหลังมีกระเบื้องตกแต่งปลายจั่ว</td>
+          </tr>
+          <tr>
+            <td class="label-cell" data-th="สีสันสดใส" data-en="Vivid façade colors">สีสันสดใส</td>
+            <td data-th="Peranakan" data-en="Peranakan">Peranakan</td>
+            <td data-th="เหลืองมัสตาร์ด เขียวอมฟ้า ชมพูฝุ่น แดงอิฐ — ทำให้ทุกอาคารมีบุคลิกเป็นของตัวเอง" data-en="Mustard yellow, seafoam green, dusty pink, brick red — each building with its own personality">เหลืองมัสตาร์ด เขียวอมฟ้า ชมพูฝุ่น แดงอิฐ — ทำให้ทุกอาคารมีบุคลิกเป็นของตัวเอง</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="img-2up">
+        <div class="post-img-wrap">
+          <img src="gallery-2.jpg" alt="รายละเอียดสถาปัตยกรรม" />
+          <div class="post-img-caption" data-th="รายละเอียดปูนปั้นที่ประณีตบรรจง" data-en="Intricate stucco detailing">รายละเอียดปูนปั้นที่ประณีตบรรจง</div>
+        </div>
+        <div class="post-img-wrap">
+          <img src="gallery-4.jpg" alt="สีสันบนผนัง" />
+          <div class="post-img-caption" data-th="สีสัน Peranakan ที่ยังคงสดใสตลอดกาล" data-en="Peranakan colors that remain vivid through time">สีสัน Peranakan ที่ยังคงสดใสตลอดกาล</div>
+        </div>
+      </div>
+
+      <!-- ── Section 3 ── -->
+      <h2 id="s3" data-th="องค์ประกอบสำคัญที่ต้องสังเกต" data-en="Key Architectural Elements to Notice">องค์ประกอบสำคัญที่ต้องสังเกต</h2>
+
+      <p data-th="เมื่อเดินในเมืองเก่า หลายคนแค่ถ่ายรูปแล้วก็เดินต่อ แต่ถ้าหยุดดูสักครู่ คุณจะพบว่าทุกอาคารมีรายละเอียดที่บอกเล่าตัวตนของเจ้าของ สถานะทางสังคม และความฝันที่พวกเขาฝากไว้ในผนังปูน"
+           data-en="When walking through the old town, most visitors simply photograph and move on. But if you pause for a moment, every building reveals details that speak to the identity of its owners, their social standing, and the dreams they embedded in plaster walls.">
+        เมื่อเดินในเมืองเก่า หลายคนแค่ถ่ายรูปแล้วก็เดินต่อ แต่ถ้าหยุดดูสักครู่ คุณจะพบว่าทุกอาคารมีรายละเอียดที่บอกเล่าตัวตนของเจ้าของ สถานะทางสังคม และความฝันที่พวกเขาฝากไว้ในผนังปูน
+      </p>
+
+      <div class="feature-boxes">
+        <div class="fbox">
+          <div class="fbox-icon">🚪</div>
+          <div class="fbox-title" data-th="Five-Foot Way" data-en="Five-Foot Way">Five-Foot Way</div>
+          <div class="fbox-desc" data-th="ทางเดินร่มรื่นหน้าอาคาร ความกว้าง 5 ฟุต กำหนดโดยกฎหมายอาณานิคมอังกฤษ เพื่อให้ผู้คนเดินได้สะดวกในสภาพอากาศร้อนชื้น" data-en="A shaded walkway in front of buildings, exactly 5 feet wide, mandated by British colonial law to allow comfortable passage in the tropical climate.">ทางเดินร่มรื่นหน้าอาคาร ความกว้าง 5 ฟุต กำหนดโดยกฎหมายอาณานิคมอังกฤษ เพื่อให้ผู้คนเดินได้สะดวกในสภาพอากาศร้อนชื้น</div>
+        </div>
+        <div class="fbox">
+          <div class="fbox-icon">🏺</div>
+          <div class="fbox-title" data-th="ปูนปั้นแบบ Peranakan" data-en="Peranakan Plasterwork">ปูนปั้นแบบ Peranakan</div>
+          <div class="fbox-desc" data-th="งานปูนปั้นนูนสูงรูปดอกไม้ ผลไม้ และสัตว์มงคล แต่ละบ้านมีลวดลายเฉพาะตัว ยิ่งประณีตยิ่งแสดงถึงความมั่งคั่งของเจ้าของ" data-en="High-relief plasterwork depicting flowers, fruits, and auspicious animals. The more intricate the design, the greater the owner's wealth.">งานปูนปั้นนูนสูงรูปดอกไม้ ผลไม้ และสัตว์มงคล แต่ละบ้านมีลวดลายเฉพาะตัว ยิ่งประณีตยิ่งแสดงถึงความมั่งคั่งของเจ้าของ</div>
+        </div>
+        <div class="fbox">
+          <div class="fbox-icon">🪟</div>
+          <div class="fbox-title" data-th="หน้าต่างโค้ง" data-en="Arched Windows">หน้าต่างโค้ง</div>
+          <div class="fbox-desc" data-th="รูปทรงโค้งแบบยุโรป มักทำจากไม้แกะสลักหรือกระจกสีพิเศษ อาคารชั้นนำในยุคนั้นมักนำเข้ากระจกสีจากยุโรปโดยตรง" data-en="European arch forms, often made with carved wood or specialty stained glass. The most prestigious buildings of the era imported colored glass directly from Europe.">รูปทรงโค้งแบบยุโรป มักทำจากไม้แกะสลักหรือกระจกสีพิเศษ อาคารชั้นนำในยุคนั้นมักนำเข้ากระจกสีจากยุโรปโดยตรง</div>
+        </div>
+      </div>
+
+      <blockquote>
+        <span data-th='"บ้านในเมืองเก่าไม่ได้แค่อยู่อาศัย มันคือนามบัตรของเจ้าของ บอกว่าคุณคือใคร มาจากไหน และฝันถึงอะไร"'
+              data-en='"Houses in the old town were not merely dwellings — they were their owners\' calling cards, announcing who you were, where you came from, and what you aspired to become."'>
+          "บ้านในเมืองเก่าไม่ได้แค่อยู่อาศัย มันคือนามบัตรของเจ้าของ บอกว่าคุณคือใคร มาจากไหน และฝันถึงอะไร"
+        </span>
+        <cite data-th="— นักประวัติศาสตร์สถาปัตยกรรม ภาคใต้ของไทย" data-en="— Architectural historian, Southern Thailand">— นักประวัติศาสตร์สถาปัตยกรรม ภาคใต้ของไทย</cite>
+      </blockquote>
+
+      <!-- ── Section 4 ── -->
+      <h2 id="s4" data-th="สีสันของเมือง: ภาษาที่ไม่ต้องใช้คำ" data-en="The Colors of the City: A Language Without Words">สีสันของเมือง: ภาษาที่ไม่ต้องใช้คำ</h2>
+
+      <p data-th="สีของอาคารในเมืองเก่าภูเก็ตไม่ได้ถูกเลือกแบบสุ่ม แต่ละโทนสีมีที่มาและความหมายในตัวเอง ตั้งแต่เหลืองมัสตาร์ดที่แสดงถึงความมั่งคั่ง ชมพูฝุ่นที่อ่อนโยนแบบ Peranakan ไปจนถึงเขียวมรกตที่แสดงถึงความสดชื่นและการผสมผสานกับธรรมชาติเขตร้อน"
+           data-en="The colors of Old Town Phuket's buildings were not chosen at random. Each tone carries its own origin and meaning — from the mustard yellow signaling wealth, to the soft dusty pink of Peranakan elegance, to the emerald green expressing vitality and connection with the tropical landscape.">
+        สีของอาคารในเมืองเก่าภูเก็ตไม่ได้ถูกเลือกแบบสุ่ม แต่ละโทนสีมีที่มาและความหมายในตัวเอง ตั้งแต่เหลืองมัสตาร์ดที่แสดงถึงความมั่งคั่ง ชมพูฝุ่นที่อ่อนโยนแบบ Peranakan ไปจนถึงเขียวมรกตที่แสดงถึงความสดชื่นและการผสมผสานกับธรรมชาติเขตร้อน
+      </p>
+
+      <div class="img-3up">
+        <div class="post-img-wrap">
+          <img src="gallery-3.jpg" alt="สีสันเมืองเก่า" />
+          <div class="post-img-caption" data-th="เหลืองมัสตาร์ด — สีแห่งความมั่งคั่ง" data-en="Mustard yellow — the color of prosperity">เหลืองมัสตาร์ด — สีแห่งความมั่งคั่ง</div>
+        </div>
+        <div class="post-img-wrap">
+          <img src="feature-1.jpg" alt="ลวดลายประดับ" />
+          <div class="post-img-caption" data-th="รายละเอียดปูนปั้นนูนบนผนัง" data-en="Relief plasterwork on the façade">รายละเอียดปูนปั้นนูนบนผนัง</div>
+        </div>
+        <div class="post-img-wrap">
+          <img src="gallery-4.jpg" alt="ประตูไม้แกะสลัก" />
+          <div class="post-img-caption" data-th="ประตูไม้แกะสลักอายุกว่าร้อยปี" data-en="Hand-carved wooden doors over a century old">ประตูไม้แกะสลักอายุกว่าร้อยปี</div>
+        </div>
+      </div>
+
+      <div class="callout teal">
+        <div class="callout-title">🎨 <span data-th="ทำไมสีจึงสดใสตลอดกาล?" data-en="Why Do the Colors Stay Vibrant?">ทำไมสีจึงสดใสตลอดกาล?</span></div>
+        <p data-th="ช่างในยุคนั้นใช้เม็ดสีธรรมชาติที่ผสมในปูนขาวสดก่อนทา (fresco technique) ซึ่งทำให้สีซึมเข้าไปเป็นส่วนหนึ่งของผนังแทนที่จะเคลือบอยู่ด้านนอก เทคนิคนี้ทนทานกว่าสีทาสมัยใหม่มาก และยังให้ผิวสัมผัสที่มีความลึกและอุ่นแบบที่สีสำเร็จรูปสร้างไม่ได้"
+             data-en="Craftsmen of that era used natural pigments mixed into fresh lime plaster before application (fresco technique), causing the color to be absorbed into the wall rather than coating the surface. This technique is far more durable than modern paint, and produces a depth and warmth of texture that factory paint cannot replicate.">
+          ช่างในยุคนั้นใช้เม็ดสีธรรมชาติที่ผสมในปูนขาวสดก่อนทา (fresco technique) ซึ่งทำให้สีซึมเข้าไปเป็นส่วนหนึ่งของผนังแทนที่จะเคลือบอยู่ด้านนอก เทคนิคนี้ทนทานกว่าสีทาสมัยใหม่มาก
+        </p>
+      </div>
+
+      <!-- ── Section 5 ── -->
+      <h2 id="s5" data-th="ถนนที่ควรเดิน" data-en="Streets Worth Walking">ถนนที่ควรเดิน</h2>
+
+      <p data-th="เมืองเก่าภูเก็ตมีถนนสำคัญหลายสายที่แต่ละสายมีบุคลิกและประวัติศาสตร์เป็นของตัวเอง การรู้จักแต่ละถนนล่วงหน้าจะทำให้คุณเห็นมากกว่าแค่ผนังสวยๆ"
+           data-en="Phuket Old Town has several key streets, each with its own character and history. Knowing them in advance means you will see far more than just beautiful walls.">
+        เมืองเก่าภูเก็ตมีถนนสำคัญหลายสายที่แต่ละสายมีบุคลิกและประวัติศาสตร์เป็นของตัวเอง การรู้จักแต่ละถนนล่วงหน้าจะทำให้คุณเห็นมากกว่าแค่ผนังสวยๆ
+      </p>
+
+      <ul class="step-list">
+        <li>
+          <div class="step-num">01</div>
+          <div class="step-text">
+            <strong data-th="ถนนดีบุก (Dibuk Road)" data-en="Dibuk Road">ถนนดีบุก (Dibuk Road)</strong><br>
+            <span data-th="หัวใจของเมืองเก่า เต็มไปด้วยอาคารชิโน-โปรตุกีสสภาพสมบูรณ์ที่สุด บางหลังกลายเป็นร้านกาแฟและโรงแรมบูติก แต่ยังคงรักษาโครงสร้างดั้งเดิมไว้แทบทุกซอกมุม" data-en="The heart of the old town, lined with the most intact Sino-Portuguese buildings. Some have become cafés and boutique hotels, yet retain nearly every original architectural detail.">หัวใจของเมืองเก่า เต็มไปด้วยอาคารชิโน-โปรตุกีสสภาพสมบูรณ์ที่สุด บางหลังกลายเป็นร้านกาแฟและโรงแรมบูติก แต่ยังคงรักษาโครงสร้างดั้งเดิมไว้แทบทุกซอกมุม</span>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">02</div>
+          <div class="step-text">
+            <strong data-th="ถนนกระบี่ (Krabi Road)" data-en="Krabi Road">ถนนกระบี่ (Krabi Road)</strong><br>
+            <span data-th="ถนนสายสำคัญที่เคยเป็นย่านการค้าหลัก เปลี่ยนจากตลาดดีบุกมาเป็นแหล่งศิลปะและวัฒนธรรม มี Street Art ที่มีชื่อเสียงระดับโลกอยู่หลายจุด" data-en="Once the main commercial artery, now a hub of art and culture, with internationally renowned street art installations throughout.">ถนนสายสำคัญที่เคยเป็นย่านการค้าหลัก เปลี่ยนจากตลาดดีบุกมาเป็นแหล่งศิลปะและวัฒนธรรม มี Street Art ที่มีชื่อเสียงระดับโลกอยู่หลายจุด</span>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">03</div>
+          <div class="step-text">
+            <strong data-th="ถนนถลาง (Thalang Road)" data-en="Thalang Road">ถนนถลาง (Thalang Road)</strong><br>
+            <span data-th="ถนนที่เก่าแก่ที่สุดในเมืองเก่า ชื่อตามวีรกรรมของท้าวเทพกระษัตรี มีพิพิธภัณฑ์ ศาลเจ้า และตึกแถวที่เก่าที่สุดบางหลังในภูเก็ต" data-en="The oldest street in the old town, named after the heroism of Thao Thep Kasattri. It holds museums, shrines, and some of Phuket's oldest shophouses.">ถนนที่เก่าแก่ที่สุดในเมืองเก่า ชื่อตามวีรกรรมของท้าวเทพกระษัตรี มีพิพิธภัณฑ์ ศาลเจ้า และตึกแถวที่เก่าที่สุดบางหลังในภูเก็ต</span>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">04</div>
+          <div class="step-text">
+            <strong data-th="ซอยรมณีย์ (Rommanee Lane)" data-en="Rommanee Lane">ซอยรมณีย์ (Rommanee Lane)</strong><br>
+            <span data-th="ซอยสายสั้นๆ ที่มีการอนุรักษ์สภาพดีที่สุดในภูเก็ต สีสันบนผนังสดใสราวกับทาใหม่ ยามค่ำมีการประดับไฟสวยงาม เหมาะสำหรับถ่ายภาพที่สุด" data-en="A short lane with the best-preserved condition in all of Phuket. The colors on the walls look freshly painted. In the evenings, festive lights make it the most photogenic spot in town.">ซอยสายสั้นๆ ที่มีการอนุรักษ์สภาพดีที่สุดในภูเก็ต สีสันบนผนังสดใสราวกับทาใหม่ ยามค่ำมีการประดับไฟสวยงาม เหมาะสำหรับถ่ายภาพที่สุด</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="post-img-wrap">
+        <img src="about.jpg" alt="ซอยรมณีย์" style="height:420px;" />
+        <div class="post-img-caption">📸 <span data-th="บรรยากาศทางเดินในเมืองเก่า — สถาปัตยกรรมที่ยังคงมีชีวิต" data-en="The walkways of the old town — architecture that is still alive">บรรยากาศทางเดินในเมืองเก่า — สถาปัตยกรรมที่ยังคงมีชีวิต</span></div>
+      </div>
+
+      <!-- ── Section 6 ── -->
+      <h2 id="s6" data-th="ความเชื่อมโยงกับหล่อซานเฮ้าส์" data-en="The Connection to Lor Xan House">ความเชื่อมโยงกับหล่อซานเฮ้าส์</h2>
+
+      <p data-th="บ้านหล่อซานไม่ได้เกิดขึ้นโดดเดี่ยวจากประวัติศาสตร์เหล่านี้ มันเป็นส่วนหนึ่งของเรื่องราวใหญ่ — ยุคสมัยที่ผู้คนสร้างบ้านเพื่อให้มันมีความหมายมากกว่าแค่ที่พักอาศัย ทุกเสา ทุกคาน ทุกรอยแกะสลักในบ้านหล่อซานล้วนเป็นส่วนหนึ่งของภาษาสถาปัตยกรรมที่เคยพูดถึงความฝัน ฐานะ และความภูมิใจของคนยุคนั้น"
+           data-en="Lor Xan House did not arise in isolation from this history. It is part of a larger story — an era when people built homes to mean more than shelter. Every pillar, beam, and carving in Lor Xan House is part of an architectural language that once spoke of dreams, status, and the pride of a generation.">
+        บ้านหล่อซานไม่ได้เกิดขึ้นโดดเดี่ยวจากประวัติศาสตร์เหล่านี้ มันเป็นส่วนหนึ่งของเรื่องราวใหญ่ — ยุคสมัยที่ผู้คนสร้างบ้านเพื่อให้มันมีความหมายมากกว่าแค่ที่พักอาศัย ทุกเสา ทุกคาน ทุกรอยแกะสลักในบ้านหล่อซานล้วนเป็นส่วนหนึ่งของภาษาสถาปัตยกรรมที่เคยพูดถึงความฝัน ฐานะ และความภูมิใจของคนยุคนั้น
+      </p>
+
+      <p data-th="เมื่อคุณมาเยือนหล่อซานเฮ้าส์ คุณไม่ได้แค่เข้าไปในบ้าน คุณกำลังเดินเข้าไปในส่วนหนึ่งของประวัติศาสตร์ที่ยังมีลมหายใจ ยังมีกลิ่นของครัว ยังมีเสียงของผู้คนที่รักมันอย่างจริงจัง"
+           data-en="When you visit Lor Xan House, you're not merely entering a building — you are stepping into a living piece of history, still breathing, still filled with the scent of the kitchen, still carrying the voices of the people who have loved it deeply.">
+        เมื่อคุณมาเยือนหล่อซานเฮ้าส์ คุณไม่ได้แค่เข้าไปในบ้าน คุณกำลังเดินเข้าไปในส่วนหนึ่งของประวัติศาสตร์ที่ยังมีลมหายใจ ยังมีกลิ่นของครัว ยังมีเสียงของผู้คนที่รักมันอย่างจริงจัง
+      </p>
+
+      <div class="callout gold">
+        <div class="callout-title">🏮 <span data-th="สัมผัสสถาปัตยกรรมมีชีวิตด้วยตัวเอง" data-en="Experience Living Architecture Yourself">สัมผัสสถาปัตยกรรมมีชีวิตด้วยตัวเอง</span></div>
+        <p data-th="ที่หล่อซานเฮ้าส์ เรายินดีนำเยี่ยมชมรายละเอียดสถาปัตยกรรมและเล่าเรื่องราวเบื้องหลังทุกชิ้นส่วนของบ้านให้ฟัง ตั้งแต่เสาไม้สักที่ยังคงแข็งแรง ไปจนถึงลวดลายฉลุที่ช่างฝีมือในยุคนั้นใช้เวลาทำนานหลายสัปดาห์"
+             data-en="At Lor Xan House, we are happy to guide you through the architectural details and share the story behind every part of the home — from the teak pillars that remain strong after a century, to the fretwork that craftsmen of that era spent weeks carving by hand.">
+          ที่หล่อซานเฮ้าส์ เรายินดีนำเยี่ยมชมรายละเอียดสถาปัตยกรรมและเล่าเรื่องราวเบื้องหลังทุกชิ้นส่วนของบ้านให้ฟัง ตั้งแต่เสาไม้สักที่ยังคงแข็งแรง ไปจนถึงลวดลายฉลุที่ช่างฝีมือในยุคนั้นใช้เวลาทำนานหลายสัปดาห์
+        </p>
+      </div>
+
+      <!-- TAGS -->
+      <div class="post-tags">
+        <span class="tag">#เมืองเก่าภูเก็ต</span>
+        <span class="tag">#ชิโนโปรตุกีส</span>
+        <span class="tag">#SinoPortuguese</span>
+        <span class="tag">#PhuketOldTown</span>
+        <span class="tag">#สถาปัตยกรรม</span>
+        <span class="tag">#Peranakan</span>
+        <span class="tag">#หล่อซานเฮ้าส์</span>
+      </div>
+
+      <!-- SHARE BAR -->
+      <div class="share-bar">
+        <div class="share-bar-label" data-th="แชร์บทความนี้" data-en="SHARE THIS ARTICLE">แชร์บทความนี้</div>
+        <div class="share-buttons">
+          <button class="share-btn fb" onclick="shareToFacebook()"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button>
+          <button class="share-btn tw" onclick="shareToX()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X (Twitter)</button>
+          <button class="share-btn li" onclick="shareToLinkedIn()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</button>
+          <button class="share-btn ig" onclick="shareToIG()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram</button>
+          <button class="share-btn em" onclick="shareByEmail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span data-th="อีเมล" data-en="Email">อีเมล</span></button>
+          <button class="share-btn cp" onclick="copyLink()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span data-th="คัดลอกลิงค์" data-en="Copy Link">คัดลอกลิงค์</span></button>
+        </div>
+      </div>
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- TOC -->
+      <div class="toc-card">
+        <div class="toc-label" data-th="สารบัญ" data-en="CONTENTS">สารบัญ</div>
+        <ul class="toc-list">
+          <li><a href="#s1" class="active-toc" data-th="รากเหง้าของเมืองเก่า" data-en="Roots of the Old Town">รากเหง้าของเมืองเก่า</a></li>
+          <li><a href="#s2" data-th="ชิโน-โปรตุกีส" data-en="Sino-Portuguese Style">ชิโน-โปรตุกีส</a></li>
+          <li><a href="#s3" data-th="องค์ประกอบสำคัญ" data-en="Key Elements">องค์ประกอบสำคัญ</a></li>
+          <li><a href="#s4" data-th="สีสันของเมือง" data-en="Colors of the City">สีสันของเมือง</a></li>
+          <li><a href="#s5" data-th="ถนนที่ควรเดิน" data-en="Streets Worth Walking">ถนนที่ควรเดิน</a></li>
+          <li><a href="#s6" data-th="ความเชื่อมโยงกับหล่อซาน" data-en="Connection to Lor Xan">ความเชื่อมโยงกับหล่อซาน</a></li>
+        </ul>
+      </div>
+
+      <!-- Sticky share -->
+      <div class="sticky-share">
+        <div class="sticky-share-label" data-th="แชร์บทความ" data-en="SHARE">แชร์บทความ</div>
+        <div class="sticky-share-btns">
+          <button class="sticky-share-btn fb" onclick="shareToFacebook()"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button>
+          <button class="sticky-share-btn tw" onclick="shareToX()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X (Twitter)</button>
+          <button class="sticky-share-btn li" onclick="shareToLinkedIn()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</button>
+          <button class="sticky-share-btn ig" onclick="shareToIG()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram</button>
+          <button class="sticky-share-btn em" onclick="shareByEmail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span data-th="อีเมล" data-en="Email">อีเมล</span></button>
+          <button class="sticky-share-btn cp" onclick="copyLink()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span data-th="คัดลอก" data-en="Copy">คัดลอก</span></button>
+        </div>
+      </div>
+
+      <!-- Author -->
+      <div class="author-card">
+        <div class="author-avatar-wrap">🏛</div>
+        <div class="author-name" data-th="ทีมงานหล่อซานเฮ้าส์" data-en="Lor Xan House Team">ทีมงานหล่อซานเฮ้าส์</div>
+        <div class="author-role" data-th="ผู้ดูแลมรดกและเรื่องราวของบ้านหล่อซาน" data-en="Curators of Lor Xan House heritage and stories">ผู้ดูแลมรดกและเรื่องราวของบ้านหล่อซาน</div>
+        <div class="author-bio" data-th="เราเชื่อว่าสถาปัตยกรรมที่ดีที่สุดไม่ใช่แค่สวยงาม แต่คือสิ่งที่ยังคงมีเรื่องราวให้เล่าได้ทุกวัน" data-en="We believe the finest architecture is not merely beautiful — it is something that still has stories to tell every single day.">เราเชื่อว่าสถาปัตยกรรมที่ดีที่สุดไม่ใช่แค่สวยงาม แต่คือสิ่งที่ยังคงมีเรื่องราวให้เล่าได้ทุกวัน</div>
+      </div>
+
+      <!-- Related -->
+      <div class="related-card">
+        <div class="related-card-label" data-th="บทความที่เกี่ยวข้อง" data-en="RELATED ARTICLES">บทความที่เกี่ยวข้อง</div>
+        <a href="blog-post.html" style="text-decoration:none;">
+          <div class="related-item">
+            <img class="related-thumb" src="about.jpg" alt="บ้านร้อยปี" />
+            <div>
+              <div class="related-title" data-th="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง" data-en="A Century-Old Home and Memories That Never Fade">บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง</div>
+              <div class="related-date" data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</div>
+            </div>
+          </div>
+        </a>
+        <a href="blog-angku.html" style="text-decoration:none;">
+          <div class="related-item">
+            <img class="related-thumb" src="feature-2.jpg" alt="อังกู๊" />
+            <div>
+              <div class="related-title" data-th="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" data-en="Ang Ku Kueh: A Small Dessert with a Big Story">อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+              <div class="related-date" data-th="1 มีนาคม 2569" data-en="1 March 2026">1 มีนาคม 2569</div>
+            </div>
+          </div>
+        </a>
+        <div class="related-item">
+          <img class="related-thumb" src="feature-3.jpg" alt="อาหาร" />
+          <div>
+            <div class="related-title" data-th="สูตรหมูฮ้องที่ไม่เคยถูกเขียน" data-en="The Braised Pork Recipe Never Written Down">สูตรหมูฮ้องที่ไม่เคยถูกเขียน</div>
+            <div class="related-date" data-th="12 กุมภาพันธ์ 2569" data-en="12 February 2026">12 กุมภาพันธ์ 2569</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ══ MORE POSTS ══ -->
+  <div class="more-posts">
+    <div class="more-posts-inner">
+      <p class="section-label" data-th="บทความล่าสุด" data-en="LATEST ARTICLES">บทความล่าสุด</p>
+      <h2 class="section-h2" data-th="เรื่องราวอื่นจากหล่อซาน" data-en="More Stories from Lor Xan">เรื่องราวอื่นจากหล่อซาน</h2>
+      <div class="cards-grid">
+        <div class="blog-card" onclick="location.href='blog-post.html'">
+          <img class="card-img" src="about.jpg" alt="บ้านหล่อซาน" />
+          <div class="card-body">
+            <div class="card-cat" data-th="มรดกและวัฒนธรรม" data-en="HERITAGE & CULTURE">มรดกและวัฒนธรรม</div>
+            <div class="card-title" data-th="บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง" data-en="A Century-Old Home and Memories That Never Fade">บ้านร้อยปีกับความทรงจำที่ไม่เคยจาง</div>
+            <div class="card-excerpt" data-th="เดินเข้าไปในบ้านที่มีชีวิต เรื่องราวที่ไม่ได้แสดงเพื่อนักท่องเที่ยว แต่รอให้คนที่ใส่ใจมาฟัง" data-en="Walk into a living home — stories not performed for tourists, but waiting for those who truly care to come and listen.">เดินเข้าไปในบ้านที่มีชีวิต เรื่องราวที่ไม่ได้แสดงเพื่อนักท่องเที่ยว แต่รอให้คนที่ใส่ใจมาฟัง</div>
+            <div class="card-meta"><span data-th="8 มีนาคม 2569" data-en="8 March 2026">8 มีนาคม 2569</span><span>·</span><span data-th="5 นาที" data-en="5 min">5 นาที</span></div>
+          </div>
+        </div>
+        <div class="blog-card" onclick="location.href='blog-angku.html'">
+          <img class="card-img" src="feature-2.jpg" alt="อังกู๊" />
+          <div class="card-body">
+            <div class="card-cat" data-th="ตำรับอาหาร" data-en="RECIPES">ตำรับอาหาร</div>
+            <div class="card-title" data-th="อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต" data-en="Ang Ku Kueh: A Small Dessert with a Big Story">อังกู๊: ขนมเล็กๆ ที่ซ่อนเรื่องราวใหญ่โต</div>
+            <div class="card-excerpt" data-th="ทุกสีทุกรูปทรงของอังกู๊มีเรื่องจะเล่า — ภาษาของขนมที่ถูกพูดมานับร้อยปี" data-en="Every color and shape of Ang Ku Kueh has a story — the language of a dessert spoken for centuries.">ทุกสีทุกรูปทรงของอังกู๊มีเรื่องจะเล่า — ภาษาของขนมที่ถูกพูดมานับร้อยปี</div>
+            <div class="card-meta"><span data-th="1 มีนาคม 2569" data-en="1 March 2026">1 มีนาคม 2569</span><span>·</span><span data-th="6 นาที" data-en="6 min">6 นาที</span></div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <img class="card-img" src="feature-4.jpg" alt="ของที่ระลึก" />
+          <div class="card-body">
+            <div class="card-cat" data-th="ประสบการณ์" data-en="EXPERIENCE">ประสบการณ์</div>
+            <div class="card-title" data-th="ของที่ระลึกที่เล่าเรื่องได้ทุกครั้งที่มอง" data-en="Keepsakes That Tell a Story Every Time You Look">ของที่ระลึกที่เล่าเรื่องได้ทุกครั้งที่มอง</div>
+            <div class="card-excerpt" data-th="หนังสือลายเซ็น สูตรพิมพ์พิเศษ และภาพถ่าย — ของที่ระลึกที่ไม่ใช่แค่ของฝาก" data-en="Signed books, printed recipes, and photographs — keepsakes that are more than just souvenirs.">หนังสือลายเซ็น สูตรพิมพ์พิเศษ และภาพถ่าย — ของที่ระลึกที่ไม่ใช่แค่ของฝาก</div>
+            <div class="card-meta"><span data-th="8 กุมภาพันธ์ 2569" data-en="8 Feb 2026">8 กุมภาพันธ์ 2569</span><span>·</span><span data-th="3 นาที" data-en="3 min">3 นาที</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta-strip">
+    <div class="cta-strip-inner">
+      <h2 data-th="มาสัมผัสสถาปัตยกรรมที่ยังมีลมหายใจด้วยตัวเอง" data-en="Come Experience Living Architecture in Person">มาสัมผัสสถาปัตยกรรมที่ยังมีลมหายใจด้วยตัวเอง</h2>
+      <p data-th="บ้านหล่อซาน — ส่วนหนึ่งของเรื่องราวที่ยิ่งใหญ่ของเมืองเก่าภูเก็ต รับได้เพียง 4–6 ท่านต่อรอบ" data-en="Lor Xan House — part of Phuket Old Town's great story. Limited to only 4–6 guests per session.">บ้านหล่อซาน — ส่วนหนึ่งของเรื่องราวที่ยิ่งใหญ่ของเมืองเก่าภูเก็ต รับได้เพียง 4–6 ท่านต่อรอบ</p>
+      <a href="booking.html" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">• LOR XAN HOUSE •</div>
+    <div data-th="Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต" data-en="Lor Xan Premium Heritage Experience · A Living Century-Old Home">Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
+    <div class="footer-links">
+      <a href="index.html" data-th="หน้าหลัก" data-en="Home">หน้าหลัก</a>
+      <a href="gallery.html" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a>
+      <a href="index.html#pricing" data-th="ราคา" data-en="Pricing">ราคา</a>
+      <a href="booking.html" style="color:var(--accent);" data-th="📅 สำรองที่นั่ง" data-en="📅 Reserve Now">📅 สำรองที่นั่ง</a>
+    </div>
+  </footer>
+
+  <div class="copy-toast" id="copyToast">✓ คัดลอกลิงค์แล้ว!</div>
+
+  <script>
+    let currentLang = 'th';
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      document.getElementById('langToggle').textContent = currentLang === 'th' ? '🌐 EN' : '🌐 TH';
+      document.querySelectorAll('[data-th][data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+      document.documentElement.lang = currentLang;
+    }
+
+    // Progress bar + TOC highlight
+    window.addEventListener('scroll', () => {
+      const el  = document.getElementById('article-body');
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      const bot = top + el.offsetHeight;
+      const pct = Math.min(100, Math.max(0, (window.scrollY - top) / (bot - top - window.innerHeight) * 100));
+      document.getElementById('progressFill').style.width = pct + '%';
+
+      const sections = ['s1','s2','s3','s4','s5','s6'];
+      let active = sections[0];
+      sections.forEach(id => {
+        const s = document.getElementById(id);
+        if (s && s.getBoundingClientRect().top < 140) active = id;
+      });
+      document.querySelectorAll('.toc-list a').forEach(a => {
+        a.classList.toggle('active-toc', a.getAttribute('href') === '#' + active);
+      });
+    });
+
+    // Share functions
+    const PAGE_URL = encodeURIComponent(window.location.href);
+    function shareToFacebook() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${PAGE_URL}`,'_blank','width=600,height=500'); }
+    function shareToX() {
+      const t = encodeURIComponent('สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก 🏛 — หล่อซานเฮ้าส์');
+      window.open(`https://twitter.com/intent/tweet?text=${t}&url=${PAGE_URL}`,'_blank','width=600,height=400');
+    }
+    function shareToLinkedIn() { window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${PAGE_URL}`,'_blank','width=600,height=500'); }
+    function shareToIG() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        showToast(currentLang === 'th' ? '✓ คัดลอกแล้ว! วางลิงค์ใน Instagram bio ได้เลย' : '✓ Copied! Paste in your Instagram bio.', 3500);
+      });
+    }
+    function shareByEmail() {
+      const s = encodeURIComponent('สถาปัตยกรรมเมืองเก่าภูเก็ต: เมื่อตะวันออกพบตะวันตก — หล่อซานเฮ้าส์');
+      const b = encodeURIComponent(`อ่านบทความนี้จากหล่อซานเฮ้าส์:\n${window.location.href}`);
+      window.location.href = `mailto:?subject=${s}&body=${b}`;
+    }
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        showToast(currentLang === 'th' ? '✓ คัดลอกลิงค์แล้ว!' : '✓ Link copied!', 2500);
+      });
+    }
+    function showToast(msg, dur) {
+      const t = document.getElementById('copyToast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), dur);
+    }
+  </script>
+</body>
+</html>
