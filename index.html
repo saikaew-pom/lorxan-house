@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>หล่อซานเฮ้าส์ — Premium Heritage Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #3B7EC8;
+      --blue-mid:    #2D6AAD;
+      --blue-dark:   #1E4D82;
+      --blue-deep:   #0F2D4E;
+      --sky:         #EBF4FD;
+      --sky-light:   #F5FAFF;
+      --sky-mid:     #D6EAFA;
+      --silver:      #F1F5F9;
+      --silver-mid:  #E2EAF2;
+      --border:      #C5D8EC;
+      --accent:      #56A3D9;
+      --accent-soft: #A8D4EF;
+      --text-muted:  #7A92A8;
+      --text-body:   #3D5A72;
+      --text-dark:   #0F2D4E;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+      background: var(--sky-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; }
+    img { display: block; }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,250,255,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 36px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: .08em; color: var(--blue-dark);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue); flex-shrink: 0;
+    }
+    .btn-nav {
+      background: var(--blue); color: #fff;
+      padding: 9px 22px; border-radius: 50px;
+      font-size: .85rem; font-weight: 700; letter-spacing: .03em;
+      transition: background .2s, transform .2s;
+    }
+    .btn-nav:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-lang {
+      background: transparent; color: var(--blue-dark);
+      padding: 7px 16px; border-radius: 50px;
+      font-size: .82rem; font-weight: 700; letter-spacing: .05em;
+      border: 1.5px solid var(--border);
+      cursor: pointer; transition: all .2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .btn-lang:hover { background: var(--sky-mid); border-color: var(--blue); color: var(--blue); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    /* ══════════════════════════════════════
+       HERO — full-bleed image
+    ══════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('hero-bg.jpg');
+      background-size: cover; background-position: center;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(15,45,78,.72) 0%, rgba(30,77,130,.60) 60%, rgba(59,126,200,.45) 100%);
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.15); color: #fff;
+      font-size: .78rem; font-weight: 700;
+      padding: 7px 20px; border-radius: 50px;
+      margin-bottom: 24px; letter-spacing: .1em;
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(6px);
+    }
+    .hero-h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800; line-height: 1.2;
+      color: #fff; max-width: 700px;
+      margin-bottom: 18px;
+    }
+    .hero-h1 em { font-style: normal; color: var(--accent-soft); }
+    .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,.82);
+      max-width: 520px; line-height: 1.8;
+      margin: 0 auto 38px;
+    }
+    .hero-btns {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 64px;
+    }
+    .btn-primary {
+      background: var(--blue); color: #fff;
+      padding: 15px 34px; border-radius: 50px;
+      font-size: .98rem; font-weight: 700;
+      box-shadow: 0 6px 24px rgba(59,126,200,.45);
+      transition: all .2s;
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .btn-ghost {
+      background: rgba(255,255,255,.15); color: #fff;
+      padding: 15px 34px; border-radius: 50px;
+      font-size: .98rem; font-weight: 600;
+      border: 1.5px solid rgba(255,255,255,.35);
+      backdrop-filter: blur(6px);
+      transition: all .2s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.25); }
+
+    /* SCROLL INDICATOR */
+    .scroll-hint {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(255,255,255,.5); font-size: .72rem; letter-spacing: .12em;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.5), transparent);
+      animation: scrollBlink 2s ease-in-out infinite;
+    }
+    @keyframes scrollBlink { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* ══════════════════════════════════════
+       STATS BAR
+    ══════════════════════════════════════ */
+    .stats-wrap { max-width: 900px; margin: -28px auto 0; padding: 0 24px; position: relative; z-index: 10; }
+    .hero-stats-bar {
+      background: #fff; border-radius: 100px;
+      padding: 20px 48px;
+      display: flex; gap: 0; flex-wrap: wrap; justify-content: center;
+      box-shadow: 0 8px 40px rgba(59,126,200,.15);
+      border: 1px solid var(--border);
+    }
+    .stat-item { text-align: center; padding: 0 36px; }
+    .stat-item + .stat-item { border-left: 1px solid var(--border); }
+    .stat-val { font-size: 1.6rem; font-weight: 800; color: var(--blue); }
+    .stat-label { font-size: .78rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ══════════════════════════════════════
+       GALLERY STRIP
+    ══════════════════════════════════════ */
+    #gallery { padding: 72px 24px 0; max-width: 1200px; margin: 0 auto; }
+    .gallery-label { text-align: center; margin-bottom: 28px; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      grid-template-rows: 280px;
+      gap: 12px; border-radius: 20px; overflow: hidden;
+    }
+    .gallery-item {
+      position: relative; overflow: hidden;
+      background: var(--sky-mid);
+    }
+    .gallery-item:first-child { border-radius: 20px 0 0 20px; }
+    .gallery-item:last-child { border-radius: 0 20px 20px 0; }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(15,45,78,.7), transparent);
+      padding: 14px 14px 10px;
+      color: #fff; font-size: .72rem; font-weight: 600;
+      letter-spacing: .06em; opacity: 0; transition: opacity .3s;
+    }
+    .gallery-item:hover .gallery-caption { opacity: 1; }
+
+    /* ══════════════════════════════════════
+       SECTION COMMONS
+    ══════════════════════════════════════ */
+    .section-label {
+      font-size: .75rem; font-weight: 700; color: var(--blue);
+      letter-spacing: .16em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .section-h2 {
+      font-size: clamp(1.5rem, 4vw, 2.3rem);
+      font-weight: 800; color: var(--text-dark); line-height: 1.3;
+    }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-header p { color: var(--text-body); margin-top: 10px; font-size: .95rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .divider { text-align: center; padding: 56px 24px 0; color: var(--accent-soft); font-size: 1rem; letter-spacing: 10px; }
+
+    /* ══════════════════════════════════════
+       FEATURES
+    ══════════════════════════════════════ */
+    #features { padding: 60px 24px 80px; max-width: 1080px; margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1.5px solid var(--silver-mid);
+      border-radius: 20px; overflow: hidden;
+      transition: all .28s; cursor: default;
+    }
+    .feature-card:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 12px 40px rgba(59,126,200,.13);
+      transform: translateY(-6px);
+    }
+    .feature-img {
+      width: 100%; height: 180px;
+      object-fit: cover;
+      background: var(--sky-mid);
+      transition: transform .4s ease;
+    }
+    .feature-card:hover .feature-img { transform: scale(1.04); }
+    .feature-img-wrap { overflow: hidden; }
+    .feature-body { padding: 22px 22px 24px; }
+    .feature-num {
+      font-size: .68rem; font-weight: 800; color: var(--accent-soft);
+      letter-spacing: .1em; margin-bottom: 8px;
+    }
+    .feature-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .feature-title { font-size: 1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; line-height: 1.4; }
+    .feature-desc { font-size: .87rem; color: var(--text-body); line-height: 1.75; }
+
+    /* ══════════════════════════════════════
+       SPLIT SECTION (image + text)
+    ══════════════════════════════════════ */
+    #about {
+      padding: 80px 24px;
+      max-width: 1080px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+    }
+    .about-img-wrap { position: relative; border-radius: 24px; overflow: hidden; }
+    .about-img { width: 100%; height: 460px; object-fit: cover; background: var(--sky-mid); }
+    .about-badge {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(15,45,78,.75); color: #fff;
+      backdrop-filter: blur(8px);
+      padding: 8px 16px; border-radius: 50px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .06em;
+      border: 1px solid rgba(255,255,255,.2);
+    }
+    .about-text .section-label { text-align: left; }
+    .about-text .section-h2 { text-align: left; margin-bottom: 18px; }
+    .about-text p { font-size: .95rem; color: var(--text-body); line-height: 1.85; margin-bottom: 14px; }
+    .about-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+    .chip {
+      background: var(--sky-mid); color: var(--blue-dark);
+      padding: 7px 16px; border-radius: 50px;
+      font-size: .8rem; font-weight: 600; border: 1px solid var(--border);
+    }
+
+    /* ══════════════════════════════════════
+       DARK HIGHLIGHT
+    ══════════════════════════════════════ */
+    #highlight {
+      background: linear-gradient(145deg, var(--blue-deep) 0%, #163E6B 100%);
+      color: #fff; padding: 80px 24px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #highlight::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(86,163,217,.15), transparent);
+    }
+    #highlight .section-label { color: var(--accent); }
+    #highlight .section-h2 { color: #fff; margin-bottom: 12px; }
+    #highlight .section-h2 em { font-style: normal; color: var(--accent-soft); }
+    .highlight-sub { font-size: .95rem; color: #7aadd4; max-width: 480px; margin: 0 auto 44px; line-height: 1.75; }
+    .highlight-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; max-width: 600px; margin: 0 auto;
+    }
+    .highlight-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: 16px 18px;
+      font-size: .9rem; color: #b8d4ea; line-height: 1.5;
+      text-align: left;
+    }
+    .h-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       PRICING
+    ══════════════════════════════════════ */
+    #pricing { padding: 80px 24px; max-width: 500px; margin: 0 auto; text-align: center; }
+    .price-card {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 24px; padding: 40px 36px;
+      box-shadow: 0 8px 40px rgba(59,126,200,.1);
+      position: relative; overflow: hidden;
+    }
+    .price-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+    }
+    .price-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--sky-mid); color: var(--blue-dark);
+      font-size: .75rem; font-weight: 700; padding: 5px 14px;
+      border-radius: 50px; margin-bottom: 20px;
+    }
+    .price-amount { font-size: 3.8rem; font-weight: 800; color: var(--blue); line-height: 1; }
+    .price-amount sup { font-size: 1.4rem; vertical-align: top; margin-top: 10px; color: var(--blue-mid); }
+    .price-unit { font-size: .95rem; color: var(--text-muted); margin-bottom: 28px; margin-top: 4px; }
+    hr.pdiv { border: none; border-top: 1px solid var(--silver-mid); margin-bottom: 24px; }
+    .include-list { text-align: left; }
+    .include-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 12px; font-size: .9rem;
+      color: var(--text-body); line-height: 1.6;
+    }
+    .ck {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--sky-mid); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+    }
+    .btn-reserve {
+      display: block;
+      background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+      color: #fff; padding: 16px 32px; border-radius: 50px;
+      font-size: 1rem; font-weight: 700; margin-top: 28px;
+      box-shadow: 0 6px 20px rgba(59,126,200,.3); transition: all .2s;
+    }
+    .btn-reserve:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(59,126,200,.4); }
+    .price-note { font-size: .78rem; color: var(--text-muted); margin-top: 12px; }
+
+    /* ══════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════ */
+    #testimonials { background: var(--sky); padding: 80px 24px; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; max-width: 980px; margin: 0 auto;
+    }
+    .tcard {
+      background: #fff; border: 1.5px solid var(--silver-mid);
+      border-radius: 20px; padding: 28px 24px;
+      box-shadow: 0 2px 16px rgba(59,126,200,.06);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .tcard:hover { box-shadow: 0 6px 28px rgba(59,126,200,.12); transform: translateY(-3px); }
+    .stars { color: #F59E0B; font-size: .85rem; margin-bottom: 12px; letter-spacing: 2px; }
+    .quote-text { font-size: .9rem; color: var(--text-body); line-height: 1.78; margin-bottom: 20px; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--accent));
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 700; flex-shrink: 0;
+    }
+    .reviewer-name { font-weight: 700; font-size: .88rem; color: var(--text-dark); }
+    .reviewer-role { font-size: .76rem; color: var(--text-muted); }
+
+    /* ══════════════════════════════════════
+       FINAL CTA
+    ══════════════════════════════════════ */
+    #cta {
+      position: relative; padding: 100px 24px; text-align: center; overflow: hidden;
+    }
+    .cta-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('hero-bg.jpg');
+      background-size: cover; background-position: center;
+    }
+    .cta-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(15,45,78,.82) 0%, rgba(30,77,130,.75) 100%);
+    }
+    .cta-content { position: relative; z-index: 1; }
+    .cta-icon { font-size: 2.2rem; margin-bottom: 14px; }
+    #cta h2 { font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 800; color: #fff; margin-bottom: 14px; }
+    #cta p { font-size: .97rem; color: rgba(255,255,255,.78); line-height: 1.78; max-width: 460px; margin: 0 auto 36px; }
+    .btn-cta {
+      display: inline-block;
+      background: #fff; color: var(--blue-dark);
+      padding: 18px 44px; border-radius: 50px;
+      font-size: 1.05rem; font-weight: 800;
+      box-shadow: 0 6px 28px rgba(0,0,0,.2);
+      transition: all .2s;
+    }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,.28); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: var(--blue-deep); color: #4a7aa8;
+      text-align: center; padding: 28px 24px; font-size: .82rem;
+    }
+    .footer-logo { color: var(--accent); font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 180px; }
+      .gallery-item:first-child { border-radius: 20px 0 0 0; }
+      .gallery-item:last-child { border-radius: 0 0 20px 0; }
+      #about { grid-template-columns: 1fr; gap: 32px; }
+      .about-img { height: 300px; }
+      .highlight-grid { grid-template-columns: 1fr; }
+      .price-card { padding: 28px 22px; }
+      .hero-stats-bar { border-radius: 20px; padding: 20px 24px; }
+      .stat-item { padding: 10px 20px; }
+      .stat-item + .stat-item { border-left: none; border-top: 1px solid var(--border); }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(4, 200px); border-radius: 20px; }
+      .gallery-item:first-child, .gallery-item:last-child { border-radius: 0; }
+      .gallery-item:first-child { border-radius: 20px 20px 0 0; }
+      .gallery-item:last-child { border-radius: 0 0 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <div class="nav-logo"><span class="nav-dot"></span>LOR XAN HOUSE</div>
+    <div class="nav-right">
+      <button class="btn-lang" id="langToggle" onclick="toggleLang()">🌐 EN</button>
+      <a href="#reserve" class="btn-nav" data-th="สำรองที่นั่ง" data-en="Reserve Now">สำรองที่นั่ง</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-tag" data-th="✦ LIMITED · จำกัดเพียง 4–6 ท่านต่อรอบ ✦" data-en="✦ LIMITED · Only 4–6 guests per session ✦">✦ LIMITED · จำกัดเพียง 4–6 ท่านต่อรอบ ✦</div>
+      <h1 class="hero-h1">
+        <span data-th="ประสบการณ์พรีเมียม" data-en="A Premium Experience">ประสบการณ์พรีเมียม</span><br>
+        <em data-th="ในบ้านร้อยปีของหล่อซาน" data-en="in Lor Xan's Century-Old Home">ในบ้านร้อยปีของหล่อซาน</em>
+      </h1>
+      <p class="hero-sub" data-th="ไม่ใช่แค่คลาสทำขนม — แต่คือการก้าวเข้าไปในบ้านจริง ฟังเรื่องราวจริง และสัมผัสรสชาติที่สืบทอดมารุ่นสู่รุ่น" data-en="Not just a cooking class — it's stepping into a real home, hearing real stories, and tasting flavors passed down through generations.">
+        ไม่ใช่แค่คลาสทำขนม — แต่คือการก้าวเข้าไปในบ้านจริง
+        ฟังเรื่องราวจริง และสัมผัสรสชาติที่สืบทอดมารุ่นสู่รุ่น
+      </p>
+      <div class="hero-btns">
+        <a href="#reserve" class="btn-primary" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">สำรองที่นั่ง Premium →</a>
+        <a href="#features" class="btn-ghost" data-th="ดูรายละเอียด" data-en="See Details">ดูรายละเอียด</a>
+      </div>
+      <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>SCROLL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STATS BAR ══ -->
+  <div class="stats-wrap">
+    <div class="hero-stats-bar">
+      <div class="stat-item"><div class="stat-val">4–6</div><div class="stat-label" data-th="ท่านต่อรอบ" data-en="guests per session">ท่านต่อรอบ</div></div>
+      <div class="stat-item"><div class="stat-val">1,950฿</div><div class="stat-label" data-th="ต่อท่าน รวมทุกอย่าง" data-en="per person, all-inclusive">ต่อท่าน รวมทุกอย่าง</div></div>
+      <div class="stat-item"><div class="stat-val">100+</div><div class="stat-label" data-th="ปี อายุบ้าน" data-en="years of heritage">ปี อายุบ้าน</div></div>
+      <div class="stat-item"><div class="stat-val">4</div><div class="stat-label" data-th="กิจกรรมพรีเมียม" data-en="premium activities">กิจกรรมพรีเมียม</div></div>
+    </div>
+  </div>
+
+  <!-- ══ GALLERY ══ -->
+  <section id="gallery">
+    <div class="gallery-label">
+      <p class="section-label" style="text-align:center;" data-th="ภาพบรรยากาศ" data-en="GALLERY">ภาพบรรยากาศ</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="gallery-1.jpg"
+             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
+             alt="บ้านหล่อซาน" />
+        <div class="gallery-caption" data-th="บ้านร้อยปีของหล่อซาน" data-en="Lor Xan's Century-Old Home">บ้านร้อยปีของหล่อซาน</div>
+      </div>
+      <div class="gallery-item">
+        <img src="gallery-2.jpg"
+             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
+             alt="คลาสทำอาหาร" />
+        <div class="gallery-caption" data-th="คลาสลงมือทำจริง" data-en="Hands-On Class">คลาสลงมือทำจริง</div>
+      </div>
+      <div class="gallery-item">
+        <img src="gallery-3.jpg"
+             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
+             alt="ขนมไทย" />
+        <div class="gallery-caption" data-th="ขนมสืบทอดตำรับ" data-en="Heirloom Recipes">ขนมสืบทอดตำรับ</div>
+      </div>
+      <div class="gallery-item">
+        <img src="gallery-4.jpg"
+             onerror="this.style.display='none';this.parentNode.style.background='var(--sky-mid)'"
+             alt="ของที่ระลึก" />
+        <div class="gallery-caption" data-th="ของที่ระลึกพิเศษ" data-en="Special Keepsakes">ของที่ระลึกพิเศษ</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">◆ ◆ ◆</div>
+
+  <!-- ══ ABOUT (SPLIT) ══ -->
+  <section id="about">
+    <div class="about-img-wrap">
+      <img class="about-img"
+           src="about.jpg"
+           onerror="this.style.display='none'"
+           alt="บ้านหล่อซาน" />
+      <div class="about-badge" data-th="🏮 บ้านร้อยปีที่มีชีวิต" data-en="🏮 A Living Century-Old Home">🏮 บ้านร้อยปีที่มีชีวิต</div>
+    </div>
+    <div class="about-text">
+      <p class="section-label" data-th="เกี่ยวกับเรา" data-en="ABOUT US">เกี่ยวกับเรา</p>
+      <h2 class="section-h2"><span data-th="หล่อซานเฮ้าส์" data-en="Lor Xan House">หล่อซานเฮ้าส์</span><br><span data-th="มากกว่าแค่สถานที่" data-en="More Than Just a Place">มากกว่าแค่สถานที่</span></h2>
+      <p data-th="บ้านหล่อซานเป็นบ้านไม้โบราณอายุกว่าร้อยปี ที่ยังคงเต็มไปด้วยเรื่องราวและชีวิตของครอบครัวที่สืบทอดตำรับอาหารและขนมมาหลายรุ่น" data-en="Lor Xan House is an antique wooden home over a century old, still filled with the stories and life of a family that has passed down food and dessert recipes through generations.">บ้านหล่อซานเป็นบ้านไม้โบราณอายุกว่าร้อยปี ที่ยังคงเต็มไปด้วยเรื่องราวและชีวิตของครอบครัวที่สืบทอดตำรับอาหารและขนมมาหลายรุ่น</p>
+      <p data-th="เราเปิดประตูบ้านให้คุณเข้ามาสัมผัสไม่ใช่ในฐานะนักท่องเที่ยว แต่ในฐานะแขกผู้มีเกียรติที่ได้รับการดูแลอย่างใกล้ชิดและเป็นส่วนตัว" data-en="We open our doors not as a tourist attraction, but as a private home where you are welcomed as an honored guest with close, personal attention.">เราเปิดประตูบ้านให้คุณเข้ามาสัมผัสไม่ใช่ในฐานะนักท่องเที่ยว แต่ในฐานะแขกผู้มีเกียรติที่ได้รับการดูแลอย่างใกล้ชิดและเป็นส่วนตัว</p>
+      <div class="about-chips">
+        <span class="chip" data-th="🏮 บ้านโบราณ" data-en="🏮 Heritage Home">🏮 บ้านโบราณ</span>
+        <span class="chip" data-th="🍵 สูตรดั้งเดิม" data-en="🍵 Authentic Recipes">🍵 สูตรดั้งเดิม</span>
+        <span class="chip" data-th="👥 ส่วนตัว" data-en="👥 Private">👥 ส่วนตัว</span>
+        <span class="chip" data-th="📖 ของที่ระลึก" data-en="📖 Keepsakes">📖 ของที่ระลึก</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ══ -->
+  <section id="features">
+    <div class="section-header">
+      <p class="section-label" data-th="สิ่งที่พิเศษกว่ารอบปกติ" data-en="WHAT MAKES IT SPECIAL">สิ่งที่พิเศษกว่ารอบปกติ</p>
+      <h2 class="section-h2" data-th="4 ประสบการณ์ที่คุณจะได้รับ" data-en="4 Experiences You Will Receive">4 ประสบการณ์ที่คุณจะได้รับ</h2>
+      <p data-th="แต่ละกิจกรรมออกแบบมาให้คุณได้สัมผัสความงามของวัฒนธรรมอย่างลึกซึ้ง" data-en="Each activity is designed to let you deeply experience the beauty of the culture.">แต่ละกิจกรรมออกแบบมาให้คุณได้สัมผัสความงามของวัฒนธรรมอย่างลึกซึ้ง</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img class="feature-img"
+               src="feature-1.jpg"
+               onerror="this.style.background='var(--sky-mid)'"
+               alt="พิมพ์ไม้โบราณ" />
+        </div>
+        <div class="feature-body">
+          <div class="feature-num">01</div>
+          <div class="feature-icon">🏮</div>
+          <div class="feature-title" data-th="พิธีเล่าเรื่องพิมพ์ไม้โบราณ" data-en="Antique Mold Storytelling Ceremony">พิธีเล่าเรื่องพิมพ์ไม้โบราณ</div>
+          <p class="feature-desc" data-th="ฟังเรื่องราวตระกูล ความหมายของลวดลายมงคล ทดลองเคาะขนมจากพิมพ์ไม้โบราณ พร้อมถ่ายภาพ Portrait ในแสงธรรมชาติของบ้านร้อยปี" data-en="Hear the family's history and the meaning behind auspicious patterns, try pressing desserts with antique wooden molds, and take a portrait in the natural light of the century-old home.">ฟังเรื่องราวตระกูล ความหมายของลวดลายมงคล ทดลองเคาะขนมจากพิมพ์ไม้โบราณ พร้อมถ่ายภาพ Portrait ในแสงธรรมชาติของบ้านร้อยปี</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img class="feature-img"
+               src="feature-2.jpg"
+               onerror="this.style.background='var(--sky-mid)'"
+               alt="อังกู๊" />
+        </div>
+        <div class="feature-body">
+          <div class="feature-num">02</div>
+          <div class="feature-icon">🍵</div>
+          <div class="feature-title" data-th="เรียนสูตรอังกู๊ 2 เวอร์ชันเต็ม" data-en="Learn Ang Ku Kueh — 2 Full Versions">เรียนสูตรอังกู๊ 2 เวอร์ชันเต็ม</div>
+          <p class="feature-desc" data-th="สูตรดั้งเดิมต้นตำรับ และสูตรแป้งพัฒนาสายสุขภาพ พร้อมเทคนิคทำเนื้อแป้งนุ่ม และรับอังกู๊ที่ทำเองกลับบ้านในกล่องพิเศษ" data-en="The original heirloom recipe and a modern healthy-dough version, with techniques for soft dough, plus take your homemade Ang Ku Kueh home in a special box.">สูตรดั้งเดิมต้นตำรับ และสูตรแป้งพัฒนาสายสุขภาพ พร้อมเทคนิคทำเนื้อแป้งนุ่ม และรับอังกู๊ที่ทำเองกลับบ้านในกล่องพิเศษ</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img class="feature-img"
+               src="feature-3.jpg"
+               onerror="this.style.background='var(--sky-mid)'"
+               alt="อาหารบ้านหล่อซาน" />
+        </div>
+        <div class="feature-body">
+          <div class="feature-num">03</div>
+          <div class="feature-icon">🍲</div>
+          <div class="feature-title" data-th="คลาสอาหารบ้านหล่อซาน" data-en="Lor Xan House Cooking Class">คลาสอาหารบ้านหล่อซาน</div>
+          <p class="feature-desc" data-th="หมูฮ้องหล่อซาน น้ำพริกหยำ ผักเครื่องเคียงครบชุด สูตรน้ำจิ้มลับของบ้าน พร้อมรับประทานร่วมกันเป็นมื้อพิเศษ" data-en="Lor Xan braised pork, Nam Prik Yam, a full side of vegetables, the house's secret dipping sauce recipe, and a shared special meal together.">หมูฮ้องหล่อซาน น้ำพริกหยำ ผักเครื่องเคียงครบชุด สูตรน้ำจิ้มลับของบ้าน พร้อมรับประทานร่วมกันเป็นมื้อพิเศษ</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img class="feature-img"
+               src="feature-4.jpg"
+               onerror="this.style.background='var(--sky-mid)'"
+               alt="ของที่ระลึก" />
+        </div>
+        <div class="feature-body">
+          <div class="feature-num">04</div>
+          <div class="feature-icon">📖</div>
+          <div class="feature-title" data-th="ของที่ระลึกเฉพาะ Premium" data-en="Exclusive Premium Keepsakes">ของที่ระลึกเฉพาะ Premium</div>
+          <p class="feature-desc" data-th="หนังสือ "ย้อนวันหวานที่หล่อซานเฮ้าส์" พร้อมลายเซ็น สูตรอาหารฉบับพิมพ์พิเศษ และภาพถ่ายที่ระลึกในบ้านหล่อซาน" data-en="The signed book &quot;Sweet Days at Lor Xan House,&quot; a special printed recipe card, and a commemorative photo taken inside Lor Xan House.">หนังสือ "ย้อนวันหวานที่หล่อซานเฮ้าส์" พร้อมลายเซ็น สูตรอาหารฉบับพิมพ์พิเศษ และภาพถ่ายที่ระลึกในบ้านหล่อซาน</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ DARK HIGHLIGHT ══ -->
+  <section id="highlight">
+    <p class="section-label" data-th="ความพิเศษของรอบ Premium" data-en="WHAT MAKES PREMIUM SPECIAL">ความพิเศษของรอบ Premium</p>
+    <h2 class="section-h2"><span data-th="คุณไม่ได้แค่มาเรียน —" data-en="You're not just here to learn —">คุณไม่ได้แค่มาเรียน —</span><br><span data-th="คุณมา" data-en="you're here to">คุณมา</span><em data-th="สัมผัสบ้าน" data-en="feel the home">สัมผัสบ้าน</em><span data-th="จริงๆ" data-en=" for real">จริงๆ</span></h2>
+    <p class="highlight-sub" data-th="เราออกแบบทุกรายละเอียดให้คุณรู้สึกว่าได้เป็นส่วนหนึ่งของบ้านจริงๆ ไม่ใช่แค่ผู้มาเยือน" data-en="We design every detail so you feel like a true part of the home — not just a visitor.">เราออกแบบทุกรายละเอียดให้คุณรู้สึกว่าได้เป็นส่วนหนึ่งของบ้านจริงๆ ไม่ใช่แค่ผู้มาเยือน</p>
+    <div class="highlight-grid">
+      <div class="highlight-item"><span class="h-icon">👥</span><span data-th="จำกัดเพียง 4–6 ท่านต่อรอบ" data-en="Limited to only 4–6 guests per session">จำกัดเพียง 4–6 ท่านต่อรอบ</span></div>
+      <div class="highlight-item"><span class="h-icon">⏳</span><span data-th="ใช้เวลายาวขึ้นแบบไม่เร่งรีบ" data-en="Unhurried, extended duration">ใช้เวลายาวขึ้นแบบไม่เร่งรีบ</span></div>
+      <div class="highlight-item"><span class="h-icon">🤝</span><span data-th="ได้พูดคุยใกล้ชิดกับเจ้าของบ้าน" data-en="Intimate conversation with the homeowner">ได้พูดคุยใกล้ชิดกับเจ้าของบ้าน</span></div>
+      <div class="highlight-item"><span class="h-icon">🌿</span><span data-th="บรรยากาศส่วนตัวอบอุ่น" data-en="Warm and private atmosphere">บรรยากาศส่วนตัวอบอุ่น</span></div>
+    </div>
+  </section>
+
+  <!-- ══ PRICING ══ -->
+  <section id="pricing">
+    <div class="section-header">
+      <p class="section-label" data-th="ราคา" data-en="PRICING">ราคา</p>
+      <h2 class="section-h2" data-th="ทุกอย่างรวมอยู่แล้ว" data-en="Everything Included">ทุกอย่างรวมอยู่แล้ว</h2>
+    </div>
+    <div class="price-card">
+      <div class="price-tag">🏮 Premium Package</div>
+      <div class="price-amount"><sup>฿</sup>1,950</div>
+      <div class="price-unit" data-th="ต่อท่าน" data-en="per person">ต่อท่าน</div>
+      <hr class="pdiv" />
+      <div class="include-list">
+        <div class="include-item"><span class="ck">✓</span><span data-th="วัตถุดิบทุกรายการ" data-en="All ingredients">วัตถุดิบทุกรายการ</span></div>
+        <div class="include-item"><span class="ck">✓</span><span data-th="อาหาร 1 มื้อ (รับประทานร่วมกัน)" data-en="1 shared meal together">อาหาร 1 มื้อ (รับประทานร่วมกัน)</span></div>
+        <div class="include-item"><span class="ck">✓</span><span data-th="อังกู๊ที่ทำเองในกล่องพิเศษ" data-en="Homemade Ang Ku Kueh in a special box">อังกู๊ที่ทำเองในกล่องพิเศษ</span></div>
+        <div class="include-item"><span class="ck">✓</span><span data-th='หนังสือ "ย้อนวันหวานที่หล่อซานเฮ้าส์" พร้อมลายเซ็น' data-en='Signed book "Sweet Days at Lor Xan House"'>หนังสือ "ย้อนวันหวานที่หล่อซานเฮ้าส์" พร้อมลายเซ็น</span></div>
+        <div class="include-item"><span class="ck">✓</span><span data-th="สูตรอาหารฉบับพิมพ์พิเศษ" data-en="Special printed recipe card">สูตรอาหารฉบับพิมพ์พิเศษ</span></div>
+        <div class="include-item"><span class="ck">✓</span><span data-th="ภาพถ่ายที่ระลึก" data-en="Commemorative photo">ภาพถ่ายที่ระลึก</span></div>
+        <div class="include-item"><span class="ck">✓</span><span data-th="คำแนะนำส่วนตัวจากเจ้าของบ้าน" data-en="Personal tips from the homeowner">คำแนะนำส่วนตัวจากเจ้าของบ้าน</span></div>
+      </div>
+      <a id="reserve" href="mailto:reserve@lorxanhouse.com?subject=สำรองที่นั่ง Premium" class="btn-reserve" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">
+        สำรองที่นั่ง Premium →
+      </a>
+      <p class="price-note" data-th="เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า" data-en="Available for specially scheduled sessions only">เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า</p>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS ══ -->
+  <section id="testimonials">
+    <div class="section-header">
+      <p class="section-label" data-th="เสียงจากผู้เข้าร่วม" data-en="GUEST REVIEWS">เสียงจากผู้เข้าร่วม</p>
+      <h2 class="section-h2" data-th="พวกเขาพูดอะไรบ้าง" data-en="What They Say">พวกเขาพูดอะไรบ้าง</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p class="quote-text" data-th="ประสบการณ์ที่หายากมาก ได้ยินเรื่องราวครอบครัว ได้เรียนสูตรจริง ได้ถ่ายรูปสวยในบ้านโบราณ คุ้มค่ามากกว่าที่คิดไว้มาก" data-en="A truly rare experience. Heard the family stories, learned real recipes, and took beautiful photos in the antique home. Far more worthwhile than I expected.">ประสบการณ์ที่หายากมาก ได้ยินเรื่องราวครอบครัว ได้เรียนสูตรจริง ได้ถ่ายรูปสวยในบ้านโบราณ คุ้มค่ามากกว่าที่คิดไว้มาก</p>
+        <div class="reviewer">
+          <div class="avatar">PN</div>
+          <div>
+            <div class="reviewer-name">คุณพิมพ์นรา ชวนะ</div>
+            <div class="reviewer-role" data-th="นักออกแบบ · กรุงเทพฯ" data-en="Designer · Bangkok">นักออกแบบ · กรุงเทพฯ</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p class="quote-text" data-th="ชอบที่สุดคือบรรยากาศ ไม่รีบ ไม่แน่น เจ้าของบ้านใส่ใจทุกคนจริงๆ กลับบ้านพร้อมทั้งสูตร หนังสือ และความทรงจำดีๆ" data-en="What I loved most was the atmosphere — no rushing, no crowds. The homeowner truly cared for everyone. I went home with recipes, a book, and beautiful memories.">ชอบที่สุดคือบรรยากาศ ไม่รีบ ไม่แน่น เจ้าของบ้านใส่ใจทุกคนจริงๆ กลับบ้านพร้อมทั้งสูตร หนังสือ และความทรงจำดีๆ</p>
+        <div class="reviewer">
+          <div class="avatar">VT</div>
+          <div>
+            <div class="reviewer-name">คุณวิภาวี ทรัพย์มี</div>
+            <div class="reviewer-role" data-th="ครู · เชียงใหม่" data-en="Teacher · Chiang Mai">ครู · เชียงใหม่</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p class="quote-text" data-th="พา 4 คนมาด้วยกันเป็น private รอบ เหมาะมาก พนักงานได้ bond กัน ได้เรียนรู้วัฒนธรรม ไม่เหมือน workshop ทั่วไปเลย" data-en="Brought 4 people for a private session — perfect. The team bonded, learned about culture, and it was nothing like any typical workshop.">พา 4 คนมาด้วยกันเป็น private รอบ เหมาะมาก พนักงานได้ bond กัน ได้เรียนรู้วัฒนธรรม ไม่เหมือน workshop ทั่วไปเลย</p>
+        <div class="reviewer">
+          <div class="avatar">SG</div>
+          <div>
+            <div class="reviewer-name">คุณสิรินภา แก้วใส</div>
+            <div class="reviewer-role" data-th="เจ้าของธุรกิจ · ภูเก็ต" data-en="Business Owner · Phuket">เจ้าของธุรกิจ · ภูเก็ต</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FINAL CTA ══ -->
+  <section id="cta">
+    <div class="cta-bg"></div>
+    <div class="cta-content">
+      <div class="cta-icon">🏮</div>
+      <h2 data-th="พร้อมสัมผัสประสบการณ์ที่แตกต่างหรือยัง?" data-en="Ready for a Truly Different Experience?">พร้อมสัมผัสประสบการณ์ที่แตกต่างหรือยัง?</h2>
+      <p data-th="ที่นั่งมีจำนวนจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า ติดต่อมาเพื่อเช็ควันว่างได้เลย" data-en="Seats are limited. Available only for specially scheduled sessions. Contact us now to check available dates.">ที่นั่งมีจำนวนจำกัด เปิดเฉพาะรอบพิเศษที่กำหนดล่วงหน้า ติดต่อมาเพื่อเช็ควันว่างได้เลย</p>
+      <a href="mailto:reserve@lorxanhouse.com?subject=สำรองที่นั่ง Premium" class="btn-cta" data-th="สำรองที่นั่ง Premium →" data-en="Reserve Premium →">
+        สำรองที่นั่ง Premium →
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">• LOR XAN HOUSE •</div>
+    <div data-th="Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต" data-en="Lor Xan Premium Heritage Experience · A Living Century-Old Home">Lor Xan Premium Heritage Experience · บ้านร้อยปีที่มีชีวิต</div>
+  </footer>
+
+  <script>
+    let currentLang = 'th';
+
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      const btn = document.getElementById('langToggle');
+      btn.textContent = currentLang === 'th' ? '🌐 EN' : '🌐 TH';
+
+      document.querySelectorAll('[data-th][data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+
+      document.documentElement.lang = currentLang;
+    }
+  </script>
+</body>
+</html>
