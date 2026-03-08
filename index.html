@@ -1090,5 +1090,35 @@
 
     document.addEventListener('DOMContentLoaded', buildSlider);
   </script>
+  <!-- ══ MESSENGER FLOAT ══ -->
+  <a href="https://m.me/wirintra.aoom" target="_blank" rel="noopener" class="ms-float" aria-label="Chat on Messenger">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.928 1.463 5.542 3.755 7.255V21l2.388-1.312A10.6 10.6 0 0 0 12 20.518c5.523 0 10-4.145 10-9.259S17.523 2 12 2Zm1.005 12.466-2.548-2.718-4.976 2.718 5.476-5.812 2.61 2.718 4.913-2.718-5.475 5.812Z"/>
+    </svg>
+    <span class="ms-label" data-th="คุยกับเรา" data-en="Chat with us">คุยกับเรา</span>
+  </a>
+  <style>
+    .ms-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: linear-gradient(135deg, #0084FF, #0050D0);
+      color: #fff; border-radius: 50px;
+      padding: 13px 20px 13px 15px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 6px 24px rgba(0,132,255,.38);
+      text-decoration: none; font-family: 'Sarabun', sans-serif;
+      font-size: .88rem; font-weight: 700; letter-spacing: .02em;
+      transition: transform .22s, box-shadow .22s;
+    }
+    .ms-float:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(0,132,255,.50);
+    }
+    .ms-float svg { flex-shrink: 0; }
+    @media (max-width: 480px) {
+      .ms-float { padding: 13px; border-radius: 50%; }
+      .ms-label { display: none; }
+    }
+  </style>
+
 </body>
 </html>
